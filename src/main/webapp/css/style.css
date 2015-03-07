@@ -1,0 +1,18 @@
+body {
+    background: deepskyblue;
+}
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#padding-to-navbar {
+    padding-top: 75px;
+}
