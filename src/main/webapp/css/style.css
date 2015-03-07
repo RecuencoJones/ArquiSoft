@@ -1,5 +1,18 @@
 body {
     background: deepskyblue;
+    background: url(../img/background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.jumbo-translucent {
+    background-color: rgba(238, 238, 238, 0.7);
+}
+
+.jumbo-transparent {
+    background-color: rgba(238, 238, 238, 0.3);
 }
 
 .vertical-center {

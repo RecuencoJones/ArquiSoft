@@ -8,16 +8,13 @@ angular.module('starter')
     }])
 
     .controller('LoginCtrl', [ '$scope', function($scope){
-        
-        
+
     }])
 
     .controller('RegisterCtrl', [ '$scope', function($scope){
 
-
     }])
 
     .controller('AboutCtrl', [ '$scope', function($scope){
-
 
     }]);
