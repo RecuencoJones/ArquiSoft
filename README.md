@@ -1,9 +1,7 @@
-# ArquiSoft
-
-## Backend
+# Backend
 
 Ejecución
-======
+------
 
 Para ejecutar el backend:
 
@@ -16,7 +14,7 @@ Para ejecutar el backend:
 4. Los endpoints son accesibles desde `http://localhost:8080/myusick/api/`
 
 API
-======
+------
 
 Directorio de endpoints
 
@@ -25,8 +23,8 @@ Directorio de endpoints
 | __GET__ | / | text/plain | Lista el directorio de endpoints |
 | __GET__ | /hello/{name} | text/plain | Returns a list of stored values |
 
-## Frontend
+# Frontend
 
 AngularJS
-======
+------
 TODO doc
