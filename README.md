@@ -37,10 +37,10 @@ TODO doc
 2. Crear una nueva configuración de ejecución __Run &gt; Edit Configurations...__
 3. Seleccionar __Tomcat Server &gt; local__
 4. En __Application Server__ pulsar __Configure...__
-5. Pulsar __+__ y seleccionar el home de Tomcat (recomendable xampp) y aceptamos en ambas ventanas
-6. En la ventana __Run/Debug configurations__ damos nombre a esta configuración
-7. En la pestaña __deployment__ pulsamos __+ &gt; External Source__ y seleccionamos __&lt;proyecto&gt;/build/libs/&lt;proyecto&gt;.war__
-8. Una vez seleccionado en __Application context:__ escribimos __&lt;proyecto&gt;__
+5. Pulsar __+__ y seleccionar el __HOME__ de Tomcat (recomendable xampp) y aceptamos en ambas ventanas
+6. En la ventana __Run/Debug configurations__ (la primera de todas) damos nombre a esta configuración
+7. En la pestaña __deployment__ pulsamos __+ &gt; External Source...__ y seleccionamos __&lt;proyecto&gt;/build/libs/&lt;proyecto&gt;.war__
+8. Una vez seleccionado en __Application context:__ escribimos __/&lt;proyecto&gt;__
 9. __[OPCIONAL]__ En el diálogo __Before launch:__ podemos agregar la tarea de __gradle war__
 
    Esto nos evita tener que construir el .war antes de lanzar el servidor, pero igualmente, antes de redesplegar va a haber que crear el .war de nuevo, así que no tiene mucha importancia
