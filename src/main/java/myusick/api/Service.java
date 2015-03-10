@@ -1,5 +1,7 @@
 package myusick.api;
 
+import myusick.util.DocUtil;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -12,7 +14,7 @@ import javax.ws.rs.core.MediaType;
  * Todos los endpoints de la API se encontrarán aquí
  */
 @Path("/")
-public class Myusick {
+public class Service {
 
     /**
      * REST endpoint
@@ -26,8 +28,8 @@ public class Myusick {
     @Produces(MediaType.TEXT_PLAIN)
     public String listEndpoints(){
         String s = "Directorio de endpoints de esta API: \n";
-        s += Util.docEndpoint("GET","/","text/plain","Devuelve este documento");
-        s += Util.docEndpoint("GET","/hello/{name}","text/plain","Devuelve \"Hello \" + el parametro especificado en la URL");
+        s += DocUtil.docEndpoint("GET", "/", "text/plain", "Devuelve este documento");
+        s += DocUtil.docEndpoint("GET", "/hello/{name}", "text/plain", "Devuelve \"Hello \" + el parametro especificado en la URL");
         return s;
     }
     
