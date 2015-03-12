@@ -1,9 +1,92 @@
 <!-- navbar -->
 <navbar></navbar>
 
-<div class="container" id="padding-to-navbar">
-    <h1>Welcome to your profile, {{user}}</h1>
-</div>
+<div id="wrapper" class="padding-to-navbar" ng-class="{'toggle-wrapper': hidden, 'show-sidebar-wrapper': !hidden }">
+    <div id="sidebar-wrapper" ng-class="{'toggle-sidebar': hidden, 'show-sidebar': !hidden }">
+        <!-- sidebar -->
+        <sidebar></sidebar>
+    </div>
+    <div id="page-content-wrapper">
+        <div>
+            <!-- href="#menu-toggle" -->
+            <a ng-click="toggleMenu()" class="btn btn-default sidebar-button" id="menu-toggle">
+                <span class="glyphicon" ng-class="{'glyphicon-triangle-right': hidden, 'glyphicon-triangle-left': !hidden}"></span>
+            </a>
+        </div>
+        <div class="container">
+    
+            <div class="row">
+        <!-- Panel izquierdo (perfil de usuario) -->
+        <div class="col-md-2">
+            <div class="jumbotron jumbo-transparent">
+                <!-- Cabecera del panel -->
+                <div class="row">
+                    <!-- Foto de perfil -->
+                    <div class="col-md-8">
+                        <img class="img img-responsive" src="img/profilePlaceholder.jpg"/>
+                    </div>
+                    <!-- Fotos y Contactos -->
+                    <div class="col-md-4">
+                        <a class="btn btn-default">
+                            <div class="glyphicon glyphicon-camera"></div>
+                        </a>
+                        <a class="btn btn-default">
+                            <div class="glyphicon glyphicon-user">
 
-<!-- footer -->
-<footer></footer>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <!-- Nick y bio -->
+                <div class="row">
+
+                </div>
+                <!-- Cuerpo del panel -->
+                <div class="row">
+
+                </div>
+                <!-- Editar perfil -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-group btn-group-justified">
+                            <a class="btn btn-primary">
+                                <span class=" glyphicon glyphicon-cog"></span> Editar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Panel central (publicaciones) -->
+        <div class="col-md-8">
+            <div class="jumbotron jumbo-transparent">
+                <div class="page-header">
+                    <h3>Welcome to your profile, {{user}}</h3>
+                </div>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p class="">Herp derp</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="">Foo bar</p>
+                </li>
+                <li class="list-group-item">
+                    <p class="">Hello world!</p>
+                </li>
+            </ul>
+        </div>
+        <!-- Panel derecho (grupos) -->
+        <div class="col-md-2">
+            <p class="text-center">Mis grupos</p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>

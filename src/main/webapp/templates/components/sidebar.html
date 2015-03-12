@@ -1,0 +1,22 @@
+<br>
+<ul class="sidebar-nav">
+    <li ng-class="{ active: isActive('/find')}">
+        <form ng-submit="search()">
+            <input class="form-control" type="text">
+        </form>
+    </li>
+    <li ng-class="{ active: isActive('/profile')}">
+        <a href="#/profile">My profile</a>
+    </li>
+    <li ng-class="{ active: isActive('/friends')}">
+        <a href="#/friends">Friends</a>
+    </li>
+    <li ng-class="{ active: isActive('/favs')}">
+        <a href="#/favs">Favs</a>
+    </li>
+    <li ng-class="{ active: isActive('/settings')}">
+        <a href="#/settings">
+            <span class=" glyphicon glyphicon-cog"></span> Settings
+        </a>
+    </li>
+</ul>

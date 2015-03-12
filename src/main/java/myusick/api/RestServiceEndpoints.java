@@ -1,14 +1,13 @@
 package myusick.api;
 
 import com.google.gson.Gson;
+
 import myusick.model.User;
-import myusick.util.AuthToken;
-import myusick.util.DocUtil;
+import myusick.util.security.AuthToken;
+import myusick.util.doc.DocUtil;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
 /**
  * REST backend
@@ -16,7 +15,7 @@ import javax.ws.rs.core.UriInfo;
  * Todos los endpoints de la API se encontrarán aquí
  */
 @Path("/")
-public class Service {
+public class RestServiceEndpoints {
 
     /**
      * REST endpoint

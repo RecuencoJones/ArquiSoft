@@ -14,4 +14,10 @@ dependencies {
     compile 'org.glassfish.jersey.media:jersey-media-moxy:2.13'
 
     compile 'com.google.code.gson:gson:2.3'
+
+    compile 'org.webjars:bootstrap:3.3.2'
+    compile 'org.webjars:angularjs:1.2.0'
+    compile 'org.webjars:angular-ui-router:0.2.13'
+    compile 'org.webjars:jquery:1.11.0'
+
 }

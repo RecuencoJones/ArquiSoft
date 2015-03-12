@@ -15,7 +15,7 @@ public class ApplicationConfig extends ResourceConfig{
      */
     public ApplicationConfig() {
         register(CrossDomainFilter.class);
-        register(Service.class);
+        register(RestServiceEndpoints.class);
         //register(MOXyJsonProvider.class);
     }
 }

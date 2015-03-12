@@ -1,4 +1,4 @@
-package myusick.util;
+package myusick.util.security;
 
 import myusick.model.User;
 

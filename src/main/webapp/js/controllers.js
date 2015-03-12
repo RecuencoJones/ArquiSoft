@@ -2,12 +2,33 @@ var API_URL = "http://localhost:8080/myusick/api";
 
 angular.module('starter')
     
-    .controller('MainCtrl', [ '$scope', '$state', 'auth', function($scope,$state,auth){
+    .controller('MainCtrl', [ '$scope', '$state', '$location', 'auth', function($scope,$state,$location,auth){
         $scope.user = auth.identity().user;
+
+        $scope.hidden = true;
+
+        $scope.toggleMenu = function() {
+            $scope.hidden = !$scope.hidden;
+        };
+
+        $scope.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
+        };
+
     }])
 
-    .controller('ProfileCtrl', [ '$scope', '$state', 'auth', function($scope,$state,auth){
+    .controller('ProfileCtrl', [ '$scope', '$state', '$location', 'auth', function($scope,$state,$location,auth){
         $scope.user = auth.identity().user;
+
+        $scope.hidden = true;
+
+        $scope.toggleMenu = function() {
+            $scope.hidden = !$scope.hidden;
+        };
+
+        $scope.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
+        };
     }])
 
     .controller('NavbarCtrl', [ '$scope', '$location', '$state', 'auth', function($scope,$location,$state,auth){
@@ -22,6 +43,12 @@ angular.module('starter')
             auth.authenticate(null);
             $state.go('login');
         }
+    }])
+    
+    .controller('SidebarCtrl', ['$scope', '$location', function($scope,$location){
+        $scope.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
+        };
     }])
 
     .controller('LoginCtrl', [ '$scope', '$http', '$state', 'auth', function($scope,$http,$state,auth){
@@ -69,8 +96,4 @@ angular.module('starter')
             console.log($scope.user);
             
         };
-    }])
-
-    .controller('AboutCtrl', [ '$scope', function($scope){
-
     }]);

@@ -1,9 +1,28 @@
 <!-- navbar -->
 <navbar></navbar>
 
-<div class="container" id="padding-to-navbar">
-    <h1>Welcome home, {{user}}</h1>
+<div id="wrapper" class="padding-to-navbar" ng-class="{'toggle-wrapper': hidden, 'show-sidebar-wrapper': !hidden }">
+    <div id="sidebar-wrapper" ng-class="{'toggle-sidebar': hidden, 'show-sidebar': !hidden }">
+        <!-- sidebar -->
+        <sidebar></sidebar>
+    </div>
+    <div id="page-content-wrapper">
+        <div>
+            <!-- href="#menu-toggle" -->
+            <a ng-click="toggleMenu()" class="btn btn-default sidebar-button" id="menu-toggle">
+                <span class="glyphicon" ng-class="{'glyphicon-triangle-right': hidden, 'glyphicon-triangle-left': !hidden}"></span>
+            </a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="jumbotron jumbo-transparent">
+                        <div class="text-center">
+                            <h3>Welcome, {{user}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- footer -->
-<footer></footer>

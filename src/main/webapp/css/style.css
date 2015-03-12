@@ -5,6 +5,7 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    overflow-x: hidden;
 }
 
 .jumbo-translucent {
@@ -12,7 +13,7 @@ body {
 }
 
 .jumbo-transparent {
-    background-color: rgba(238, 238, 238, 0.3);
+    background-color: rgba(238, 238, 238, 0.3) !important;
 }
 
 .vertical-center {
@@ -62,6 +63,30 @@ body {
     box-shadow: 0 1px 0 black, 0 2px 0 orange;
 }
 
-#padding-to-navbar {
+.padding-to-navbar {
     padding-top: 75px;
+}
+
+.padding-to-navbar {
+    padding-top: 50px;
+}
+
+.no-collapse-item {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    height: 50px ! important;
+    padding-top: 15px ! important;
+}
+
+.custom-nav {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.sidebar-button, .sidebar-button:hover {
+    color: #ccc;
+    background-color: #333;
+    border-color: transparent;
+    margin-bottom: 10px;
 }
