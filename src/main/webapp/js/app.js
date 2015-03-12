@@ -11,13 +11,23 @@ angular.module('starter', ['ui.router'])
             .state('home', {
                 url: "/home",
                 templateUrl: "templates/main/home.html",
-                controller: "MainCtrl"
+                controller: "MainCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('login');
+                    }
+                }
             })
             
             .state('profile', {
                 url: "/profile",
                 templateUrl: "templates/main/profile.html",
-                controller: "ProfileCtrl"
+                controller: "ProfileCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('login');
+                    }
+                }
             })
             
             .state('login', {

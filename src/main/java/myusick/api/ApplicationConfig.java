@@ -7,6 +7,12 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 public class ApplicationConfig extends ResourceConfig{
 
+    /**
+     * Configuración de la aplicación
+     * Registra el servicio donde se encuentran todos los endpoints
+     * Adicionalmente registra la configuración de CORS
+     * Todas las peticiones se harán a través de esta clase
+     */
     public ApplicationConfig() {
         register(CrossDomainFilter.class);
         register(Service.class);

@@ -26,6 +26,42 @@ body {
     text-align: center;
 }
 
+.right-top-radius {
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.right-bot-radius {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+.default-cursor {
+    cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.logo-style {
+    font-weight: bold !important;
+    color: black !important;
+    text-shadow: 2px 0 0 orange, 
+        -2px 0 0 orange, 
+        0 2px 0 orange, 
+        0 -2px 0 orange, 
+        1px 1px orange, 
+        -1px -1px 0 orange,
+        1px -1px 0 orange,
+        -1px 1px 0 orange !important;
+}
+
+.page-header {
+    border-bottom: 1px solid orange;
+    box-shadow: 0 1px 0 black, 0 2px 0 orange;
+}
+
 #padding-to-navbar {
     padding-top: 75px;
 }

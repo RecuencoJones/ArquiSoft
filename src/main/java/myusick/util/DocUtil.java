@@ -6,19 +6,16 @@ public class DocUtil {
      * Método para documentar los endpoints
      * @param httpVerb verbo HTTP usado
      * @param path el path del endpoint
-     * @param type tipo de documento de petición o respuesta
+     * @param consumes tipo de documento consumido
+     * @param produces tipo de documento producido
      * @param description descripción del endpoint
      * @return string formateado con la documentación
      */
-    public static String docEndpoint(String httpVerb, String path, String type, String description){
-        if(httpVerb.equalsIgnoreCase("post")) {
-            return "\t" + httpVerb + "\t" + path + "\n" +
-                    "\tConsumes: " + type + "\n" +
-                    "\t\t+ " + description + "\n\n";
-        }else{
-            return "\t" + httpVerb + "\t" + path + "\n" +
-                    "\tResponse-Type: " + type + "\n" +
-                    "\t\t+ " + description + "\n\n";
-        }
+    public static String docEndpoint(String httpVerb, String path, String consumes, String produces, String description){
+        return "\t" + httpVerb + "\t" + path + "\n" +
+                "\tConsumes: " + consumes + "\n" +
+                "\tResponse-Type: " + produces + "\n" +
+                "\t\t+ " + description + "\n\n";
+
     }
 }

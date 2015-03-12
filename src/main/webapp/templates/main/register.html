@@ -1,7 +1,77 @@
 <!-- navbar -->
 <navbar></navbar>
 
-<div class="container" id="padding-to-navbar">Cosas</div>
+<div class="container vertical-center">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="jumbotron jumbotron-inverted jumbo-transparent">
+                <form class="container-fluid" ng-submit="register()">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </span>
+                            <input class="form-control right-top-radius" type="text" placeholder="Name" ng-model="user.name" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Surname" ng-model="user.lastname" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            <input class="form-control" type="date" placeholder="Birthdate" ng-model="user.birthday" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                </span>
+                            <input class="form-control right-top-radius" type="text" placeholder="Address" ng-model="user.address" required/>
+                            <input class="form-control" type="text" placeholder="City" ng-model="user.city" required/>
+                            <input class="form-control" type="text" placeholder="Country" ng-model="user.country" required/>
+                            <input class="form-control right-bot-radius" type="text" pattern="[0-9]*" placeholder="Zipcode" ng-model="user.zipcode" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-phone"></span>
+                                </span>
+                            <input class="form-control" type="tel" placeholder="Phone number" ng-model="user.phone" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-envelope"></span>
+                                </span>
+                            <input class="form-control" type="text" placeholder="Email" ng-model="user.email" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class=" glyphicon glyphicon-lock"></span>
+                                </span>
+                            <input class="form-control" type="password" placeholder="Password" ng-model="user.password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class=" glyphicon glyphicon-lock"></span>
+                                </span>
+                            <input class="form-control" type="password" placeholder="Repeat password" ng-model="user.repassword" required>
+                        </div>
+                    </div>
+                    <button class="btn btn-block btn-success" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- footer -->
 <footer></footer>

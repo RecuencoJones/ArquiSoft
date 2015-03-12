@@ -15,6 +15,12 @@ import java.io.IOException;
 @PreMatching
 public class CrossDomainFilter implements ContainerResponseFilter {
 
+    /**
+     * Configuración del filtro CORS
+     * @param cres
+     * @param arg1
+     * @throws IOException
+     */
     @Override
     public void filter(ContainerRequestContext cres, ContainerResponseContext arg1) throws IOException {
         arg1.getHeaders().add("Access-Control-Allow-Origin", "*");
