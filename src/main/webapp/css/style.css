@@ -67,7 +67,7 @@ body {
     padding-top: 75px;
 }
 
-.padding-to-navbar {
+.padding-to-navbar-50 {
     padding-top: 50px;
 }
 
@@ -89,4 +89,22 @@ body {
     background-color: #333;
     border-color: transparent;
     margin-bottom: 10px;
+}
+
+.custom-nav-toggle {
+    margin-bottom: 0;
+    margin-left: 15px;
+    border: 0;
+}
+
+.custom-nav-header {
+    margin-left: 15px;
+}
+
+@media(min-width:768px) {
+    .custom-nav-toggle {
+        margin-bottom: 0;
+        border: 0;
+        margin-left: 0px;
+    }
 }

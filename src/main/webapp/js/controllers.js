@@ -1,4 +1,4 @@
-var API_URL = "http://localhost:8080/myusick/api";
+var API_URL = "http://"+window.location.host+"/myusick/api";
 
 angular.module('starter')
     
