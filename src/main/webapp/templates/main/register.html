@@ -6,24 +6,24 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="jumbotron jumbotron-inverted jumbo-transparent">
                 <form class="container-fluid" ng-submit="register()">
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.name}">
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-user"></span>
                             </span>
                             <input class="form-control right-top-radius" type="text" placeholder="Name" ng-model="user.name" required/>
-                            <input class="form-control right-bot-radius" type="text" placeholder="Surname" ng-model="user.lastname" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Lastname" ng-model="user.lastname" required/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.birthdate}">
                         <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input class="form-control" type="date" placeholder="Birthdate" ng-model="user.birthday" required/>
+                            <input class="form-control" type="date" placeholder="Birthdate" ng-model="user.birthdate" required/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.address}">
                         <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-home"></span>
@@ -34,7 +34,7 @@
                             <input class="form-control right-bot-radius" type="text" pattern="[0-9]*" placeholder="Zipcode" ng-model="user.zipcode" required/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.phone}">
                         <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-phone"></span>
@@ -42,7 +42,7 @@
                             <input class="form-control" type="tel" placeholder="Phone number" ng-model="user.phone" required/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.email}">
                         <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-envelope"></span>
@@ -50,24 +50,23 @@
                             <input class="form-control" type="text" placeholder="Email" ng-model="user.email" required/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{'has-error': errors.password}">
                         <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class=" glyphicon glyphicon-lock"></span>
                                 </span>
-                            <input class="form-control" type="password" placeholder="Password" ng-model="user.password" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class=" glyphicon glyphicon-lock"></span>
-                                </span>
-                            <input class="form-control" type="password" placeholder="Repeat password" ng-model="user.repassword" required>
+                            <input class="form-control right-top-radius" type="password" placeholder="Password" ng-model="user.password" required>
+                            <input class="form-control right-bot-radius" type="password" placeholder="Repeat password" ng-model="user.repassword" required>
                         </div>
                     </div>
                     <button class="btn btn-block btn-success" type="submit">Send</button>
                 </form>
+                <br>
+                <div class="btn-group-justified" ng-hide="hiddenErrorMessage">
+                    <a class="btn btn-danger" style="background-color: #D43F3A;" ng-click="hideErrorMessage()">
+                        Check errors. <span class="glyphicon glyphicon-ban-circle"></span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -33,13 +33,23 @@ angular.module('starter', ['ui.router'])
             .state('login', {
                 url: "/login",
                 templateUrl: "templates/main/login.html",
-                controller: "LoginCtrl"
+                controller: "LoginCtrl",
+                onEnter: function($state,auth){
+                    if(auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
             })
             
             .state('register', {
                 url: "/register",
                 templateUrl: "templates/main/register.html",
-                controller: "RegisterCtrl"
+                controller: "RegisterCtrl",
+                onEnter: function($state,auth){
+                    if(auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
             });
         
         $urlRouterProvider.otherwise('login');

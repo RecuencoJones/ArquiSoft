@@ -3,12 +3,12 @@ package myusick.model;
 /**
  * Created by david on 11/03/2015.
  */
-public class User {
+public class LoginUser {
     
     private String user;
     private String password;
     
-    public User(String user, String password){
+    public LoginUser(String user, String password){
         this.user=user;
         this.password=password;
     }
