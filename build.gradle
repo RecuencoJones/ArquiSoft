@@ -22,4 +22,5 @@ dependencies {
 
 }
 
-war.archiveName "myusick.war"
+
+war.archiveName 'myusick.war'
