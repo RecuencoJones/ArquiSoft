@@ -5,7 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 /**
  * Created by david on 10/03/2015.
  */
-public class ApplicationConfig extends ResourceConfig{
+public class ApplicationConfig extends ResourceConfig {
 
     /**
      * Configuración de la aplicación
@@ -17,5 +17,6 @@ public class ApplicationConfig extends ResourceConfig{
         register(CrossDomainFilter.class);
         register(RestServiceEndpoints.class);
         //register(MOXyJsonProvider.class);
+
     }
 }
