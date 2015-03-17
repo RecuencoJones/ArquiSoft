@@ -102,11 +102,36 @@ body {
     margin-left: 15px;
 }
 
+.simple-jumbo {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.margin-0 {
+    margin: 0px;
+}
+
+.img-bordered {
+    border-radius: 10px;
+    border: 5px solid grey;
+}
+
 @media(min-width:768px) {
     .custom-nav-toggle {
         margin-bottom: 0;
         border: 0;
         margin-left: 0px;
         cursor: pointer;
+    }
+    
+    .simple-jumbo {
+        margin-bottom: 0px;
+    }
+    
+    .profile-icons-bar {
+        padding-left: 0;
+        padding-top: 10px;
     }
 }
