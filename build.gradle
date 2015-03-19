@@ -19,6 +19,7 @@ dependencies {
     compile 'org.webjars:angularjs:1.2.0'
     compile 'org.webjars:angular-ui-router:0.2.13'
     compile 'org.webjars:jquery:1.11.0'
+    compile 'org.eclipse.persistence:javax.persistence:2.0.0'
 
 }
 
