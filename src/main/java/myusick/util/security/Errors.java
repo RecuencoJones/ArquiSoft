@@ -58,6 +58,7 @@ public class Errors {
         return (name || birthdate || address || phone || email || password);
     }
     
+    //lab is especificacion
     public static boolean isOk(String s){
         return !(s == null
                 || s.trim().length()==0

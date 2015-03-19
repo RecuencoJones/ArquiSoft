@@ -118,7 +118,11 @@ body {
     border: 5px solid grey;
 }
 
-@media(min-width:768px) {
+.margin-bot-10 {
+    margin-bottom: 10px;
+}
+
+@media(min-width:990px) {
     .custom-nav-toggle {
         margin-bottom: 0;
         border: 0;
@@ -131,7 +135,10 @@ body {
     }
     
     .profile-icons-bar {
-        padding-left: 0;
         padding-top: 10px;
+    }
+    
+    .margin-bot-10 {
+        margin-bottom: 0px;
     }
 }

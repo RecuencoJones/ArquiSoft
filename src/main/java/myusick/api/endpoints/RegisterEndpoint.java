@@ -42,20 +42,12 @@ public class RegisterEndpoint {
         //Check and set errors
         if(!Errors.isOk(registerUser.getName()))
             errors.setName();
-        if(!Errors.isOk(registerUser.getLastname()))
-            errors.setName();
         if(!Errors.isOk(registerUser.getBirthdate()))
             errors.setBirthdate();
-        if(!Errors.isOk(registerUser.getAddress()))
-            errors.setAddress();
         if(!Errors.isOk(registerUser.getCity()))
             errors.setAddress();
         if(!Errors.isOk(registerUser.getCountry()))
             errors.setAddress();
-        if(!Errors.isOk(registerUser.getZipcode()))
-            errors.setAddress();
-        if(!Errors.isOk(registerUser.getPhone()))
-            errors.setPhone();
         if(!Errors.isOk(registerUser.getEmail()))
             errors.setEmail();
         if(!Errors.isOk(registerUser.getPassword()))
