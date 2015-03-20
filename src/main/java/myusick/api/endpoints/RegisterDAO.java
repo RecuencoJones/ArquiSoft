@@ -1,18 +1,17 @@
 package myusick.api.endpoints;
 
 import com.google.gson.Gson;
-import myusick.model.LoginUser;
-import myusick.model.RegisterUser;
+import myusick.model.dto.LoginUserDTO;
+import myusick.model.dto.RegisterUserDTO;
 import myusick.util.security.AuthToken;
 import myusick.util.security.Errors;
 
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 /**
  * Created by david on 16/03/2015.
  */
-public class RegisterEndpoint {
+public class RegisterDAO {
 
     /**
      * Función de registro de usuarios
@@ -23,42 +22,43 @@ public class RegisterEndpoint {
      *
      * Registra a un usuario si los campos son correctos
      * @param info shit
-     * @param registerUser usuario a registrar
+     * @param registerUserDTO usuario a registrar
      * @return token de autenticación
      */
-    public static String register(UriInfo info, RegisterUser registerUser){
+    public static String register(UriInfo info, RegisterUserDTO registerUserDTO){
         Gson gson = new Gson();
         AuthToken authToken = new AuthToken();
         authToken.setToken("no");
         Errors errors = new Errors();
 
-        if(registerUser == null){
+        if(registerUserDTO == null){
             authToken.setErrors(errors.setEmpty());
             return gson.toJson(authToken);
         }
 
-        System.out.println(registerUser);
+        System.out.println(registerUserDTO);
 
         //Check and set errors
-        if(!Errors.isOk(registerUser.getName()))
+        if(!Errors.isOk(registerUserDTO.getName()))
             errors.setName();
-        if(!Errors.isOk(registerUser.getBirthdate()))
+        if(!Errors.isOk(registerUserDTO.getBirthdate()))
             errors.setBirthdate();
-        if(!Errors.isOk(registerUser.getCity()))
+        if(!Errors.isOk(registerUserDTO.getCity()))
             errors.setAddress();
-        if(!Errors.isOk(registerUser.getCountry()))
+        if(!Errors.isOk(registerUserDTO.getCountry()))
             errors.setAddress();
-        if(!Errors.isOk(registerUser.getEmail()))
+        if(!Errors.isOk(registerUserDTO.getEmail()))
             errors.setEmail();
-        if(!Errors.isOk(registerUser.getPassword()))
+        if(!Errors.isOk(registerUserDTO.getPassword()))
             errors.setPassword();
-        if(!Errors.isOk(registerUser.getRepassword()))
+        if(!Errors.isOk(registerUserDTO.getRepassword()))
             errors.setPassword();
 
         //Check if there were errors
         if(!errors.hasErrors()){
             //save registerUser to db
-            LoginUser user = new LoginUser(registerUser.getEmail(),registerUser.getPassword());
+            LoginUserDTO user = new LoginUserDTO(registerUserDTO.getEmail(), registerUserDTO.getPassword());
+            user.setUserId(1);
             authToken = AuthToken.generateToken(user);
         }else{
             authToken.setErrors(errors);

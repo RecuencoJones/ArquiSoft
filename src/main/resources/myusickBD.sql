@@ -11,10 +11,8 @@ USE `mydb` ;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`Publicante` (
   `UUID` INT NOT NULL AUTO_INCREMENT ,
-  `email` VARCHAR(60) NOT NULL ,
   `tipoPublicante` TINYINT(1) NOT NULL ,
-  PRIMARY KEY (`UUID`) ,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
+  PRIMARY KEY (`UUID`) )
 ENGINE = InnoDB;
 
 
@@ -23,7 +21,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`Publicacion` (
   `idPublicacion` INT NOT NULL AUTO_INCREMENT ,
-  `fecha` DATE NOT NULL ,
+  `fecha` BIGINT NOT NULL ,
   `contenido` VARCHAR(144) NOT NULL ,
   `Publicante_UUID` INT NOT NULL ,
   PRIMARY KEY (`idPublicacion`) ,
@@ -43,13 +41,15 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`Persona` (
   `Publicante_UUID` INT NOT NULL ,
   `nombre` VARCHAR(20) NOT NULL ,
   `apellidos` VARCHAR(60) NULL ,
+  `email` VARCHAR(60) NOT NULL ,
   `password` VARCHAR(20) NOT NULL ,
-  `fechaNacimiento` DATE NOT NULL ,
+  `fechaNacimiento` BIGINT NOT NULL ,
   `ciudad` VARCHAR(45) NOT NULL ,
   `pais` VARCHAR(45) NOT NULL ,
   `telefono` INT NULL ,
   PRIMARY KEY (`Publicante_UUID`) ,
   INDEX `fk_Persona_Publicante1_idx` (`Publicante_UUID` ASC) ,
+  UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) ,
   CONSTRAINT `fk_Persona_Publicante1`
     FOREIGN KEY (`Publicante_UUID` )
     REFERENCES `mydb`.`Publicante` (`UUID` )
@@ -64,7 +64,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `mydb`.`Grupo` (
   `Publicante_UUID` INT NOT NULL ,
   `nombre` VARCHAR(45) NOT NULL ,
-  `anyoFundacion` DATE NOT NULL ,
+  `anyoFundacion` INT NOT NULL ,
   `descripcion` VARCHAR(144) NULL ,
   PRIMARY KEY (`Publicante_UUID`) ,
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) ,
@@ -144,9 +144,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`tiene_tag`
+-- Table `mydb`.`persona_tiene_tag`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `mydb`.`tiene_tag` (
+CREATE  TABLE IF NOT EXISTS `mydb`.`persona_tiene_tag` (
   `idTag` INT NOT NULL ,
   `UUID_P` INT NOT NULL ,
   PRIMARY KEY (`idTag`, `UUID_P`) ,
@@ -160,6 +160,28 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`tiene_tag` (
   CONSTRAINT `fk_Tag_has_Persona_Persona1`
     FOREIGN KEY (`UUID_P` )
     REFERENCES `mydb`.`Persona` (`Publicante_UUID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`grupo_tiene_tag`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`grupo_tiene_tag` (
+  `idTag` INT NOT NULL ,
+  `UUID_G` INT NOT NULL ,
+  PRIMARY KEY (`idTag`, `UUID_G`) ,
+  INDEX `fk_Tag_has_Grupo_Grupo1_idx` (`UUID_G` ASC) ,
+  INDEX `fk_Tag_has_Grupo_Tag1_idx` (`idTag` ASC) ,
+  CONSTRAINT `fk_Tag_has_Grupo_Tag1`
+    FOREIGN KEY (`idTag` )
+    REFERENCES `mydb`.`Tag` (`idTag` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tag_has_Grupo_Grupo1`
+    FOREIGN KEY (`UUID_G` )
+    REFERENCES `mydb`.`Grupo` (`Publicante_UUID` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

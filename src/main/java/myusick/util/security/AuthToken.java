@@ -1,6 +1,6 @@
 package myusick.util.security;
 
-import myusick.model.LoginUser;
+import myusick.model.dto.LoginUserDTO;
 
 /**
  * Created by david on 11/03/2015.
@@ -8,7 +8,7 @@ import myusick.model.LoginUser;
 public class AuthToken {
     
     private String token;
-    private String user;
+    private int userid;
     private Errors errors;
 
     public String getToken() {
@@ -19,12 +19,12 @@ public class AuthToken {
         this.token = token;
     }
 
-    public String getUser() {
-        return user;
+    public int getUser() {
+        return userid;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(int userid) {
+        this.userid = userid;
     }
 
     public void setErrors(Errors errors) {
@@ -33,11 +33,11 @@ public class AuthToken {
 
     /**
      * Generates a token based on user data 
-     * @param loginUser user to be tokenized
+     * @param loginUserDTO user to be tokenized
      * @return token
      */
-    public static AuthToken generateToken(LoginUser loginUser){
-        char[] chars = loginUser.getPassword().toCharArray();
+    public static AuthToken generateToken(LoginUserDTO loginUserDTO){
+        char[] chars = loginUserDTO.getPassword().toCharArray();
         int[] bytes = new int[chars.length];
         String s = "";
         for(int i = 0; i < bytes.length; i++){
@@ -46,7 +46,7 @@ public class AuthToken {
         }
         AuthToken token = new AuthToken();
         token.setToken(s);
-        token.setUser(loginUser.getUser());
+        token.setUser(loginUserDTO.getUserId());
         return token;
     }
 }

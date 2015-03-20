@@ -1,7 +1,5 @@
 package myusick.util.security;
 
-import myusick.model.RegisterUser;
-
 /**
  * Created by david on 13/03/2015.
  */

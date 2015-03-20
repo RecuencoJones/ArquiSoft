@@ -1,11 +1,11 @@
-package myusick.model;
+package myusick.model.dto;
 
 import java.util.Date;
 
 /**
  * Created by david on 13/03/2015.
  */
-public class RegisterUser {
+public class RegisterUserDTO {
     
     private String name;
     private String lastname;

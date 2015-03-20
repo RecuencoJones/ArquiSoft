@@ -17,7 +17,7 @@
                         <div class="row margin-0">
                             <!-- Foto de perfil -->
                             <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
-                                <img class="img img-responsive img-bordered" src="img/placeholder.JPG"/>
+                                <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
                             </div>
                             <!-- Fotos y Contactos -->
                             <div class="col-md-12 col-xs-3 profile-icons-bar">
@@ -43,24 +43,16 @@
                         <!-- Nick y bio -->
                         <div class="row margin-0" style="padding-top: 10px">
                             <div class="text-center">
-                                <p>{{user}}</p>
-                                <p>my uber bio</p>
+                                <p>{{user.name}}</p>
+                                <p>{{user.description}}</p>
                             </div>
                         </div>
-                        <!-- Cuerpo del panel, aptitudes -->
+                        <!-- Aptitudes -->
                         <div class="row margin-0">
                             <ul class="list-group">
-                                <li class="list-group-item">
+                                <li class="list-group-item" ng-repeat="apt in user.skills">
                                     <span class="badge">10</span>
-                                    Guitarrista
-                                </li>
-                                <li class="list-group-item">
-                                    <span class="badge">0</span>
-                                    Bajista
-                                </li>
-                                <li class="list-group-item">
-                                    <span class="badge">999</span>
-                                    Retrasado
+                                    {{apt}}
                                 </li>
                             </ul>
                         </div>
@@ -81,8 +73,7 @@
                     <div class="simple-jumbo">
                         <p class="text-center">My bands</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" href="#/group/123">Ceporrín</a>
-                            <a class="btn btn-default" href="#/group/456">Ceporrón</a>
+                            <a class="btn btn-default" ng-repeat="group in user.groups" ng-href="#/group/{{group.id}}">{{group.name}}</a>
                             <a class="btn btn-primary" href="#/newGroup">Create group</a>
                         </div>
                     </div>
@@ -94,7 +85,7 @@
                             <input class="form-control" type="text" ng-model="message" placeholder="Say hello!"/>
                         </form>
                         <ul class="list-group">
-                            <li class="list-group-item" ng-repeat="pub in publications | orderBy: '-date'">
+                            <li class="list-group-item" ng-repeat="pub in user.publications | orderBy: '-date'">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p class="pull-left">{{pub.user}}</p>

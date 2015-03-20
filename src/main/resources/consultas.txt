@@ -1,0 +1,17 @@
+Login:
+	dado un email y una password, devolver el uuid del usuario y de sus grupos, si existe
+Registro:
+	dados nombre, [apellido,] fecha de nacimiento, ciudad, país, email, [telefono,] y password, introducir un nuevo usuario en la bd
+Home:
+	devolver las 10 últimas publicaciones de la bd
+		{id, uuid y nombre de publicante, contenido, fecha, etc}
+Perfil de usuario:
+	dado un uuid de usuario, devolver sus 10 últimas publicaciones
+		{id, contenido, fecha, etc}
+	dado un uuid de usuario, devolver su nombre, sus aptitudes, tags, url de la imagen de avatar y su bio
+	dado un uuid de usuario, devolver los uuids y nombres de los grupos a los que pertenece
+Perfil de grupo:
+	dado un uuid de grupo, devolver sus 10 últimas publicaciones
+		{id, contenido, fecha, etc}
+	dado un uuid de grupo, devolver su nombre, sus tags, año y descripción
+	dado un uuid de grupo, devolver los uuids y nombres de los componentes

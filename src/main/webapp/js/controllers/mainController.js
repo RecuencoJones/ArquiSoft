@@ -1,7 +1,7 @@
 angular.module('starter')
 
     .controller('MainCtrl', [ '$scope', '$state', '$location', 'auth', function($scope,$state,$location,auth){
-        $scope.user = auth.identity().user;
+        $scope.loggedUserId = auth.identity().userid;
 
         $scope.hidden = true;
 

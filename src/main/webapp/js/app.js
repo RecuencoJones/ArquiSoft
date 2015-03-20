@@ -20,7 +20,7 @@ angular.module('starter', ['ui.router'])
             })
             
             .state('profile', {
-                url: "/profile",
+                url: "/profile/:_userid",
                 templateUrl: "templates/main/profile.html",
                 controller: "ProfileCtrl",
                 onEnter: function($state,auth){
