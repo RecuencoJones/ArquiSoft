@@ -3,7 +3,10 @@ angular.module('starter')
     .controller('ProfileCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
         $scope.message = "";
+        $scope.newtag = "";
         $scope.hidden = true;
+        $scope.showTagInput = false;
+        
         $scope.user = {};
         
         $scope.toggleMenu = function() {
@@ -34,6 +37,15 @@ angular.module('starter')
                 //$http.post()
                 $scope.user.publications.push(newPub);
                 $scope.message = "";
+            }
+        };
+        
+        $scope.submitTag = function() {
+            if ($scope.newtag.trim() != "") {
+                //$http.post()
+                $scope.user.tags.push($scope.newtag);
+                $scope.newtag = "";
+                $scope.showTagInput = false;
             }
         }
         

@@ -11,14 +11,16 @@ public class ProfileUserDTO {
     private String description;
     private String avatar;
     private String[] skills;
+    private String[] tags;
     private List<ShortGroupDTO> groups;
     private List<PublicationDTO> publications;
 
-    public ProfileUserDTO(String name, String description, String avatar, String[] skills, List<ShortGroupDTO> groups, List<PublicationDTO> publications) {
+    public ProfileUserDTO(String name, String description, String avatar, String[] skills, String[] tags, List<ShortGroupDTO> groups, List<PublicationDTO> publications) {
         this.name = name;
         this.description = description;
         this.avatar = avatar;
         this.skills = skills;
+        this.tags = tags;
         this.groups = groups;
         this.publications = publications;
     }
@@ -53,6 +55,14 @@ public class ProfileUserDTO {
 
     public void setSkills(String[] skills) {
         this.skills = skills;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 
     public List<ShortGroupDTO> getGroups() {

@@ -77,6 +77,16 @@
                             <a class="btn btn-primary" href="#/newGroup">Create group</a>
                         </div>
                     </div>
+                    <div class="simple-jumbo" style="margin-top: 25px">
+                        <p class="text-center">My tags</p>
+                        <div class="btn-group-vertical" style="display: block">
+                            <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
+                            <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput">Add tag</a>
+                            <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
+                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag">
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <!-- Panel central (publicaciones) -->
                 <div class="col-md-6 col-md-pull-3">
@@ -87,13 +97,16 @@
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="pub in user.publications | orderBy: '-date'">
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="pull-left">{{pub.user}}</p>
+                                    <div class="col-md-2 col-xs-3">
+                                        <img class=" img-responsive img-bordered" ng-src="{{user.avatar}}" style="max-height: 50px">
+                                    </div>
+                                    <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
+                                        <p class="pull-left"><strong>{{pub.user}}</strong></p>
                                         <em class="pull-right">{{pub.date | date: 'dd/MM/yyyy'}}</em>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="padding-top: 10px;">
                                         <p class="">{{pub.content}}</p>
                                     </div>
                                 </div>

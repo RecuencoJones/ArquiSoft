@@ -15,9 +15,10 @@ public class ProfileDAO {
     public static String profile(int userid) {
         Gson gson = new Gson();
         String[] skills = {"Guitarra","Bajo","Retrasado"};
+        String[] tags = {};
         List<ShortGroupDTO> groups = new ArrayList<>();
-        groups.add(new ShortGroupDTO(123,"Ceporrín"));
-        groups.add(new ShortGroupDTO(456,"Ceporrón"));
+        groups.add(new ShortGroupDTO(123,"Ceporrin"));
+        groups.add(new ShortGroupDTO(456,"Ceporron"));
         List<PublicationDTO> publications = new ArrayList<>();
         publications.add(new PublicationDTO(2,1676556867,"David",1,"Foo bar"));
         publications.add(new PublicationDTO(1,1464646878,"David",1,"LOL"));
@@ -25,6 +26,7 @@ public class ProfileDAO {
                 "Cute retarded unicorn",
                 "img/placeholder.JPG",
                 skills,
+                tags,
                 groups,
                 publications);
         
