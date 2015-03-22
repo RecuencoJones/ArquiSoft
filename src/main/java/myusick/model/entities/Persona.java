@@ -30,6 +30,9 @@ public class Persona {
 	@Column(name = "password", nullable = false, length = 20)
 	private String password;
 	
+	@Column(name = "email", nullable = false, length = 60)
+	private String email;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fechanacimiento", nullable = false)
 	private Date fechanacimiento;
@@ -52,10 +55,10 @@ public class Persona {
 	private Set<Aptitud> aptitudes = new HashSet<Aptitud>();
 	
 	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="tiene_tag", 
+	@JoinTable(name="persona_tiene_tag", 
 			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
 			inverseJoinColumns={@JoinColumn(name="idtag", referencedColumnName="idtag")})
-	private Set<Tag> tags = new HashSet<Tag>();
+	private Set<Tag> tags_persona = new HashSet<Tag>();
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="es_integrante", 
@@ -96,6 +99,14 @@ public class Persona {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public int getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getFechanacimiento() {

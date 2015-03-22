@@ -38,6 +38,12 @@ public class Grupo {
 			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
 			inverseJoinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")})
 	private Set<Persona> miembros = new HashSet<Persona>();
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="grupo_tiene_tag", 
+			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
+			inverseJoinColumns={@JoinColumn(name="idtag", referencedColumnName="idtag")})
+	private Set<Tag> tags_grupo = new HashSet<Tag>();
 		
 	/*------GETTERS/SETTERS------*/
 	
