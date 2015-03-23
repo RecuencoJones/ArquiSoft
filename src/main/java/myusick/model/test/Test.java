@@ -6,6 +6,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import myusick.model.entities.*;
+
+import java.sql.Date;
+
 /**
  * Bases de datos 2 2014. Practica 4.
  * @author Equipo 2
@@ -23,40 +26,54 @@ public class Test {
 
 		trans.begin();
 
-		/* Creamos efectivo */
+        Aptitud ap1 = new Aptitud();
+        ap1.setIdaptitud(1); ap1.setNombre("bajista");
+        Aptitud ap2 = new Aptitud();
+        ap2.setIdaptitud(2); ap2.setNombre("vocalista");
+        Aptitud ap3 = new Aptitud();
+        ap3.setIdaptitud(3); ap3.setNombre("bateria");
 
-		/*Efectivo efectivo = new Efectivo();
-		efectivo.setIdOperacion(1234);
-		//Aqui es una relaci�n. Asocias una cuenta, no un numero.
-		efectivo.setNumCuenta("12345123451234512345");*/
+        Tag tag1 = new Tag();
+        tag1.setIdtag(1); tag1.setNombreTag("zaragoza");
+        Tag tag2 = new Tag();
+        tag2.setIdtag(2); tag2.setNombreTag("rock");
+        Tag tag3 = new Tag();
+        tag3.setIdtag(3); tag3.setNombreTag("folk-rock");
+        Tag tag4 = new Tag();
+        tag4.setIdtag(4); tag4.setNombreTag("spain");
 
-		/**
-		 * Llenamos Hash
-		 */
-		//cliente.getHash().add(cuenta); etc etc
-		
-		/**
-		 * Les damos persistencia
-		 */
-		/*em.persist(dir); 		em.persist(dir2); 			em.persist(dir3);
-		em.persist(dir5); 		em.persist(dir6);			em.persist(dir7);
-		em.persist(dir8);		em.persist(dir9);			em.persist(dir10);
-		em.persist(dir11);		em.persist(dir12);
-		em.persist(oficina); 	em.persist(oficina2); 		em.persist(oficina3);
-		em.persist(oficina4);	em.persist(oficina5);		em.persist(oficina6);
-		em.persist(cliente); 	em.persist(cliente2); 		em.persist(cliente3); 
-		em.persist(cliente4); 	em.persist(cliente5); 		em.persist(cliente6); 
-		em.persist(cuenta); 	em.persist(cuentaOrigen); 	em.persist(cuenta3); 
-		em.persist(cuenta4);	em.persist(cuenta5);		em.persist(cuenta6);
-		em.persist(cuenta7);
-		em.persist(efectivo); 	em.persist(efectivo2);		em.persist(efectivo3);
-		em.persist(ahorro);		em.persist(ahorro2);		em.persist(ahorro3);
-		em.persist(ahorro4);
-		em.persist(operacion);	em.persist(operacion2);		em.persist(operacion3);
-		em.persist(corriente); 	em.persist(corriente2); 	em.persist(corriente3);
-		em.persist(corriente4);
-		em.persist(transferencia); em.persist(transferencia2); em.persist(transferencia3);
-		trans.commit();*/
+        Publicante pub1 = new Publicante();
+        pub1.setUuid(1); pub1.setEmail("grupo1@unizar.es"); pub1.setTipoPublicante(true);
+        Publicante pub2 = new Publicante();
+        pub2.setUuid(2); pub2.setEmail("grupo2@unizar.es"); pub2.setTipoPublicante(true);
+        Publicante pub3 = new Publicante();
+        pub3.setUuid(3); pub3.setEmail("grupo3@unizar.es"); pub3.setTipoPublicante(true);
+        Publicante pub4 = new Publicante();
+        pub4.setUuid(4); pub4.setEmail("pers1@unizar.es"); pub4.setTipoPublicante(false);
+        Publicante pub5 = new Publicante();
+        pub4.setUuid(5); pub5.setEmail("pers2@unizar.es"); pub4.setTipoPublicante(false);
+
+        Grupo gr1 = new Grupo();
+        gr1.setNombre("the beatles"); gr1.setAnyo(new Date(1900));
+        gr1.setDescripcion("unos pelopijos que no llegaron a nada"); gr1.setPublicante_uuid(1);
+        Grupo gr2 = new Grupo();
+        gr2.setNombre("kancer de sida"); gr2.setAnyo(new Date(2003));
+        gr2.setDescripcion("grupo de covers zaragozano"); gr2.setPublicante_uuid(2);
+        Grupo gr3 = new Grupo();
+        gr3.setNombre("los toreros muertos"); gr3.setAnyo(new Date(1984));
+        gr3.setDescripcion("los putos amos"); gr3.setPublicante_uuid(3);
+
+
+        Persona per1 = new Persona();
+        per1.setNombre("guille"); per1.setPublicante_uuid(4);
+        Persona per2 = new Persona();
+        per2.setNombre("recu"); per2.setPublicante_uuid(5);
+
+		//cliente.getHash().add(cuenta);
+
+		//em.persist(dir);
+
+		//trans.commit();
 		
 		/**
 		 * Inicio de las consultas 
