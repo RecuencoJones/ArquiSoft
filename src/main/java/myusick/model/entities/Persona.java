@@ -4,19 +4,11 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 public class Persona {
 
-	@Id
+    @EmbeddedId
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "publicante_uuid")
 	private int publicante_uuid;
@@ -101,7 +93,7 @@ public class Persona {
 		this.password = password;
 	}
 	
-	public int getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
