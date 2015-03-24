@@ -6,6 +6,7 @@
 	<persistence-unit name="PersistenciaTest"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <!--<class>myusick.model.entities</class>-->
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
@@ -19,10 +20,14 @@
 			<!-- Además, en lugar de "puerto" tenéis que poner el número de puerto 
 				donde está escuchando vuestro servidor MySQL. -->
 			<!-- Por último, reemplazad "bd" con el nombre de BD deseado. -->
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>
-			<property name="javax.persistence.jdbc.user" value="myusick"/>
-            <property name="javax.persistence.jdbc.password" value="1234"/>
+			<!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
+			<!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>-->
+			<!--<property name="javax.persistence.jdbc.user" value="myusick"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="1234"/>-->
+            <property name="hibernate.connection.username" value="myusick"/>
+            <property name="hibernate.connection.password" value="1234"/>
+            <property name="hibernate.connection.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mydb"/>
 		</properties>
 	</persistence-unit>
 </persistence>
