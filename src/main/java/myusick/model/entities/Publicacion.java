@@ -15,7 +15,7 @@ public class Publicacion {
 
 	@Id
 	@Column(name = "idpublicacion", nullable = false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idpublicacion;
 
 	@Temporal(TemporalType.DATE)
