@@ -4,18 +4,10 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 public class Grupo {
-	@Id
+	@EmbeddedId
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "publicante_uuid")
 	private int publicante_uuid;
@@ -38,6 +30,12 @@ public class Grupo {
 			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
 			inverseJoinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")})
 	private Set<Persona> miembros = new HashSet<Persona>();
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="grupo_tiene_tag", 
+			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
+			inverseJoinColumns={@JoinColumn(name="idtag", referencedColumnName="idtag")})
+	private Set<Tag> tags_grupo = new HashSet<Tag>();
 		
 	/*------GETTERS/SETTERS------*/
 	

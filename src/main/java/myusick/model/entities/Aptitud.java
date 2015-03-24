@@ -9,7 +9,7 @@ public class Aptitud {
 
 	@Id
 	@Column(name = "idaptitud", nullable = false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idaptitud;
 
 	@Column(name = "nombre", nullable = false, length = 45)

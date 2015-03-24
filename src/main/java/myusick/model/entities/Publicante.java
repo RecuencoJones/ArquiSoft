@@ -18,7 +18,7 @@ public class Publicante {
 
 	@Id
 	@Column(name = "uuid", nullable = false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int uuid;
 	
 	@Column (name = "email", nullable = false, length = 60)
