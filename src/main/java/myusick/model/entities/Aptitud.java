@@ -1,14 +1,12 @@
 package myusick.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class Aptitud {
 
 	@Id
-	@Column(name = "idaptitud", nullable = false)
+	@Column(name = "idAptitud", nullable = false)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idaptitud;
 

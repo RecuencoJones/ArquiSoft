@@ -1,15 +1,10 @@
 package myusick.model.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
+@Entity
 @Embeddable
 public class Publicacion {
 

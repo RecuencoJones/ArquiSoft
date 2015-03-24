@@ -1,17 +1,21 @@
 package myusick.model.entities;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
-public class Persona {
+@Entity
+@Table(name = "Persona")
+public class Persona implements Serializable{
 
-    @EmbeddedId
+    @Id
+//    @EmbeddedId
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "publicante_uuid")
-	private int publicante_uuid;
+    @JoinColumn(name = "publicante_uuid",insertable=true,updatable=true,nullable=true,unique=true)
+	private Publicante publicante_uuid;
 
 	@Column(name = "nombre", nullable = false, length = 20)
 	private String nombre;
@@ -43,7 +47,7 @@ public class Persona {
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="tiene_aptitud", 
 			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="idaptitud", referencedColumnName="idaptitud")})
+			inverseJoinColumns={@JoinColumn(name="idaptitud", referencedColumnName="idAptitud")})
 	private Set<Aptitud> aptitudes = new HashSet<Aptitud>();
 	
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -55,17 +59,17 @@ public class Persona {
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="es_integrante", 
 			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="uuid_g", referencedColumnName="uuid_g")})
+			inverseJoinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")})
 	private Set<Grupo> grupos = new HashSet<Grupo>();
 
 	
 	/*------GETTERS/SETTERS------*/
-	
-	public int getPublicante_uuid() {
+
+	public Publicante getPublicante_uuid() {
 		return publicante_uuid;
 	}
 
-	public void setPublicante_uuid(int publicante_uuid) {
+	public void setPublicante_uuid(Publicante publicante_uuid) {
 		this.publicante_uuid = publicante_uuid;
 	}
 	

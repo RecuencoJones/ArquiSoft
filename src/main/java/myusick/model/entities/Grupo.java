@@ -1,14 +1,17 @@
 package myusick.model.entities;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 
-public class Grupo {
-	@EmbeddedId
-	@OneToOne(cascade = CascadeType.ALL)
+@Entity
+public class Grupo implements Serializable{
+	//@EmbeddedId
+    @Id
+	@OneToOne(targetEntity = Publicante.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "publicante_uuid")
 	private int publicante_uuid;
 

@@ -6,7 +6,12 @@
 	<persistence-unit name="PersistenciaTest"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <!--<class>myusick.model.entities</class>-->
+        <class>myusick.model.entities.Aptitud</class>
+        <class>myusick.model.entities.Grupo</class>
+        <class>myusick.model.entities.Persona</class>
+        <class>myusick.model.entities.Publicacion</class>
+        <class>myusick.model.entities.Publicante</class>
+        <class>myusick.model.entities.Tag</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="create" />
