@@ -10,10 +10,9 @@ import myusick.model.entities.*;
 import java.sql.Date;
 
 /**
- * Bases de datos 2 2014. Practica 4.
- * @author Equipo 2
+ * Arquitectura Software
+ * @author Guillermo Perez Garcia
  * Clase que implementa la insercion de datos en las tablas
- * y las consultas correspondientes
  */
 public class Test {
 	
@@ -25,13 +24,15 @@ public class Test {
 		EntityTransaction trans = em.getTransaction();
 
 		trans.begin();
-
+        /*--------- ENTIDADES ---------*/
         Aptitud ap1 = new Aptitud();
         ap1.setIdaptitud(1); ap1.setNombre("bajista");
         Aptitud ap2 = new Aptitud();
         ap2.setIdaptitud(2); ap2.setNombre("vocalista");
         Aptitud ap3 = new Aptitud();
         ap3.setIdaptitud(3); ap3.setNombre("bateria");
+        Aptitud ap4 = new Aptitud();
+        ap4.setIdaptitud(4); ap4.setNombre("guitarrista");
 
         Tag tag1 = new Tag();
         tag1.setIdtag(1); tag1.setNombreTag("zaragoza");
@@ -42,12 +43,13 @@ public class Test {
         Tag tag4 = new Tag();
         tag4.setIdtag(4); tag4.setNombreTag("spain");
 
+        //true=grupo, false=solista
         Publicante pub1 = new Publicante();
         pub1.setUuid(1); pub1.setEmail("grupo1@unizar.es"); pub1.setTipoPublicante(true);
         Publicante pub2 = new Publicante();
         pub2.setUuid(2); pub2.setEmail("grupo2@unizar.es"); pub2.setTipoPublicante(true);
         Publicante pub3 = new Publicante();
-        pub3.setUuid(3); pub3.setEmail("grupo3@unizar.es"); pub3.setTipoPublicante(true);
+        pub3.setUuid(3); pub3.setEmail("grupo3@unizar.es"); pub3.setTipoPublicante(false);
         Publicante pub4 = new Publicante();
         pub4.setUuid(4); pub4.setEmail("pers1@unizar.es"); pub4.setTipoPublicante(false);
         Publicante pub5 = new Publicante();
@@ -63,17 +65,38 @@ public class Test {
         gr3.setNombre("los toreros muertos"); gr3.setAnyo(new Date(1984));
         gr3.setDescripcion("los putos amos"); gr3.setPublicante_uuid(3);
 
-
         Persona per1 = new Persona();
         per1.setNombre("guille"); per1.setPublicante_uuid(4);
         Persona per2 = new Persona();
         per2.setNombre("recu"); per2.setPublicante_uuid(5);
 
-		//cliente.getHash().add(cuenta);
+        /*--------- RELACIONES ---------*/
 
-		//em.persist(dir);
+        /*----- grupo->persona y viceversa -----*/
+		per1.addGrupo(gr1); gr1.addMiembro(per1);
+		per2.addGrupo(gr1); gr2.addMiembro(per1);
 
-		//trans.commit();
+        /*----- grupo->tag -----*/
+        gr1.addTag(tag2);
+        gr2.addTag(tag2); gr2.addTag(tag1); gr2.addTag(tag4);
+
+        /*----- persona->tag -----*/
+        per1.addTag(tag1); per1.addTag(tag2);
+        per2.addTag(tag1); per2.addTag(tag2);
+
+        /*----- persona->aptitud -----*/
+        per1.addAptitud(ap1);per1.addAptitud(ap3);per1.addAptitud(ap4);
+        per2.addAptitud(ap1);per2.addAptitud(ap4);
+
+        /*aún no hay entidades débiles*/
+
+        em.persist(per1);   em.persist(per2);
+        em.persist(gr1);    em.persist(gr2);    em.persist(gr3);
+        em.persist(pub1);   em.persist(pub2);   em.persist(pub3);   em.persist(pub4);   em.persist(pub5);
+        em.persist(ap1);    em.persist(ap2);    em.persist(ap3);    em.persist(ap4);
+        em.persist(tag1);   em.persist(tag2);   em.persist(tag3);   em.persist(tag4);
+
+        trans.commit();
 		
 		/**
 		 * Inicio de las consultas 
