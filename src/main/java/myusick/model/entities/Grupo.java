@@ -70,4 +70,22 @@ public class Grupo {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+    public boolean addMiembro(Persona p){
+        boolean exito = false;
+        try{
+            miembros.add(p); exito=true;
+        }catch(Exception ex){/*nada, exito permanece false*/ }
+
+        return exito;
+    }
+
+    public boolean addTag(Tag t){
+        boolean exito = false;
+        try{
+            tags_grupo.add(t); exito=true;
+        }catch(Exception ex){/*nada, exito permanece false*/ }
+
+        return exito;
+    }
 }

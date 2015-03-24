@@ -132,4 +132,31 @@ public class Persona {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+
+    public boolean addGrupo(Grupo g){
+        boolean exito = false;
+        try{
+            grupos.add(g); exito=true;
+        }catch(Exception ex){/*nada, exito permanece false*/ }
+
+        return exito;
+    }
+
+    public boolean addTag(Tag t){
+        boolean exito = false;
+        try{
+            tags_persona.add(t); exito=true;
+        }catch(Exception ex){/*nada, exito permanece false*/ }
+
+        return exito;
+    }
+
+    public boolean addAptitud(Aptitud apt){
+        boolean exito = false;
+        try{
+            aptitudes.add(apt); exito=true;
+        }catch(Exception ex){/*nada, exito permanece false*/ }
+
+        return exito;
+    }
 }
