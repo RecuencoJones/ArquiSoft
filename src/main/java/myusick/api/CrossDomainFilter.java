@@ -15,7 +15,7 @@ import java.io.IOException;
 @PreMatching
 public class CrossDomainFilter implements ContainerResponseFilter {
 
-    /**
+    /**te
      * Configuración del filtro CORS
      * @param cres
      * @param arg1
