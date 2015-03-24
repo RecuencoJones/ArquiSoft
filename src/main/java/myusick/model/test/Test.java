@@ -6,6 +6,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import myusick.model.entities.*;
+import org.eclipse.persistence.sessions.factories.SessionFactory;
 
 import java.sql.Date;
 
@@ -15,12 +16,16 @@ import java.sql.Date;
  * Clase que implementa la insercion de datos en las tablas
  */
 public class Test {
-	
+
 	public static void main(String[] args) {
 		EntityManagerFactory entityManagerFactory = Persistence
 				.createEntityManagerFactory("PersistenciaTest");
 
-		EntityManager em = entityManagerFactory.createEntityManager();
+       /* try {
+            Class c = Class.forName("org.hibernate.ejb.HibernatePersistence");
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }*/
+
+        EntityManager em = entityManagerFactory.createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 
 		trans.begin();
