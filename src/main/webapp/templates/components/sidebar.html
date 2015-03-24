@@ -6,7 +6,7 @@
         </form>
     </li>
     <li ng-class="{ active: isActive('/profile')}">
-        <a href="#/profile">My profile</a>
+        <a ng-href="#/profile/{{loggedUserId}}">My profile</a>
     </li>
     <li ng-class="{ active: isActive('/friends')}">
         <a href="#/friends">Friends</a>

@@ -102,11 +102,43 @@ body {
     margin-left: 15px;
 }
 
-@media(min-width:768px) {
+.simple-jumbo {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.margin-0 {
+    margin: 0px;
+}
+
+.img-bordered {
+    border-radius: 10px;
+    border: 5px solid grey;
+}
+
+.margin-bot-10 {
+    margin-bottom: 10px;
+}
+
+@media(min-width:990px) {
     .custom-nav-toggle {
         margin-bottom: 0;
         border: 0;
         margin-left: 0px;
         cursor: pointer;
+    }
+    
+    .simple-jumbo {
+        margin-bottom: 0px;
+    }
+    
+    .profile-icons-bar {
+        padding-top: 10px;
+    }
+    
+    .margin-bot-10 {
+        margin-bottom: 0px;
     }
 }

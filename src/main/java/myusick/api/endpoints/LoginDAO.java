@@ -1,10 +1,10 @@
 package myusick.api.endpoints;
 
 import com.google.gson.Gson;
-import myusick.model.LoginUser;
+import myusick.model.dto.LoginUserDTO;
 import myusick.util.security.AuthToken;
 
-public class LoginEndpoint {
+public class LoginDAO {
 
     /**
      * Función de autenticación de usuarios
@@ -20,9 +20,10 @@ public class LoginEndpoint {
      */
     public static String authenticate(String user, String password){
         Gson gson = new Gson();
-        LoginUser userDatabase, userForm;
-        userForm = new LoginUser(user,password);
-        userDatabase = new LoginUser("foo@bar.com","foobar"); //db.queryForUser(authForm.getUser());
+        LoginUserDTO userDatabase, userForm;
+        userForm = new LoginUserDTO(user,password);
+        userDatabase = new LoginUserDTO("foo@bar.com","foobar"); //db.queryForUser(authForm.getUser());
+        userDatabase.setUserId(1);
         AuthToken authToken = new AuthToken();
         authToken.setToken("no"); //default not allowed
         if(userForm.getPassword().equals(userDatabase.getPassword())){

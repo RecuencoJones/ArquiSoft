@@ -5,7 +5,7 @@ import myusick.util.doc.DocUtil;
 /**
  * Created by david on 16/03/2015.
  */
-public class DirectoryEndpoint {
+public class APIdirectory {
 
     /**
      * REST endpoint

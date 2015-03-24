@@ -11,8 +11,8 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-user"></span>
                             </span>
-                            <input class="form-control right-top-radius" type="text" placeholder="Name" ng-model="user.name" required/>
-                            <input class="form-control right-bot-radius" type="text" placeholder="Lastname" ng-model="user.lastname" required/>
+                            <input class="form-control right-top-radius" type="text" placeholder="Name*" ng-model="user.name" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Lastname" ng-model="user.lastname"/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.birthdate}">
@@ -20,7 +20,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input class="form-control" type="date" placeholder="Birthdate" ng-model="user.birthdate" required/>
+                            <input class="form-control" type="date" placeholder="Birthdate*" ng-model="user.birthdate" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.address}">
@@ -28,10 +28,8 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-home"></span>
                                 </span>
-                            <input class="form-control right-top-radius" type="text" placeholder="Address" ng-model="user.address" required/>
-                            <input class="form-control" type="text" placeholder="City" ng-model="user.city" required/>
-                            <input class="form-control" type="text" placeholder="Country" ng-model="user.country" required/>
-                            <input class="form-control right-bot-radius" type="text" pattern="[0-9]*" placeholder="Zipcode" ng-model="user.zipcode" required/>
+                            <input class="form-control right-top-radius" type="text" placeholder="City*" ng-model="user.city" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Country*" ng-model="user.country" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.phone}">
@@ -39,7 +37,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-phone"></span>
                                 </span>
-                            <input class="form-control" type="tel" placeholder="Phone number" ng-model="user.phone" required/>
+                            <input class="form-control" type="tel" placeholder="Phone number" ng-model="user.phone"/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.email}">
@@ -47,7 +45,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                 </span>
-                            <input class="form-control" type="text" placeholder="Email" ng-model="user.email" required/>
+                            <input class="form-control" type="text" placeholder="Email*" ng-model="user.email" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.password}">

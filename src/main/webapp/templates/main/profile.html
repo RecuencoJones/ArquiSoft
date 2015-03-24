@@ -7,86 +7,122 @@
         <sidebar></sidebar>
     </div>
     <div id="page-content-wrapper">
-        <!--<div>
-            &lt;!&ndash; href="#menu-toggle" &ndash;&gt;
-            <a ng-click="toggleMenu()" class="btn btn-default sidebar-button" id="menu-toggle">
-                <span class="glyphicon" ng-class="{'glyphicon-triangle-right': hidden, 'glyphicon-triangle-left': !hidden}"></span>
-            </a>
-        </div>-->
         <div class="container">
     
             <div class="row">
-        <!-- Panel izquierdo (perfil de usuario) -->
-        <div class="col-md-2">
-            <div class="jumbotron jumbo-transparent">
-                <!-- Cabecera del panel -->
-                <div class="row">
-                    <!-- Foto de perfil -->
-                    <div class="col-md-8">
-                        <img class="img img-responsive" src="img/profilePlaceholder.jpg"/>
-                    </div>
-                    <!-- Fotos y Contactos -->
-                    <div class="col-md-4">
-                        <a class="btn btn-default">
-                            <div class="glyphicon glyphicon-camera"></div>
-                        </a>
-                        <a class="btn btn-default">
-                            <div class="glyphicon glyphicon-user">
-
+                <!-- Panel izquierdo (perfil de usuario) -->
+                <div class="col-md-3">
+                    <div class="simple-jumbo">
+                        <!-- Cabecera del panel -->
+                        <div class="row margin-0">
+                            <!-- Foto de perfil -->
+                            <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
+                                <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
                             </div>
-                        </a>
-                    </div>
-                </div>
-                <!-- Nick y bio -->
-                <div class="row">
-
-                </div>
-                <!-- Cuerpo del panel -->
-                <div class="row">
-
-                </div>
-                <!-- Editar perfil -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="btn-group btn-group-justified">
-                            <a class="btn btn-primary">
-                                <span class=" glyphicon glyphicon-cog"></span> Editar
-                            </a>
+                            <!-- Fotos y Contactos -->
+                            <div class="col-md-12 col-xs-3 profile-icons-bar">
+                                <div class="row text-center">
+                                    <div class="col-md-4 col-xs-12 margin-bot-10">
+                                        <a class="btn btn-default" title="Media">
+                                            <span class="glyphicon glyphicon-picture"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 margin-bot-10">
+                                        <a class="btn btn-default" title="Contacts">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 margin-bot-10">
+                                        <a class="btn btn-default" title="Favourites">
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Nick y bio -->
+                        <div class="row margin-0" style="padding-top: 10px">
+                            <div class="text-center">
+                                <p>{{user.name}}</p>
+                                <p>{{user.description}}</p>
+                            </div>
+                        </div>
+                        <!-- Aptitudes -->
+                        <div class="row margin-0">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="apt in user.skills">
+                                    <span class="badge">10</span>
+                                    {{apt}}
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Editar perfil -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-primary">
+                                        <span class=" glyphicon glyphicon-cog"></span> Edit
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Panel central (publicaciones) -->
-        <div class="col-md-8">
-            <div class="jumbotron jumbo-transparent">
-                <div class="page-header">
-                    <h3>Welcome to your profile, {{user}}</h3>
+                <!-- Panel derecho (grupos) -->
+                <div class="col-md-3 col-md-push-6">
+                    <div class="simple-jumbo">
+                        <p class="text-center">My bands</p>
+                        <div class="btn-group-vertical" style="display: block">
+                            <a class="btn btn-default" ng-repeat="group in user.groups" ng-href="#/group/{{group.id}}">{{group.name}}</a>
+                            <a class="btn btn-primary" href="#/newGroup">Create group</a>
+                        </div>
+                    </div>
+                    <div class="simple-jumbo" style="margin-top: 25px">
+                        <p class="text-center">My tags</p>
+                        <div class="btn-group-vertical" style="display: block">
+                            <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
+                            <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput">Add tag</a>
+                            <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
+                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Panel central (publicaciones) -->
+                <div class="col-md-6 col-md-pull-3">
+                    <div class="simple-jumbo">
+                        <form class="form-group" ng-submit="sendMessage()">
+                            <input class="form-control" type="text" ng-model="message" placeholder="Say hello!"/>
+                        </form>
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="pub in user.publications | orderBy: '-date'">
+                                <div class="row">
+                                    <div class="col-md-2 col-xs-3">
+                                        <img class=" img-responsive img-bordered" ng-src="{{user.avatar}}" style="max-height: 50px">
+                                    </div>
+                                    <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
+                                        <p class="pull-left"><strong>{{pub.user}}</strong></p>
+                                        <em class="pull-right">{{pub.date | date: 'dd/MM/yyyy'}}</em>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-top: 10px;">
+                                        <p class="">{{pub.content}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <a class="btn" ng-href="#/post/{{pub.id}}"><span class="glyphicon glyphicon-share"></span></a>
+                                            <a class="btn"><span class="glyphicon glyphicon-star"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <p class="">Herp derp</p>
-                </li>
-                <li class="list-group-item">
-                    <p class="">Foo bar</p>
-                </li>
-                <li class="list-group-item">
-                    <p class="">Hello world!</p>
-                </li>
-            </ul>
-        </div>
-        <!-- Panel derecho (grupos) -->
-        <div class="col-md-2">
-            <p class="text-center">Mis grupos</p>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    
-                </li>
-            </ul>
-        </div>
-    </div>
         </div>
     </div>
 </div>

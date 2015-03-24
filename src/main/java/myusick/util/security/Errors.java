@@ -1,7 +1,5 @@
 package myusick.util.security;
 
-import myusick.model.RegisterUser;
-
 /**
  * Created by david on 13/03/2015.
  */
@@ -58,6 +56,7 @@ public class Errors {
         return (name || birthdate || address || phone || email || password);
     }
     
+    //lab is especificacion
     public static boolean isOk(String s){
         return !(s == null
                 || s.trim().length()==0

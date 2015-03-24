@@ -1,7 +1,7 @@
 package myusick.api;
 
 import myusick.api.endpoints.*;
-import myusick.model.RegisterUser;
+import myusick.model.dto.RegisterUserDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -19,7 +19,7 @@ public class RestServiceEndpoints {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String listEndpoints(){
-        return DirectoryEndpoint.listEndpoints();
+        return APIdirectory.listEndpoints();
     }
 
     @POST
@@ -27,14 +27,22 @@ public class RestServiceEndpoints {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public String authenticate(@FormParam("user") String user, @FormParam("password") String password){
-        return LoginEndpoint.authenticate(user, password);
+        return LoginDAO.authenticate(user, password);
     }
 
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String register(@Context UriInfo info, RegisterUser registerUser){
-        return RegisterEndpoint.register(info, registerUser);
+    public String register(@Context UriInfo info, RegisterUserDTO registerUserDTO){
+        return RegisterDAO.register(info, registerUserDTO);
     }
+    
+    @GET
+    @Path("/profile/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String profile(@PathParam("userid") int userid){
+        return ProfileDAO.profile(userid);
+    }
+    
 }
