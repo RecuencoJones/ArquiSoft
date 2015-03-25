@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Embeddable
+@Table(name = "Publicacion")
 public class Publicacion {
 
 	@Id
@@ -13,47 +13,54 @@ public class Publicacion {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idpublicacion;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false)
-	private Date fecha;
+	private long fecha;
 
 	@Column(name = "contenido", nullable = false, length = 144)
 	private String contenido;
-	
-	@Column(name = "Publicante_UUID", nullable = false)
-	private int Publicante_UUID;
+
+    @ManyToOne
+    @JoinColumn(name = "Publicante_UUID")
+    private Publicante publicante;
+
+
+    public Publicacion(long fecha, String contenido) {
+        this.fecha = fecha;
+        this.contenido = contenido;
+        this.publicante = publicante;
+    }
 
 	/*------GETTERS/SETTERS------*/
-	
-	public int getIdpublicacion() {
-		return idpublicacion;
-	}
 
-	public void setIdpublicacion(int idpublicacion) {
-		this.idpublicacion = idpublicacion;
-	}
+    public int getIdpublicacion() {
+        return idpublicacion;
+    }
 
-	public Date getFecha() {
-		return fecha;
-	}
+    public void setIdpublicacion(int idpublicacion) {
+        this.idpublicacion = idpublicacion;
+    }
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
+    public long getFecha() {
+        return fecha;
+    }
 
-	public String getContenido() {
-		return contenido;
-	}
+    public void setFecha(long fecha) {
+        this.fecha = fecha;
+    }
 
-	public void setContenido(String contenido) {
-		this.contenido = contenido;
-	}
+    public String getContenido() {
+        return contenido;
+    }
 
-	public int getPublicante_UUID() {
-		return Publicante_UUID;
-	}
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
 
-	public void setPublicante_UUID(int publicante_UUID) {
-		Publicante_UUID = publicante_UUID;
-	}
+    public Publicante getPublicante() {
+        return publicante;
+    }
+
+    public void setPublicante(Publicante publicante) {
+        this.publicante = publicante;
+    }
 }

@@ -8,87 +8,115 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Grupo")
 public class Grupo implements Serializable{
-	//@EmbeddedId
-    @Id
-	@OneToOne(targetEntity = Publicante.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "publicante_uuid")
-	private int publicante_uuid;
 
-	@Column(name = "nombre", nullable = false, length = 45)
-	private String nombre;
-	
-	@Temporal(TemporalType.DATE)
+    @Id
+    @Column(name = "Publicante_UUID")
+    private int id;
+
+    @Column(name = "nombre", nullable = false, length = 45)
+    private String nombre;
+
+    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Publicante publicante;
+
 	@Column(name = "anyofundacion", nullable = false)
-	private Date anyofundacion;
+	private long anyofundacion;
 	
 	@Column(name = "descripcion", nullable = true, length = 144)
 	private String descripcion;
-	
+
 	/*------RELACIONES------*/
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(
-			name="es_integrante", 
-			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")})
-	private Set<Persona> miembros = new HashSet<Persona>();
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="grupo_tiene_tag", 
-			joinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="idtag", referencedColumnName="idtag")})
-	private Set<Tag> tags_grupo = new HashSet<Tag>();
-		
+    @ManyToMany(mappedBy = "grupos")
+    private Set<Persona> miembros;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "grupo_tiene_tag",
+            joinColumns = {@JoinColumn(name = "UUID_G", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "idTag", nullable = false, updatable = false)})
+    private Set<Tag> tagsGrupo = new HashSet<Tag>(0);
+
+    public Grupo(String nombre, long anyofundacion, String descripcion) {
+        this.nombre = nombre;
+        this.anyofundacion = anyofundacion;
+        this.descripcion = descripcion;
+    }
+
 	/*------GETTERS/SETTERS------*/
-	
-	public int getPublicante_uuid() {
-		return publicante_uuid;
-	}
 
-	public void setPublicante_uuid(int publicante_uuid) {
-		this.publicante_uuid = publicante_uuid;
-	}
-	
-	public String getNombre() {
-		return nombre;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Date getAnyo() {
-		return anyofundacion;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setAnyo(Date anyo) {
-		this.anyofundacion = anyo;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    public Publicante getPublicante() {
+        return publicante;
+    }
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public void setPublicante(Publicante publicante) {
+        this.publicante = publicante;
+    }
 
-    public boolean addMiembro(Persona p){
+    public long getAnyofundacion() {
+        return anyofundacion;
+    }
+
+    public void setAnyofundacion(long anyofundacion) {
+        this.anyofundacion = anyofundacion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Set<Persona> getMiembros() {
+        return miembros;
+    }
+
+    public void setMiembros(Set<Persona> miembros) {
+        this.miembros = miembros;
+    }
+
+    public Set<Tag> getTagsBanda() {
+        return tagsGrupo;
+    }
+
+    public void setTagsGrupo(Set<Tag> tagsBanda) {
+        this.tagsGrupo = tagsBanda;
+    }
+	/*public boolean addMiembro(Persona p){
         boolean exito = false;
         try{
             miembros.add(p); exito=true;
-        }catch(Exception ex){/*nada, exito permanece false*/ }
+        }catch(Exception ex){*//*nada, exito permanece false*//* }
 
         return exito;
     }
-
-    public boolean addTag(Tag t){
-        boolean exito = false;
-        try{
-            tags_grupo.add(t); exito=true;
-        }catch(Exception ex){/*nada, exito permanece false*/ }
-
-        return exito;
+    */
+     public boolean anadirTag(Tag tag){
+        try {
+            this.tagsGrupo.add(tag);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
