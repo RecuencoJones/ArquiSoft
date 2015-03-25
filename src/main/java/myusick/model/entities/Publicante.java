@@ -18,44 +18,41 @@ public class Publicante {
 	@Column (name = "tipoPublicante", nullable = false)
 	private boolean tipoPublicante;
 
-	/*------RELACIONES------*/
-	/*@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(
-			name="publicante", 
-			joinColumns={@JoinColumn(name="uuid", referencedColumnName="uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="publicante_uuid", referencedColumnName="publicante_uuid")})
-	private Set<Persona> pub_pers = new HashSet<Persona>();
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(
-			name="publicante", 
-			joinColumns={@JoinColumn(name="uuid", referencedColumnName="uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="publicante_uuid", referencedColumnName="publicante_uuid")})
-	private Set<Grupo> pub_grupo = new HashSet<Grupo>();*/
-	
-	@ElementCollection
-	List<Publicacion> pubs;
-		
-	/*------GETTERS/SETTERS------*/
-	public int getUuid() {
-		return uuid;
-	}
+    @OneToMany(mappedBy = "publicante")
+    private Set<Publicacion> publicaciones;
 
-	public void setUuid(int uuid) {
-		this.uuid = uuid;
-	}
+    public Publicante(boolean tipoPublicante) {
+        this.tipoPublicante = tipoPublicante;
+    }
 
-	public boolean isTipoPublicante() {
-		return tipoPublicante;
-	}
+    /*------GETTERS/SETTERS------*/
 
-	public void setTipoPublicante(boolean tipoPublicante) {
-		this.tipoPublicante = tipoPublicante;
-	}
-	
-	public boolean addPublicacion(Publicacion p){
-		pubs.add(p);
-		return true;
-	}
+    public int getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
+    }
+
+    public boolean isTipoPublicante() {
+        return tipoPublicante;
+    }
+
+    public void setTipoPublicante(boolean tipoPublicante) {
+        this.tipoPublicante = tipoPublicante;
+    }
+
+    public Set<Publicacion> getPublicaciones() {
+        return publicaciones;
+    }
+
+    public void setPublicaciones(Set<Publicacion> publicaciones) {
+        this.publicaciones = publicaciones;
+    }
+    //	public boolean addPublicacion(Publicacion p){
+//		pubs.add(p);
+//		return true;
+//	}
 	
 }

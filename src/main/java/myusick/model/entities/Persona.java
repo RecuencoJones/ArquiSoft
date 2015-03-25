@@ -12,10 +12,13 @@ import javax.persistence.*;
 public class Persona implements Serializable{
 
     @Id
-//    @EmbeddedId
+    @Column(name = "Publicante_UUID")
+    private int publicante_uuid;
+
+    @Transient
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "publicante_uuid",insertable=true,updatable=true,nullable=true,unique=true)
-	private Publicante publicante_uuid;
+    @PrimaryKeyJoinColumn
+	private Publicante publicante;
 
 	@Column(name = "nombre", nullable = false, length = 20)
 	private String nombre;
@@ -28,10 +31,9 @@ public class Persona implements Serializable{
 	
 	@Column(name = "email", nullable = false, length = 60)
 	private String email;
-	
-	@Temporal(TemporalType.DATE)
+
 	@Column(name = "fechanacimiento", nullable = false)
-	private Date fechanacimiento;
+	private long fechanacimiento;
 
 	@Column(name = "ciudad", nullable = false, length = 45)
 	private String ciudad;
@@ -40,127 +42,177 @@ public class Persona implements Serializable{
 	private String pais;
 	
 	@Column(name = "telefono", nullable = true)
-	private String telefono;
+	private long telefono;
 	
 	/*------RELACIONES------*/
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="tiene_aptitud", 
-			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="idaptitud", referencedColumnName="idAptitud")})
-	private Set<Aptitud> aptitudes = new HashSet<Aptitud>();
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="persona_tiene_tag", 
-			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="idtag", referencedColumnName="idtag")})
-	private Set<Tag> tags_persona = new HashSet<Tag>();
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="es_integrante", 
-			joinColumns={@JoinColumn(name="uuid_p", referencedColumnName="publicante_uuid")}, 
-			inverseJoinColumns={@JoinColumn(name="uuid_g", referencedColumnName="publicante_uuid")})
-	private Set<Grupo> grupos = new HashSet<Grupo>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tiene_aptitud",
+            joinColumns = {@JoinColumn(name = "UUID_P", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "idAptitud", nullable = false, updatable = false)})
+    private Set<Aptitud> aptitudes = new HashSet<Aptitud>(0);
 
-	
-	/*------GETTERS/SETTERS------*/
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "es_integrante",
+            joinColumns = {@JoinColumn(name = "UUID_P", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "UUID_G", nullable = false, updatable = false)})
+    private Set<Grupo> grupos = new HashSet<Grupo>(0);
 
-	public Publicante getPublicante_uuid() {
-		return publicante_uuid;
-	}
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "persona_tiene_tag",
+            joinColumns = {@JoinColumn(name = "UUID_P", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "idTag", nullable = false, updatable = false)})
+    private Set<Tag> tagsPersona = new HashSet<Tag>(0);
 
-	public void setPublicante_uuid(Publicante publicante_uuid) {
-		this.publicante_uuid = publicante_uuid;
-	}
-	
-	public String getNombre() {
-		return nombre;
-	}
+    public Persona(String nombre, String apellidos,String password, String email, long fechanacimiento,
+                   String ciudad, String pais, long telefono) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.password = password;
+        this.email = email;
+        this.fechanacimiento = fechanacimiento;
+        this.ciudad = ciudad;
+        this.pais = pais;
+        this.telefono = telefono;
+    }
 
-	public void setNombre(String apnombre) {
-		this.nombre = apnombre;
-	}
-	
-	public String getApellidos() {
-		return apellidos;
-	}
+    /*------GETTERS/SETTERS------*/
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
+    public int getPublicante_uuid() {
+        return publicante_uuid;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setPublicante_uuid(int publicante_uuid) {
+        this.publicante_uuid = publicante_uuid;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
+    public Publicante getPublicante() {
+        return publicante;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setPublicante(Publicante publicante) {
+        this.publicante = publicante;
+    }
 
-	public Date getFechanacimiento() {
-		return fechanacimiento;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setFechanacimiento(Date fechanacimiento) {
-		this.fechanacimiento = fechanacimiento;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public String getCiudad() {
-		return ciudad;
-	}
+    public String getApellidos() {
+        return apellidos;
+    }
 
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
-	}
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
 
-	public String getPais() {
-		return pais;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getTelefono() {
-		return telefono;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public boolean addGrupo(Grupo g){
+    public long getFechanacimiento() {
+        return fechanacimiento;
+    }
+
+    public void setFechanacimiento(long fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public long getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(long telefono) {
+        this.telefono = telefono;
+    }
+
+    public Set<Aptitud> getAptitudes() {
+        return aptitudes;
+    }
+
+    public void setAptitudes(Set<Aptitud> aptitudes) {
+        this.aptitudes = aptitudes;
+    }
+
+    public Set<Grupo> getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(Set<Grupo> grupos) {
+        this.grupos = grupos;
+    }
+
+    public Set<Tag> getTagsPersona() {
+        return tagsPersona;
+    }
+
+    public void setTagsPersona(Set<Tag> tagsPersona) {
+        this.tagsPersona = tagsPersona;
+    }
+
+   /*public boolean addGrupo(Grupo g){
         boolean exito = false;
         try{
             grupos.add(g); exito=true;
-        }catch(Exception ex){/*nada, exito permanece false*/ }
+        }catch(Exception ex){*//*nada, exito permanece false*//* }
 
         return exito;
     }
-
-    public boolean addTag(Tag t){
-        boolean exito = false;
-        try{
-            tags_persona.add(t); exito=true;
-        }catch(Exception ex){/*nada, exito permanece false*/ }
-
-        return exito;
+    */
+     public boolean anadirTag(Tag tag){
+        try {
+            this.tagsPersona.add(tag);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    public boolean anadirGrupo(Grupo grupo){
+        try {
+            this.grupos.add(grupo);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
-    public boolean addAptitud(Aptitud apt){
-        boolean exito = false;
+    public boolean anadirAptitud(Aptitud ap){
         try{
-            aptitudes.add(apt); exito=true;
-        }catch(Exception ex){/*nada, exito permanece false*/ }
-
-        return exito;
+            this.aptitudes.add(ap);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }
