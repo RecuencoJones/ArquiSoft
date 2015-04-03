@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import myusick.model.entities.*;
+//import myusick.model.entities.*;
 
 import java.sql.Date;
 
@@ -28,12 +28,12 @@ public class Test {
 		EntityTransaction trans = em.getTransaction();
         
         /*Configuration configuration = new Configuration();
-        configuration.addClass(myusick.model.entities.Aptitud.class);
-        configuration.addClass(myusick.model.entities.Grupo.class);
-        configuration.addClass(myusick.model.entities.Persona.class);
-        configuration.addClass(myusick.model.entities.Publicacion.class);
-        configuration.addClass(myusick.model.entities.Publicante.class);
-        configuration.addClass(myusick.model.entities.Tag.class);*/
+        configuration.addClass(myusick.persistence.VO.Aptitud.class);
+        configuration.addClass(myusick.persistence.VO.Grupo.class);
+        configuration.addClass(myusick.persistence.VO.Persona.class);
+        configuration.addClass(myusick.persistence.VO.Publicacion.class);
+        configuration.addClass(myusick.persistence.VO.Publicante.class);
+        configuration.addClass(myusick.persistence.VO.Tag.class);*/
 
 
 		trans.begin();

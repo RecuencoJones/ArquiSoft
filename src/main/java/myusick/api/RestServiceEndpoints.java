@@ -1,7 +1,7 @@
 package myusick.api;
 
 import myusick.api.endpoints.*;
-import myusick.model.dto.RegisterUserDTO;
+import myusick.model.DTO.RegisterUserDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

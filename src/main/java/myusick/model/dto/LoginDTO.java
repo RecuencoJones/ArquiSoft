@@ -1,17 +1,20 @@
-package myusick.model.dto;
+package myusick.model.DTO;
 
 /**
- * Created by david on 11/03/2015.
+ * Created by Cuenta de clase on 02/04/2015.
  */
-public class LoginUserDTO {
-    
+public class LoginDTO {
     private String user;
     private String password;
     private int userId;
-    
-    public LoginUserDTO(String user, String password){
-        this.user=user;
-        this.password=password;
+    private Publisher[] groups;
+
+    public LoginDTO(){}
+    public LoginDTO(String user, String password, int userId, Publisher[] groups) {
+        this.user = user;
+        this.password = password;
+        this.userId = userId;
+        this.groups = groups;
     }
 
     public String getUser() {
@@ -36,5 +39,13 @@ public class LoginUserDTO {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public Publisher[] getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Publisher[] groups) {
+        this.groups = groups;
     }
 }

@@ -1,6 +1,6 @@
 package myusick.util.security;
 
-import myusick.model.dto.LoginUserDTO;
+import myusick.model.DTO.LoginUserDTO;
 
 /**
  * Created by david on 11/03/2015.

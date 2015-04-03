@@ -1,23 +1,32 @@
-package myusick.model.dto;
-
-import java.util.Date;
+package myusick.model.DTO;
 
 /**
- * Created by david on 13/03/2015.
+ * Created by Cuenta de clase on 02/04/2015.
  */
-public class RegisterUserDTO {
-    
+public class RegisterDTO {
+
     private String name;
     private String lastname;
     private String birthdate;
-    private String address;
     private String city;
     private String country;
-    private String zipcode;
     private String phone;
     private String email;
     private String password;
     private String repassword;
+
+    public RegisterDTO(String name, String lastname, String birthdate, String city,
+                       String country, String phone, String email, String password, String repassword) {
+        this.name = name;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.city = city;
+        this.country = country;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.repassword = repassword;
+    }
 
     public String getName() {
         return name;
@@ -43,14 +52,6 @@ public class RegisterUserDTO {
         this.birthdate = birthdate;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getCity() {
         return city;
     }
@@ -65,14 +66,6 @@ public class RegisterUserDTO {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
     }
 
     public String getPhone() {
@@ -105,22 +98,5 @@ public class RegisterUserDTO {
 
     public void setRepassword(String repassword) {
         this.repassword = repassword;
-    }
-
-    @Override
-    public String toString() {
-        return "RegisterUser{" +
-                "name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", zipcode='" + zipcode + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", repassword='" + repassword + '\'' +
-                '}';
     }
 }

@@ -1,9 +1,9 @@
 package myusick.api.endpoints;
 
 import com.google.gson.Gson;
-import myusick.model.dto.ProfileUserDTO;
-import myusick.model.dto.PublicationDTO;
-import myusick.model.dto.ShortGroupDTO;
+import myusick.model.DTO.ProfileUserDTO;
+import myusick.model.DTO.PublicationDTO;
+import myusick.model.DTO.ShortGroupDTO;
 
 import java.util.ArrayList;
 import java.util.List;

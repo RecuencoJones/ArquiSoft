@@ -1,7 +1,7 @@
 package myusick.api.endpoints;
 
 import com.google.gson.Gson;
-import myusick.model.dto.LoginUserDTO;
+import myusick.model.DTO.LoginUserDTO;
 import myusick.util.security.AuthToken;
 
 public class LoginDAO {

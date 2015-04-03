@@ -8,11 +8,11 @@
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="hibernate.show_sql">true</property>
 
-        <mapping class="myusick.model.entities.Publicante" />
-        <mapping class="myusick.model.entities.Aptitud" />
-        <mapping class="myusick.model.entities.Grupo" />
-        <mapping class="myusick.model.entities.Persona" />
-        <mapping class="myusick.model.entities.Publicacion" />
-        <mapping class="myusick.model.entities.Tag" />
+        <mapping class="myusick.persistence.VO.Publicante" />
+        <mapping class="myusick.persistence.VO.Aptitud" />
+        <mapping class="myusick.persistence.VO.Grupo" />
+        <mapping class="myusick.persistence.VO.Persona" />
+        <mapping class="myusick.persistence.VO.Publicacion" />
+        <mapping class="myusick.persistence.VO.Tag" />
     </session-factory>
 </hibernate-configuration>

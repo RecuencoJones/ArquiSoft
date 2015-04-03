@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'war'
 
 repositories {
-   mavenCentral()                                               
+    mavenCentral()
 }
 
 dependencies {
@@ -20,7 +20,7 @@ dependencies {
     compile 'org.webjars:angular-ui-router:0.2.13'
     compile 'org.webjars:jquery:1.11.0'
 
-    compile 'mysql:mysql-connector-java:5.1.6'
+    compile 'mysql:mysql-connector-java:5.1.35'
 
     compile 'org.slf4j:slf4j-simple:1.7.7'
     compile 'org.javassist:javassist:3.15.0-GA'
@@ -29,13 +29,11 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.0.Final'
     compile group: 'org.hibernate', name: 'hibernate-annotations', version: '3.5.6-Final'
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
-    compile group: 'org.hibernate', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
 
     runtime group: 'org.hibernate', name: 'hibernate-core', version: '4.2.0.Final'
     runtime group: 'org.hibernate', name: 'hibernate-entitymanager', version: '4.2.0.Final'
     runtime group: 'org.hibernate', name: 'hibernate-annotations', version: '3.5.6-Final'
     runtime group: 'org.hibernate', name: 'hibernate-validator', version: '4.2.0.Final'
-    runtime group: 'org.hibernate', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
 }
 
 

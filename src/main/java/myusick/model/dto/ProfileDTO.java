@@ -1,26 +1,30 @@
-package myusick.model.dto;
+package myusick.model.DTO;
 
-import java.util.List;
+import myusick.persistence.VO.Publicacion;
+import myusick.persistence.VO.Publicante;
 
 /**
- * Created by david on 20/03/2015.
+ * Created by Cuenta de clase on 02/04/2015.
  */
-public class ProfileUserDTO {
-    
+public class ProfileDTO {
     private String name;
     private String description;
     private String avatar;
     private String[] skills;
     private String[] tags;
-    private List<ShortGroupDTO> groups;
-    private List<PublicationDTO> publications;
+    private Publisher[] members;
+    private Publisher[] groups;
+    private Publications[] publications;
 
-    public ProfileUserDTO(String name, String description, String avatar, String[] skills, String[] tags, List<ShortGroupDTO> groups, List<PublicationDTO> publications) {
+    public ProfileDTO(){}
+    public ProfileDTO(String name, String description, String avatar, String[] skills,
+                      String[] tags, Publisher[] members, Publisher[] groups, Publications[] publications) {
         this.name = name;
         this.description = description;
         this.avatar = avatar;
         this.skills = skills;
         this.tags = tags;
+        this.members = members;
         this.groups = groups;
         this.publications = publications;
     }
@@ -65,19 +69,31 @@ public class ProfileUserDTO {
         this.tags = tags;
     }
 
-    public List<ShortGroupDTO> getGroups() {
+    public Publisher[] getMembers() {
+        return members;
+    }
+
+    public void setMembers(Publisher[] members) {
+        this.members = members;
+    }
+
+    public Publisher[] getGroups() {
         return groups;
     }
 
-    public void setGroups(List<ShortGroupDTO> groups) {
+    public void setGroups(Publisher[] groups) {
         this.groups = groups;
     }
 
-    public List<PublicationDTO> getPublications() {
+    public Publications[] getPublications() {
         return publications;
     }
 
-    public void setPublications(List<PublicationDTO> publications) {
+    public void setPublications(Publications[] publications) {
         this.publications = publications;
+    }
+
+    public boolean isAGroup(){
+        return groups.length!=0;
     }
 }
