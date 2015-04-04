@@ -52,7 +52,9 @@ public class GrupoDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.getBoolean(1)==true;
+            if(resultSet.next())
+                return resultSet.getBoolean(1)==true;
+            else return false;
         }catch(SQLException e){return false;}
     }
 

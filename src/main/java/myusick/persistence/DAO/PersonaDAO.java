@@ -3,7 +3,9 @@ package myusick.persistence.DAO;
 import myusick.model.DTO.LoginDTO;
 import myusick.model.DTO.Publications;
 import myusick.model.DTO.Publisher;
+import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
+import myusick.persistence.connection.ConnectionAdmin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,8 +30,10 @@ public class PersonaDAO {
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             int i = 0; Persona p;
-            return new Persona(uuid,resultSet.getString("nombre"),null,null,0,null,null,0,
+            if(resultSet.next())
+                return new Persona(uuid,resultSet.getString("nombre"),null,null,0,null,null,0,
                         resultSet.getString("descripcion"),null,resultSet.getString("avatar"));
+            else return null;
         }catch (Exception e) {
             e.printStackTrace(System.err);
             return null;
@@ -41,7 +45,9 @@ public class PersonaDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.getBoolean(1)==false;
+            if(resultSet.next())
+                return resultSet.getBoolean(1)==false;
+            else return false;
         }catch(SQLException e){return false;}
     }
 
@@ -65,24 +71,27 @@ public class PersonaDAO {
     }
 
     public LoginDTO getLoginData(String email, String password){
-        try{
-            String queryString = "select user, password, Publicante_UUID from Persona " +
-                    "where email=? and password=?";
-            PreparedStatement preparedStatement = con.prepareStatement(queryString);
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LoginDTO log = new LoginDTO();
-            log.setUser(resultSet.getString("user"));
-            log.setPassword(resultSet.getString("password"));
-            int uuid = resultSet.getInt("Publicante_UUID");
-            log.setUserId(uuid);
-            /* Ahora extraemos los grupos a los que pertenece */
-            log.setGroups(getGroupsByMember(uuid));
-            return log;
-        }catch (Exception e) {
-            e.printStackTrace(System.err);
-            return null;
+        LoginDTO l = new LoginDTO();
+        l.setUser(email);
+        l.setPassword(password);
+        try {
+            String query="select publicante_uuid from persona where email=? and password=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1,"foo@bar.com");
+            ps.setString(2,"1234");
+            ResultSet rs = ps.executeQuery();
+            int i = 1;
+            if(rs.next()){
+                l.setUserId(rs.getInt(1));
+            }else{
+                /* El usuario no existe */
+                return null;
+            }
+            l.setGroups(getGroupsByMember(l.getUserId()));
+            return l;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new LoginDTO();
         }
     }
 }

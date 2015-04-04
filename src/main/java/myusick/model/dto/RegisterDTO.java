@@ -1,9 +1,11 @@
 package myusick.model.DTO;
 
+import java.io.Serializable;
+
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Created by Sandra Campos on 02/04/2015.
  */
-public class RegisterDTO {
+public class RegisterDTO implements Serializable{
 
     private String name;
     private String lastname;

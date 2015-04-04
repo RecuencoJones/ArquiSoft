@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
-public class myusickService {
+public class MyusickService {
 
     private GrupoDAO gdao;
     private AptitudDAO adao;
@@ -22,13 +22,13 @@ public class myusickService {
     private PublicacionDAO pubdao;
     private TagDAO tdao;
 
-    public myusickService(GrupoDAO gdao, AptitudDAO adao, PersonaDAO pdao, PublicacionDAO pubdao, TagDAO tdao) {
+    public MyusickService() {
         try{
-            gdao.setConnection(ConnectionAdmin.getConnection());
-            adao.setConnection (ConnectionAdmin.getConnection());
-            pdao.setConnection (ConnectionAdmin.getConnection());
-            pubdao.setConnection (ConnectionAdmin.getConnection());
-            tdao.setConnection (ConnectionAdmin.getConnection());
+            gdao = new GrupoDAO(); gdao.setConnection(ConnectionAdmin.getConnection());
+            adao = new AptitudDAO(); adao.setConnection (ConnectionAdmin.getConnection());
+            pdao = new PersonaDAO(); pdao.setConnection (ConnectionAdmin.getConnection());
+            pubdao = new PublicacionDAO(); pubdao.setConnection (ConnectionAdmin.getConnection());
+            tdao = new TagDAO(); tdao.setConnection (ConnectionAdmin.getConnection());
 
         }catch (SQLException e){
             /* Problema con la BD */
@@ -67,6 +67,7 @@ public class myusickService {
             profile.setPublications(pubdao.getPublicacionesById(p.getPublicante_uuid()));
         } else {
             /* El usuario no existe */
+            System.out.printf("No existe el usuario\n");
             profile = null;
         }
         return profile;

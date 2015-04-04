@@ -1,9 +1,11 @@
 package myusick.model.DTO;
 
+import java.io.Serializable;
+
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
-public class AuthToken {
+public class AuthToken implements Serializable {
 
     private String token;
     private int userid;

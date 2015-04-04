@@ -1,6 +1,5 @@
 package myusick.util.security;
 
-import myusick.model.DTO.LoginUserDTO;
 
 /**
  * Created by david on 11/03/2015.
@@ -36,17 +35,17 @@ public class AuthToken {
      * @param loginUserDTO user to be tokenized
      * @return token
      */
-    public static AuthToken generateToken(LoginUserDTO loginUserDTO){
-        char[] chars = loginUserDTO.getPassword().toCharArray();
-        int[] bytes = new int[chars.length];
-        String s = "";
-        for(int i = 0; i < bytes.length; i++){
-            bytes[i] = chars[i];
-            s += Integer.toBinaryString(bytes[i]);
-        }
-        AuthToken token = new AuthToken();
-        token.setToken(s);
-        token.setUser(loginUserDTO.getUserId());
-        return token;
-    }
+//    public static AuthToken generateToken(LoginUserDTO loginUserDTO){
+//        char[] chars = loginUserDTO.getPassword().toCharArray();
+//        int[] bytes = new int[chars.length];
+//        String s = "";
+//        for(int i = 0; i < bytes.length; i++){
+//            bytes[i] = chars[i];
+//            s += Integer.toBinaryString(bytes[i]);
+//        }
+//        AuthToken token = new AuthToken();
+//        token.setToken(s);
+//        token.setUser(loginUserDTO.getUserId());
+//        return token;
+//    }
 }

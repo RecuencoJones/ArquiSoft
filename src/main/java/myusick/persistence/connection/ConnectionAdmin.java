@@ -13,8 +13,7 @@ public class ConnectionAdmin {
 	 */
     private final static String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
     private final static String DRIVER_URL =
-            "jdbc:mysql://localhost:3306/mydb";
-
+            "jdbc:mysql://localhost:3306/myusickdb";
     private final static String USER = "root";
     private final static String PASSWORD = "";
 

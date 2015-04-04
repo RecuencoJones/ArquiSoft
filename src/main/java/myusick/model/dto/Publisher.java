@@ -1,9 +1,11 @@
 package myusick.model.DTO;
 
+import java.io.Serializable;
+
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
-public class Publisher {
+public class Publisher implements Serializable {
 
     private int id;
     private String name;
@@ -27,5 +29,13 @@ public class Publisher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,9 +1,12 @@
 package myusick.model.DTO;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
-public class LoginDTO {
+public class LoginDTO implements Serializable {
     private String user;
     private String password;
     private int userId;
@@ -47,5 +50,15 @@ public class LoginDTO {
 
     public void setGroups(Publisher[] groups) {
         this.groups = groups;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginDTO{" +
+                "user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", userId=" + userId +
+                ", groups=" + Arrays.toString(groups) +
+                '}';
     }
 }

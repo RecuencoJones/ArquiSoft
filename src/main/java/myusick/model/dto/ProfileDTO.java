@@ -3,10 +3,13 @@ package myusick.model.DTO;
 import myusick.persistence.VO.Publicacion;
 import myusick.persistence.VO.Publicante;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
-public class ProfileDTO {
+public class ProfileDTO implements Serializable {
     private String name;
     private String description;
     private String avatar;
@@ -95,5 +98,19 @@ public class ProfileDTO {
 
     public boolean isAGroup(){
         return groups.length!=0;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileDTO{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", skills=" + Arrays.toString(skills) +
+                ", tags=" + Arrays.toString(tags) +
+                ", members=" + Arrays.toString(members) +
+                ", groups=" + Arrays.toString(groups) +
+                ", publications=" + Arrays.toString(publications) +
+                '}';
     }
 }

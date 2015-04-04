@@ -5,6 +5,7 @@ import myusick.persistence.connection.ConnectionAdmin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by Sandra on 30/03/2015.
@@ -12,26 +13,18 @@ import java.sql.ResultSet;
 public class ConnectionTest {
     public static void main (String [] args){
         try{
-            Connection con = ConnectionAdmin.getConnection();
-            con.setAutoCommit(false);
-            String queryString = "INSERT INTO Aptitud (nombre) VALUES(?)";
-            PreparedStatement ps = null;
-            ps = con.prepareStatement(queryString);
 
-            ps.setString(1, "abrir los ojos en el agua");
-            ResultSet resultSet = null;
-            int insertedRows = ps.executeUpdate();
-            if (insertedRows == 1) {
-                /*Ahora que no ha dado error, hacemos el commit*/
-                con.commit();
+            Connection c = ConnectionAdmin.getConnection();
+            String query="select publicante_uuid from persona where email=? and password=?";
+            PreparedStatement ps = c.prepareStatement(query);
+            ps.setString(1,"foo@bar.com");
+            ps.setString(2,"1234");
+            ResultSet rs = ps.executeQuery();
+            int i=1;
+            while(rs.next()){
+                System.out.println(rs.getInt(1));
             }
-            else{
-                /* Error, hacemos rollback*/
-                con.rollback();
-            }
-
-
-        }catch (Exception e){
+        }catch(SQLException e){
             e.printStackTrace();
         }
 
