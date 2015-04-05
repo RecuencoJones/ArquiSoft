@@ -100,7 +100,6 @@ public class PersonaDAO {
             PublicanteDAO pdao = new PublicanteDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
             int uuid = pdao.insertarPublicante(false);
-            System.out.println(rd.toString());
             if (uuid != -1) {
                 String query = "insert into persona (Publicante_UUID,nombre,apellidos,email,password," +
                         "fechaNacimiento,ciudad,pais,telefono) values (?,?,?,?,?,?,?,?,?)";

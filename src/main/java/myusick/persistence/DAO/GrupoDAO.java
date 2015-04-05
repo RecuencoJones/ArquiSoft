@@ -1,6 +1,8 @@
 package myusick.persistence.DAO;
 
+import myusick.model.dto.GroupDTO;
 import myusick.model.dto.PublisherDTO;
+import myusick.model.dto.RegisterDTO;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
@@ -18,59 +20,93 @@ public class GrupoDAO {
 
     private Connection con;
 
-    public void setConnection(Connection con){
+    public void setConnection(Connection con) {
         this.con = con;
     }
 
 
-
-    public ArrayList<PublisherDTO> getMembersGroup(int uuid){
+    public ArrayList<PublisherDTO> getMembersGroup(int uuid) {
         ArrayList<PublisherDTO> result = new ArrayList<>();
-        try{
+        try {
             String queryString = "select Publicante_UUID,nombre from Persona where publicante_uuid " +
                     "in (select uuid_p from es_integrante where uuid_g=?)";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                result.add(new PublisherDTO(resultSet.getInt(1),resultSet.getString(2)));
+            while (resultSet.next()) {
+                result.add(new PublisherDTO(resultSet.getInt(1), resultSet.getString(2)));
             }
             return result;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
             return null;
-        }catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace(System.err);
             return result;
         }
     }
 
-    public boolean esUnGrupo(int uuid){
+    public boolean esUnGrupo(int uuid) {
         try {
             String queryString = "select tipoPublicante from publicante where uuid=?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
-                return resultSet.getBoolean(1)==true;
+            if (resultSet.next())
+                return resultSet.getBoolean(1) == true;
             else return false;
-        }catch(SQLException e){return false;}
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
-    public Grupo getDataProfile(int uuid){
-        try{
+    public Grupo getDataProfile(int uuid) {
+        try {
             String queryString = "select nombre,descripcion,anyofundacion,avatar from grupo where publicante_uuid = ?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             int i = 0;
-            return new Grupo(uuid,resultSet.getString("nombre"),resultSet.getLong("anyofundacion"),
-                    resultSet.getString("descripcion"),resultSet.getString("avatar"));
-        }catch (Exception e) {
+            return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyofundacion"),
+                    resultSet.getString("descripcion"), resultSet.getString("avatar"));
+        } catch (Exception e) {
             e.printStackTrace(System.err);
             return null;
         }
     }
 
-
+    public boolean registerGroup(GroupDTO gd) {
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            int uuid = pdao.insertarPublicante(false);
+            if (uuid != -1) {
+                String query = "insert into grupo (Publicante_UUID,nombre,anyofundacion) values (?,?,?)";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setInt(1, uuid);
+                ps.setString(2, gd.getName());
+                ps.setInt(3, Integer.parseInt(gd.getYear()));
+                int insertedRows = ps.executeUpdate();
+                if (insertedRows == 1) {
+                /* insertamos al usuario en la tabla de union con el grupo */
+                    System.out.println("grupo "+uuid+" persona "+gd.getCreator());
+                    query = "insert into es_integrante (UUID_G,UUID_P) values (?,?)";
+                    ps = con.prepareStatement(query);
+                    ps.setInt(1, uuid);
+                    ps.setInt(2,gd.getCreator());
+                    insertedRows = ps.executeUpdate();
+                    if(insertedRows == 1){
+                        return true;
+                    }else return false;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
