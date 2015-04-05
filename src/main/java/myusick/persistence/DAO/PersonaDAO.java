@@ -100,6 +100,7 @@ public class PersonaDAO {
             PublicanteDAO pdao = new PublicanteDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
             int uuid = pdao.insertarPublicante(false);
+            System.out.println(rd.toString());
             if (uuid != -1) {
                 String query = "insert into persona (Publicante_UUID,nombre,apellidos,email,password," +
                         "fechaNacimiento,ciudad,pais,telefono) values (?,?,?,?,?,?,?,?,?)";
@@ -109,12 +110,10 @@ public class PersonaDAO {
                 ps.setString(3, rd.getLastname());
                 ps.setString(4, rd.getEmail());
                 ps.setString(5, rd.getPassword());
-                ps.setString(6, rd.getBirthdate());
+                ps.setLong(6, Long.parseLong(rd.getBirthdate()));
                 ps.setString(7, rd.getCity());
                 ps.setString(8, rd.getCountry());
                 ps.setString(9, rd.getPhone());
-
-
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
                     return uuid;
@@ -125,6 +124,7 @@ public class PersonaDAO {
                 return -1;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }        
     }
