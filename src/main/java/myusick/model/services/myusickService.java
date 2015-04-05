@@ -87,5 +87,8 @@ public class MyusickService {
         return pdao.getLoginData(email,password);
     }
 
+    public boolean registrarTag(String nombre, int publicante){
+        return tdao.registrarTag(nombre,publicante);
+    }
 
 }
