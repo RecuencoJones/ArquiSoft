@@ -1,4 +1,4 @@
-package myusick.api.endpoints;
+package myusick.api.services;
 
 import com.google.gson.Gson;
 import myusick.model.dto.LoginUserDTO;
@@ -11,7 +11,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * Created by david on 16/03/2015.
  */
-public class RegisterDAO {
+public class RegisterService {
 
     /**
      * Función de registro de usuarios
@@ -55,7 +55,7 @@ public class RegisterDAO {
             errors.setPassword();
 
         //Check if there were errors
-        if(!errors.hasErrors()){
+        if(!errors.hasErrors(1)){
             //save registerUser to db
             LoginUserDTO user = new LoginUserDTO(registerUserDTO.getEmail(), registerUserDTO.getPassword());
             user.setUserId(1);

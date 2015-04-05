@@ -1,4 +1,4 @@
-package myusick.api.endpoints;
+package myusick.api.services;
 
 import myusick.util.doc.DocUtil;
 

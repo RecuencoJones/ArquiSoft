@@ -1,4 +1,4 @@
-package myusick.api.endpoints;
+package myusick.api.services;
 
 import com.google.gson.Gson;
 import myusick.model.dto.ProfileUserDTO;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by david on 20/03/2015.
  */
-public class ProfileDAO {
+public class ProfileService {
     public static String profile(int userid) {
         Gson gson = new Gson();
         String[] skills = {"Guitarra","Bajo","Retrasado"};

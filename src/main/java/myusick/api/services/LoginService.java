@@ -1,10 +1,10 @@
-package myusick.api.endpoints;
+package myusick.api.services;
 
 import com.google.gson.Gson;
 import myusick.model.dto.LoginUserDTO;
 import myusick.util.security.AuthToken;
 
-public class LoginDAO {
+public class LoginService {
 
     /**
      * Función de autenticación de usuarios

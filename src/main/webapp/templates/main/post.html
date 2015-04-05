@@ -1,0 +1,45 @@
+<!-- navbar -->
+<navbar></navbar>
+
+<div id="wrapper" class="padding-to-navbar-50" ng-class="{'toggle-wrapper': hidden, 'show-sidebar-wrapper': !hidden }">
+    <div id="sidebar-wrapper" ng-class="{'toggle-sidebar': hidden, 'show-sidebar': !hidden }">
+        <!-- sidebar -->
+        <sidebar></sidebar>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="simple-jumbo">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-2 col-xs-3">
+                                        <img class=" img-responsive img-bordered" ng-src="{{post.avatar}}" style="max-height: 50px">
+                                    </div>
+                                    <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
+                                        <p class="pull-left"><strong>{{post.user}}</strong></p>
+                                        <em class="pull-right">{{post.date | date: 'dd/MM/yyyy'}}</em>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-top: 10px;">
+                                        <p class="">{{post.content}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <a class="btn" ng-href="#/post/{{post.id}}"><span class="glyphicon glyphicon-share"></span></a>
+                                            <a class="btn"><span class="glyphicon glyphicon-star"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
