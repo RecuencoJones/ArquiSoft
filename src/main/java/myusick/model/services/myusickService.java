@@ -1,9 +1,6 @@
 package myusick.model.services;
 
-import myusick.model.dto.GroupDTO;
-import myusick.model.dto.LoginDTO;
-import myusick.model.dto.ProfileDTO;
-import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.*;
 import myusick.persistence.DAO.*;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
@@ -87,5 +84,8 @@ public class MyusickService {
         return pdao.getLoginData(email,password);
     }
 
+    public boolean registrarTag(TagDTO td){
+        return tdao.registrarTag(td);
+    }
 
 }

@@ -23,7 +23,7 @@ Directorio de endpoints
 | Verb | URI | Response-Type | Definition |
 |------------|--------------|-------------|------------|
 | __GET__ | / | text/plain | Lista el directorio de endpoints |
-| __GET__ | /hello/{name} | text/plain | Returns a list of stored values |
+| __GET__ | /hello/{nombre} | text/plain | Returns a list of stored values |
 
 # Frontend
 

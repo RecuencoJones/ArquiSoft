@@ -29,9 +29,7 @@ public class NewGroupService {
         Gson gson = new Gson();
         ErrorsDTO errors = new ErrorsDTO();
 
-        System.out.println("AQUI LLEGA 2");
         if(groupDTO == null){
-            System.out.println("EHEHEHEHE");
             errors.setEmpty();
             return gson.toJson(errors);
         }

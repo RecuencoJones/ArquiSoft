@@ -43,7 +43,7 @@
                         <!-- Nick y bio -->
                         <div class="row margin-0" style="padding-top: 10px">
                             <div class="text-center">
-                                <p>{{band.name}}</p>
+                                <p>{{band.nombre}}</p>
                                 <p>{{band.year}}</p>
                                 <p>{{band.description}}</p>
                             </div>
@@ -65,7 +65,7 @@
                     <div class="simple-jumbo">
                         <p class="text-center">Members</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" ng-repeat="member in band.members" ng-href="#/profile/{{member.id}}">{{member.name}}</a>
+                            <a class="btn btn-default" ng-repeat="member in band.members" ng-href="#/profile/{{member.id}}">{{member.nombre}}</a>
                             <a class="btn btn-primary" href="#/applyGroup">Apply for group</a>
                         </div>
                     </div>

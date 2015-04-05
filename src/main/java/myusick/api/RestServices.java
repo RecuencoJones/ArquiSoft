@@ -3,6 +3,7 @@ package myusick.api;
 import myusick.api.services.*;
 import myusick.model.dto.GroupDTO;
 import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.TagDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -57,6 +58,14 @@ public class RestServices {
         System.out.println("AQUI LLEGA 1");
         return NewGroupService.newGroup(info, groupDTO);
     }
+
+    @POST
+    @Path("/newtag")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newTag(@Context UriInfo info, TagDTO tagDTO){
+        return TagService.newTag(info, tagDTO);
+    }
     
     /*@GET
     @Path("/home/{userid}")
@@ -78,14 +87,6 @@ public class RestServices {
     @Produces(MediaType.APPLICATION_JSON)
     public String getPost(@PathParam("postid") int postid){
         return PostService.getPost(postid);
-    }
-    
-    @POST
-    @Path("/newTag")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String newTag(@Context UriInfo, TagDTO tagDTO){
-        return TagService.newTag(info, tagDTO);
     }
         
     @POST

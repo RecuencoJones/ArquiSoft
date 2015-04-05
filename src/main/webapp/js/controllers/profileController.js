@@ -39,15 +39,36 @@ angular.module('starter')
                 $scope.message = "";
             }
         };
-        
+
+
+
         $scope.submitTag = function() {
             if ($scope.newtag.trim() != "") {
-                //$http.post()
-                $scope.user.tags.push($scope.newtag);
-                $scope.newtag = "";
-                $scope.showTagInput = false;
+                var tag = {
+                    nombre: $scope.newtag,
+                    publicante: $stateParams._userid
+                };
+                $http.post(API.URL + API.TAG_ENDPOINT,
+                    JSON.stringify(tag),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+
+                    .success(function(data){
+                        if(data.ok){
+                            $scope.user.tags.push($scope.newtag);
+                        }else{
+                            alert("JAJAJA");
+                        }
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    }).error(function(data){
+                        console.log(data);
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    });
             }
-        }
+        };
         
         /*$scope.user = {
             name: "David",

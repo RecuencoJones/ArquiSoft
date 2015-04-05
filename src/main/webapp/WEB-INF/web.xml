@@ -6,11 +6,11 @@
          id="WebApp_ID" version="3.0">
     
     <servlet>
-        <servlet-name>myusick.api.ApplicationConfig</servlet-name>
+        <servlet-nombre>myusick.api.ApplicationConfig</servlet-nombre>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>myusick.api.ApplicationConfig</servlet-name>
+        <servlet-nombre>myusick.api.ApplicationConfig</servlet-nombre>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
     

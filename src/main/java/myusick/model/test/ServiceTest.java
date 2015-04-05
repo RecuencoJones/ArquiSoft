@@ -18,7 +18,7 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        m.registerGroup(new GroupDTO(2,"el grupo de la mierda","2015"));
+        //m.registrarTag("soyUnaMierda",1);
 ////        LoginDTO l = m.getLoginData("foo@bar.com","1234");
 ////        System.out.printf(l.toString());
 //        ProfileDTO p = m.getProfileData(1);
