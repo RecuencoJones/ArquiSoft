@@ -45,7 +45,7 @@ public class NewGroupService {
 
         //Check if there were errors
         if(!ErrorSpecification.hasErrors(errors,2)){
-            //TODO save registerUser to db
+            //TODO save group to db
             
             return "{\"ok\": \"true\"}";
         }else{

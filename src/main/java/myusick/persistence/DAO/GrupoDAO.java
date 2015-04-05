@@ -22,8 +22,6 @@ public class GrupoDAO {
         this.con = con;
     }
 
-
-
     public ArrayList<PublisherDTO> getMembersGroup(int uuid){
         ArrayList<PublisherDTO> result = new ArrayList<>();
         try{
