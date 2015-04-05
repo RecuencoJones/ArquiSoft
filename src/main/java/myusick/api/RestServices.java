@@ -64,6 +64,37 @@ public class RestServices {
         
     }
     
+    @POST
+    @Path("/post")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newPost(@Context UriInfo, PostDTO postDTO){
+        return PostService.newPost(info, postDTO);
+    }
+    
+    @GET
+    @Path("/post/{postid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPost(@PathParam("postid") int postid){
+        return PostService.getPost(postid);
+    }
+    
+    @POST
+    @Path("/newTag")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newTag(@Context UriInfo, TagDTO tagDTO){
+        return TagService.newTag(info, tagDTO);
+    }
+        
+    @POST
+    @Path("/apply/{userid}/{groupid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String applyForGroup(@PathParam("userid") int userid,
+                                @PathParam("groupid") int groupid){
+        return ApplyService(userid, groupid);
+    }
+    
     @GET
     @Path("events")
     @Produces(SseFeature.SERVER_SENT_EVENTS)

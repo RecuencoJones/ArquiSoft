@@ -2,6 +2,7 @@ package myusick.persistence.DAO;
 
 import myusick.model.dto.LoginDTO;
 import myusick.model.dto.PublisherDTO;
+import myusick.model.dto.RegisterDTO;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
@@ -92,5 +93,39 @@ public class PersonaDAO {
             e.printStackTrace();
             return new LoginDTO();
         }
+    }
+    
+    public int registerUser(RegisterDTO rd) {
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            int uuid = pdao.insertarPublicante(false);
+            if (uuid != -1) {
+                String query = "insert into persona (Publicante_UUID,nombre,apellidos,email,password," +
+                        "fechaNacimiento,ciudad,pais,telefono) values (?,?,?,?,?,?,?,?,?)";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setInt(1, uuid);
+                ps.setString(2, rd.getName());
+                ps.setString(3, rd.getLastname());
+                ps.setString(4, rd.getEmail());
+                ps.setString(5, rd.getPassword());
+                ps.setString(6, rd.getBirthdate());
+                ps.setString(7, rd.getCity());
+                ps.setString(8, rd.getCountry());
+                ps.setString(9, rd.getPhone());
+
+
+                int insertedRows = ps.executeUpdate();
+                if (insertedRows == 1) {
+                    return uuid;
+                }else{
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            return -1;
+        }        
     }
 }
