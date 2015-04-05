@@ -2,6 +2,7 @@ package myusick.model.services;
 
 import myusick.model.dto.LoginDTO;
 import myusick.model.dto.ProfileDTO;
+import myusick.model.dto.RegisterDTO;
 import myusick.persistence.DAO.*;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
@@ -33,6 +34,10 @@ public class MyusickService {
         }
     }
 
+    public int registerUser(RegisterDTO rd){
+        return pdao.registerUser(rd);
+    }
+    
     public ProfileDTO getProfileData(int uuid) {
         ProfileDTO profile = new ProfileDTO();
         if (gdao.esUnGrupo(uuid)) {

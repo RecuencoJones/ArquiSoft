@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import myusick.model.dto.AuthTokenDTO;
 import myusick.model.dto.ErrorsDTO;
 import myusick.model.dto.LoginDTO;
+import myusick.model.services.MyusickService;
 import myusick.util.security.AuthTokenGenerator;
 import myusick.model.dto.RegisterDTO;
 import myusick.util.security.ErrorSpecification;
@@ -35,13 +36,14 @@ public class RegisterService {
 
         System.out.println(registerDTO);
 
+        // If mapping went wrong
         if(registerDTO == null){
             errorsDTO.setEmpty();
             authTokenDTO.setErrorsDTO(errorsDTO);
             return gson.toJson(authTokenDTO);
         }
 
-        //Check and set errors
+        // Check and set errors
         if(!ErrorSpecification.isOk(registerDTO.getName()))
             errorsDTO.setName();
         if(!ErrorSpecification.isOk(registerDTO.getBirthdate()))
@@ -57,12 +59,15 @@ public class RegisterService {
         if(!ErrorSpecification.isOk(registerDTO.getRepassword()))
             errorsDTO.setPassword();
 
-        //Check if there were errors
+        // Check if there were any errors
         if(!ErrorSpecification.hasErrors(errorsDTO,1)){
-            //save registerUser to db
-            LoginDTO user = new LoginDTO(registerDTO.getEmail(), registerDTO.getPassword());
-            user.setUserId(1);
-            authTokenDTO = AuthTokenGenerator.generateToken(user);
+            // save registerUser to db
+            int uuid = new MyusickService().registerUser(registerDTO);
+            if(uuid!=-1) {
+                LoginDTO user = new MyusickService().getLoginData(registerDTO.getEmail(), registerDTO.getPassword());
+                user.setUserId(uuid);
+                authTokenDTO = AuthTokenGenerator.generateToken(user);
+            }
         }else{
             authTokenDTO.setErrorsDTO(errorsDTO);
         }
