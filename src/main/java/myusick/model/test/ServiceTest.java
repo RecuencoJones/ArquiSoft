@@ -18,7 +18,7 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        m.registrarTag("soyUnaMierda",1);
+        m.registrarTag("attention whore",7);
 ////        LoginDTO l = m.getLoginData("foo@bar.com","1234");
 ////        System.out.printf(l.toString());
 //        ProfileDTO p = m.getProfileData(1);
