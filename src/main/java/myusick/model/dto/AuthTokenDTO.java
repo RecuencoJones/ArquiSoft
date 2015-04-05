@@ -2,6 +2,7 @@ package myusick.model.dto;
 
 import java.io.Serializable;
 
+
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
