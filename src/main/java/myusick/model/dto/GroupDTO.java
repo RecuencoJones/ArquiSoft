@@ -3,7 +3,7 @@ package myusick.model.dto;
 /**
  * Created by david on 31/03/2015.
  */
-public class NewGroupDTO {
+public class GroupDTO {
     
     private int creator;
     private String name;

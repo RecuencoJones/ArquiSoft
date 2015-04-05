@@ -77,18 +77,18 @@ public class PersonaDAO {
         try {
             String query="select publicante_uuid from persona where email=? and password=?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1,"foo@bar.com");
-            ps.setString(2,"1234");
+            ps.setString(1,email);
+            ps.setString(2,password);
             ResultSet rs = ps.executeQuery();
             int i = 1;
             if(rs.next()){
                 l.setUserId(rs.getInt(1));
+                l.setGroups(getGroupsByMember(l.getUserId()));
+                return l;
             }else{
                 /* El usuario no existe */
                 return null;
             }
-            l.setGroups(getGroupsByMember(l.getUserId()));
-            return l;
         } catch (SQLException e) {
             e.printStackTrace();
             return new LoginDTO();
@@ -109,7 +109,7 @@ public class PersonaDAO {
                 ps.setString(3, rd.getLastname());
                 ps.setString(4, rd.getEmail());
                 ps.setString(5, rd.getPassword());
-                ps.setString(6, rd.getBirthdate());
+                ps.setLong(6,Long.parseLong(rd.getBirthdate()));
                 ps.setString(7, rd.getCity());
                 ps.setString(8, rd.getCountry());
                 ps.setString(9, rd.getPhone());

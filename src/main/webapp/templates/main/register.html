@@ -11,8 +11,8 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-user"></span>
                             </span>
-                            <input class="form-control right-top-radius" type="text" placeholder="Name*" ng-model="user.name" required/>
-                            <input class="form-control right-bot-radius" type="text" placeholder="Lastname" ng-model="user.lastname"/>
+                            <input class="form-control right-top-radius" type="text" placeholder="Name*" ng-model="name" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Lastname" ng-model="lastname"/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.birthdate}">
@@ -20,7 +20,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input class="form-control" type="date" placeholder="Birthdate*" ng-model="user.birthdate" required/>
+                            <input class="form-control" type="date" placeholder="Birthdate*" ng-model="birthdate" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.address}">
@@ -28,8 +28,8 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-home"></span>
                                 </span>
-                            <input class="form-control right-top-radius" type="text" placeholder="City*" ng-model="user.city" required/>
-                            <input class="form-control right-bot-radius" type="text" placeholder="Country*" ng-model="user.country" required/>
+                            <input class="form-control right-top-radius" type="text" placeholder="City*" ng-model="city" required/>
+                            <input class="form-control right-bot-radius" type="text" placeholder="Country*" ng-model="country" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.phone}">
@@ -37,7 +37,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-phone"></span>
                                 </span>
-                            <input class="form-control" type="tel" placeholder="Phone number" ng-model="user.phone"/>
+                            <input class="form-control" type="tel" placeholder="Phone number" ng-model="phone"/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.email}">
@@ -45,7 +45,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                 </span>
-                            <input class="form-control" type="text" placeholder="Email*" ng-model="user.email" required/>
+                            <input class="form-control" type="text" placeholder="Email*" ng-model="email" required/>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'has-error': errors.password}">
@@ -53,8 +53,8 @@
                                 <span class="input-group-addon">
                                     <span class=" glyphicon glyphicon-lock"></span>
                                 </span>
-                            <input class="form-control right-top-radius" type="password" placeholder="Password" ng-model="user.password" required>
-                            <input class="form-control right-bot-radius" type="password" placeholder="Repeat password" ng-model="user.repassword" required>
+                            <input class="form-control right-top-radius" type="password" placeholder="Password" ng-model="password" required>
+                            <input class="form-control right-bot-radius" type="password" placeholder="Repeat password" ng-model="repassword" required>
                         </div>
                     </div>
                     <button class="btn btn-block btn-success" type="submit">Send</button>

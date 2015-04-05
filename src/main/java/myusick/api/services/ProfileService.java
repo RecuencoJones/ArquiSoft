@@ -1,19 +1,22 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
-import myusick.model.dto.PostDTO;
 import myusick.model.dto.ProfileDTO;
-import myusick.model.dto.PublisherDTO;
-
-import java.util.ArrayList;
+import myusick.model.services.MyusickService;
 
 /**
  * Created by david on 20/03/2015.
  */
 public class ProfileService {
     public static String profile(int userid) {
-        Gson gson = new Gson();
-        String[] skills = {"Guitarra","Bajo","Retrasado"};
+        Gson gson = new Gson();        
+        ProfileDTO user = new MyusickService().getProfileData(userid);
+        return gson.toJson(user);
+    }
+}
+
+
+        /*String[] skills = {"Guitarra","Bajo","Retrasado"};
         String[] tags = {};
         ArrayList<PublisherDTO> groups = new ArrayList<>();
         groups.add(new PublisherDTO(123,"Ceporrin"));
@@ -28,8 +31,4 @@ public class ProfileService {
                 tags,
                 null,
                 groups,
-                publications);
-        
-        return gson.toJson(user);
-    }
-}
+                publications);*/

@@ -31,6 +31,8 @@ public class MyusickService {
 
         }catch (SQLException e){
             /* Problema con la BD */
+            e.printStackTrace();
+            System.out.println("EJEJEJEJEJEJE");
         }
     }
 
