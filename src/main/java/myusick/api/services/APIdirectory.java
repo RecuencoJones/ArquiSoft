@@ -20,6 +20,8 @@ public class APIdirectory {
         s += DocUtil.docEndpoint("GET", "/", "", "text/plain", "Devuelve este documento");
         s += DocUtil.docEndpoint("POST", "/auth", "application/x-www-form-urlencoded", "application/json", "Autentica a un usuario");
         s += DocUtil.docEndpoint("POST", "/register", "application/json", "application/json", "Registra a un usuario");
+        s += DocUtil.docEndpoint("GET", "/profile/{userid}", "PathParam(userid: int)", "application/json", "Saca los datos de perfil del usuario {userid}");
+        s += DocUtil.docEndpoint("POST", "/newGroup", "application/json", "application/json", "Crea un grupo para un usuario");
         return s;
     }
 }

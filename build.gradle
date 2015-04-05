@@ -28,5 +28,4 @@ dependencies {
     compile 'org.javassist:javassist:3.15.0-GA'
 }
 
-
 war.archiveName 'myusick.war'
