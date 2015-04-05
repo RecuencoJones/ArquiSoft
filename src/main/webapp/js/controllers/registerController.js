@@ -1,7 +1,6 @@
 angular.module('starter')
 
     .controller('RegisterCtrl', [ '$scope', '$http', '$state', 'auth', 'API', function($scope,$http,$state,auth,API){
-        $scope.user = {};
         $scope.hiddenErrorMessage = true;
         $scope.errors = {};
 
@@ -13,14 +12,25 @@ angular.module('starter')
             
             $scope.errors = {};
             $scope.hiddenErrorMessage = true;
-            console.log($scope.user);
             
-            if($scope.user.password==undefined 
-                || $scope.user.password.trim()=="" 
-                || $scope.user.password!=$scope.user.repassword){
+            if($scope.password==undefined
+                || $scope.password.trim()==""
+                || $scope.password!=$scope.repassword){
                 $scope.errors.password = true;
                 $scope.hiddenErrorMessage = false;
             }else {
+                $scope.user = {
+                    name: $scope.name,
+                    lastname: $scope.lastname,
+                    birthdate: Date.parse($scope.birthdate),
+                    city: $scope.city,
+                    country: $scope.country,
+                    phone: $scope.phone,
+                    email: $scope.email,
+                    password: $scope.password,
+                    repassword: $scope.repassword
+                };
+                console.log($scope.user);
                 $http.post(
                     API.URL + API.REGISTER_ENDPOINT,
                     JSON.stringify($scope.user),

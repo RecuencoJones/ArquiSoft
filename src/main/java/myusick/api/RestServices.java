@@ -1,7 +1,7 @@
 package myusick.api;
 
 import myusick.api.services.*;
-import myusick.model.dto.NewGroupDTO;
+import myusick.model.dto.GroupDTO;
 import myusick.model.dto.RegisterDTO;
 
 import javax.ws.rs.*;
@@ -53,8 +53,8 @@ public class RestServices {
     @Path("/newGroup")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String newGroup(@Context UriInfo info, NewGroupDTO newGroupDTO){
-        return NewGroupService.newGroup(info, newGroupDTO);
+    public String newGroup(@Context UriInfo info, GroupDTO groupDTO){
+        return NewGroupService.newGroup(info, groupDTO);
     }
     
     /*@GET

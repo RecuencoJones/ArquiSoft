@@ -2,7 +2,7 @@ package myusick.api.services;
 
 import com.google.gson.Gson;
 import myusick.model.dto.ErrorsDTO;
-import myusick.model.dto.NewGroupDTO;
+import myusick.model.dto.GroupDTO;
 import myusick.util.security.ErrorSpecification;
 
 import javax.ws.rs.core.UriInfo;
@@ -21,31 +21,32 @@ public class NewGroupService {
      *
      * Crea un grupo si los campos son correctos
      * @param info shit
-     * @param newGroupDTO grupo a crear
+     * @param groupDTO grupo a crear
      * @return token de autenticación
      */
-    public static String newGroup(UriInfo info, NewGroupDTO newGroupDTO){
+    public static String newGroup(UriInfo info, GroupDTO groupDTO){
         Gson gson = new Gson();
         ErrorsDTO errors = new ErrorsDTO();
 
-        if(newGroupDTO == null){
+        if(groupDTO == null){
             errors.setEmpty();
             return gson.toJson(errors);
         }
 
-        System.out.println(newGroupDTO);
+        System.out.println(groupDTO);
 
         //Check and set errors
-        if(!ErrorSpecification.isOk(newGroupDTO.getName()))
+        if(!ErrorSpecification.isOk(groupDTO.getName()))
             errors.setName();
-        if(!ErrorSpecification.isOk(newGroupDTO.getYear()))
+        if(!ErrorSpecification.isOk(groupDTO.getYear()))
             errors.setYear();
-        if(!ErrorSpecification.isOk(newGroupDTO.getDescription()))
+        if(!ErrorSpecification.isOk(groupDTO.getDescription()))
             errors.setDescription();
 
         //Check if there were errors
         if(!ErrorSpecification.hasErrors(errors,2)){
-            //save registerUser to db
+            //TODO save registerUser to db
+            
             return "{\"ok\": \"true\"}";
         }else{
             return gson.toJson(errors);
