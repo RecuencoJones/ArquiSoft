@@ -1,8 +1,9 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
-import myusick.model.dto.LoginUserDTO;
-import myusick.util.security.AuthToken;
+import myusick.model.dto.AuthTokenDTO;
+import myusick.model.dto.LoginDTO;
+import myusick.util.security.AuthTokenGenerator;
 
 public class LoginService {
 
@@ -20,17 +21,17 @@ public class LoginService {
      */
     public static String authenticate(String user, String password){
         Gson gson = new Gson();
-        LoginUserDTO userDatabase, userForm;
-        userForm = new LoginUserDTO(user,password);
-        userDatabase = new LoginUserDTO("foo@bar.com","foobar"); //db.queryForUser(authForm.getUser());
+        LoginDTO userDatabase, userForm;
+        userForm = new LoginDTO(user,password);
+        userDatabase = new LoginDTO("foo@bar.com","foobar"); //db.queryForUser(authForm.getUser());
         userDatabase.setUserId(1);
-        AuthToken authToken = new AuthToken();
-        authToken.setToken("no"); //default not allowed
+        AuthTokenDTO authTokenDTO = new AuthTokenDTO();
+        authTokenDTO.setToken("no"); //default not allowed
         if(userForm.getPassword().equals(userDatabase.getPassword())){
             //allow auth, send token
             //authToken="allowed";
-            authToken = AuthToken.generateToken(userDatabase);
+            authTokenDTO = AuthTokenGenerator.generateToken(userDatabase);
         }
-        return gson.toJson(authToken);
+        return gson.toJson(authTokenDTO);
     }
 }

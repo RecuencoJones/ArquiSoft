@@ -1,9 +1,8 @@
 package myusick.api;
 
-import com.google.gson.Gson;
 import myusick.api.services.*;
 import myusick.model.dto.NewGroupDTO;
-import myusick.model.dto.RegisterUserDTO;
+import myusick.model.dto.RegisterDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -39,10 +38,10 @@ public class RestServices {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String register(@Context UriInfo info, RegisterUserDTO registerUserDTO){
-        return RegisterService.register(info, registerUserDTO);
+    public String register(@Context UriInfo info, RegisterDTO registerDTO){
+        return RegisterService.register(info, registerDTO);
     }
-    
+
     @GET
     @Path("/profile/{userid}")
     @Produces(MediaType.APPLICATION_JSON)

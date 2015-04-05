@@ -1,18 +1,22 @@
 package myusick.model.dto;
 
+import java.io.Serializable;
+
 /**
- * Created by david on 20/03/2015.
+ * Created by Cuenta de clase on 02/04/2015.
  */
-public class PublicationDTO {
-    
+public class PostDTO implements Serializable {
+
     private int id;
-    private long date;
+    private String avatar;
+    private int date;
     private String user;
     private int user_id;
     private String content;
 
-    public PublicationDTO(int id, int date, String user, int user_id, String content) {
+    public PostDTO(int id, String avatar, int date, String user, int user_id, String content) {
         this.id = id;
+        this.avatar = avatar;
         this.date = date;
         this.user = user;
         this.user_id = user_id;
@@ -27,11 +31,19 @@ public class PublicationDTO {
         this.id = id;
     }
 
-    public long getDate() {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public int getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(int date) {
         this.date = date;
     }
 

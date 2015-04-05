@@ -1,11 +1,6 @@
 package myusick.model.test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
-import myusick.model.entities.*;
+//import myusick.model.entities.*;
 
 import java.sql.Date;
 
@@ -17,28 +12,28 @@ import java.sql.Date;
 public class Test {
 
 	public static void main(String[] args) {
-		EntityManagerFactory entityManagerFactory = Persistence
-				.createEntityManagerFactory("PersistenciaTest");
-
-       /* try {
-            Class c = Class.forName("org.hibernate.ejb.HibernatePersistence");
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }*/
-        
-        EntityManager em = entityManagerFactory.createEntityManager();
-		EntityTransaction trans = em.getTransaction();
-        
-        /*Configuration configuration = new Configuration();
-        configuration.addClass(myusick.model.entities.Aptitud.class);
-        configuration.addClass(myusick.model.entities.Grupo.class);
-        configuration.addClass(myusick.model.entities.Persona.class);
-        configuration.addClass(myusick.model.entities.Publicacion.class);
-        configuration.addClass(myusick.model.entities.Publicante.class);
-        configuration.addClass(myusick.model.entities.Tag.class);*/
-
-
-		trans.begin();
+//		EntityManagerFactory entityManagerFactory = Persistence
+//				.createEntityManagerFactory("PersistenciaTest");
+//
+//       /* try {
+//            Class c = Class.forName("org.hibernate.ejb.HibernatePersistence");
+//        } catch (ClassNotFoundException e) { e.printStackTrace(); }*/
+//
+//        EntityManager em = entityManagerFactory.createEntityManager();
+//		EntityTransaction trans = em.getTransaction();
+//
+//        /*Configuration configuration = new Configuration();
+//        configuration.addClass(myusick.persistence.VO.Aptitud.class);
+//        configuration.addClass(myusick.persistence.VO.Grupo.class);
+//        configuration.addClass(myusick.persistence.VO.Persona.class);
+//        configuration.addClass(myusick.persistence.VO.Publicacion.class);
+//        configuration.addClass(myusick.persistence.VO.Publicante.class);
+//        configuration.addClass(myusick.persistence.VO.Tag.class);*/
+//
+//
+//		trans.begin();
         /*--------- ENTIDADES ---------*/
-        Aptitud ap1 = new Aptitud();
+       /* Aptitud ap1 = new Aptitud();
         ap1.setIdaptitud(1); ap1.setNombre("bajista");
         Aptitud ap2 = new Aptitud();
         ap2.setIdaptitud(2); ap2.setNombre("vocalista");
@@ -83,25 +78,25 @@ public class Test {
         Persona per2 = new Persona();
         per2.setNombre("recu"); per2.setEmail("pers2@unizar.es"); per2.setPublicante_uuid(pub5);
 
-        /*--------- RELACIONES ---------*/
+        *//*--------- RELACIONES ---------*//*
 
-        /*----- grupo->persona y viceversa -----*/
+        *//*----- grupo->persona y viceversa -----*//*
 		per1.addGrupo(gr1); gr1.addMiembro(per1);
 		per2.addGrupo(gr1); gr2.addMiembro(per1);
 
-        /*----- grupo->tag -----*/
+        *//*----- grupo->tag -----*//*
         gr1.addTag(tag2);
         gr2.addTag(tag2); gr2.addTag(tag1); gr2.addTag(tag4);
         
-        /*----- persona->tag -----*/
+        *//*----- persona->tag -----*//*
         per1.addTag(tag1); per1.addTag(tag2);
         per2.addTag(tag1); per2.addTag(tag2);
 
-        /*----- persona->aptitud -----*/
+        *//*----- persona->aptitud -----*//*
         per1.addAptitud(ap1);per1.addAptitud(ap3);per1.addAptitud(ap4);
         per2.addAptitud(ap1);per2.addAptitud(ap4);
 
-        /*aún no hay entidades débiles*/
+        *//*aún no hay entidades débiles*//*
 
         em.merge(tag1);   em.merge(tag2);   em.merge(tag3);   em.merge(tag4);
         em.merge(ap1);    em.merge(ap2);    em.merge(ap3);    em.merge(ap4);
@@ -110,61 +105,61 @@ public class Test {
         em.merge(per1);   em.merge(per2);
         em.merge(gr1);    em.merge(gr2);    em.merge(gr3);
         trans.commit();
-		/**
+		*//**
 		 * Inicio de las consultas 
-		 */
+		 *//*
 		
-		/*------CONSULTA 1------*//*
-		*//*sql nativo*//*
+		*//*------CONSULTA 1------*//**//*
+		*//**//*sql nativo*//**//*
 		String consulta1="select c,count(t) cnt from titular t JOIN cliente c WHERE cnt>1 GROUP BY t.dni";
 		//Query q1_1 = em.createNativeQuery(consulta1,Cliente.class);
 		//Cliente[] resul1=(Cliente[])q1_1.getResultList().toArray(new Cliente[0]);
 		
-		*//*JPQL*//*
+		*//**//*JPQL*//**//*
 		Query q1_2 = em.createQuery("SELECT t,count(t) cnt FROM titular t WHERE cnt>1 GROUP BY t.dni;");
 		
-		*//*------CONSULTA 2------*//*
-		*//*sql nativo*//*
+		*//**//*------CONSULTA 2------*//**//*
+		*//**//*sql nativo*//**//*
 		String consulta2="select c,count(c) cnt2 from cliente c WHERE cnt2>1 GROUP BY c.direccionCliente";
 		//Query q2_1 = em.createNativeQuery(consulta2,Cliente.class);
 		//Cliente[] resul2=(Cliente[])q2_1.getResultList().toArray(new Cliente[0]);
 		
-		*//*JPQL*//*
+		*//**//*JPQL*//**//*
 		Query q2_2 = em.createQuery("SELECT c,count(c) cnt2 FROM cliente c WHERE cnt2>1 GROUP BY c.direccionCliente;");
 		
-		*//*------CONSULTA 3------*//*
+		*//**//*------CONSULTA 3------*//**//*
 		int min = 400; int max = 1000;
-		*//*sql nativo*//*
+		*//**//*sql nativo*//**//*
 		String consulta3="SELECT c FROM cuenta c WHERE c.saldo BETWEEN " + min +" AND " + max +";";
 		//Query q3_1 = em.createNativeQuery(consulta3,Cuenta.class);
 		//Cuenta[] resul3=(Cuenta[])q3_1.getResultList().toArray(new Cuenta[0]);
 		
-		*//*JPQL*//*
+		*//**//*JPQL*//**//*
 		Query q3_2 = em.createQuery("SELECT c FROM cuenta c WHERE c.saldo BETWEEN :min AND :max;")
 				.setParameter("min", min).setParameter("max", max);
 		
-		*//*------CONSULTA 4------*//*
-		*//*sql nativo*//*
+		*//**//*------CONSULTA 4------*//**//*
+		*//**//*sql nativo*//**//*
 		String consulta4="SELECT c FROM corriente c JOIN oficina o WHERE o.estadoOficina = 0";
 		//Query q4_1 = em.createNativeQuery(consulta4,Corriente.class);
 		//Corriente[] resul4=(Corriente[])q4_1.getResultList().toArray(new Corriente[0]);
 		
-		*//*JPQL*//*
+		*//**//*JPQL*//**//*
 		Query q4_2 = em.createQuery("SELECT c FROM corriente c JOIN oficina o WHERE o.estadoOficina = 0;");
 		
-		*//*------CONSULTA 5------*//*
-		*//*sql nativo*//*
+		*//**//*------CONSULTA 5------*//**//*
+		*//**//*sql nativo*//**//*
 		String consulta5="SELECT cu FROM cuenta cu JOIN titular ti, cliente cl WHERE ti.dni = cl.dni " +	
 					"AND cl.estadoCliente = 0;";
 		//Query q5_1 = em.createNativeQuery(consulta5,Cuenta.class);
 		//Cuenta[] resul5=(Cuenta[])q5_1.getResultList().toArray(new Cuenta[0]);
 		
-		*//*JPQL*//*
+		*//**//*JPQL*//**//*
 		Query q5_2 = em.createQuery("SELECT cu FROM cuenta cu JOIN titular ti, cliente cl WHERE ti.dni = cl.dni "
-				+ "AND cl.estadoCliente = 0;");*/
+				+ "AND cl.estadoCliente = 0;");*//*
 		
 		em.close();
-		entityManagerFactory.close();
+		entityManagerFactory.close();*/
 
 	}
 }

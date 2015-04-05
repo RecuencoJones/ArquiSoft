@@ -1,16 +1,20 @@
 package myusick.model.dto;
 
+import java.io.Serializable;
+
 /**
- * Created by david on 20/03/2015.
+ * Created by Cuenta de clase on 02/04/2015.
  */
-public class ShortGroupDTO {
-    
+public class PublicationsDTO implements Serializable {
+
     private int id;
     private String name;
+    private long fecha;
 
-    public ShortGroupDTO(int id, String name) {
+    public PublicationsDTO(int id, String name, long fecha) {
         this.id = id;
         this.name = name;
+        this.fecha = fecha;
     }
 
     public int getId() {
@@ -27,5 +31,13 @@ public class ShortGroupDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(long fecha) {
+        this.fecha = fecha;
     }
 }

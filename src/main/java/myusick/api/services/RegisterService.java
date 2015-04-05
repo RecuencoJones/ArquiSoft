@@ -1,10 +1,12 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
-import myusick.model.dto.LoginUserDTO;
-import myusick.model.dto.RegisterUserDTO;
-import myusick.util.security.AuthToken;
-import myusick.util.security.Errors;
+import myusick.model.dto.AuthTokenDTO;
+import myusick.model.dto.ErrorsDTO;
+import myusick.model.dto.LoginDTO;
+import myusick.util.security.AuthTokenGenerator;
+import myusick.model.dto.RegisterDTO;
+import myusick.util.security.ErrorSpecification;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -22,47 +24,48 @@ public class RegisterService {
      *
      * Registra a un usuario si los campos son correctos
      * @param info shit
-     * @param registerUserDTO usuario a registrar
+     * @param registerDTO usuario a registrar
      * @return token de autenticación
      */
-    public static String register(UriInfo info, RegisterUserDTO registerUserDTO){
+    public static String register(UriInfo info, RegisterDTO registerDTO){
         Gson gson = new Gson();
-        AuthToken authToken = new AuthToken();
-        authToken.setToken("no");
-        Errors errors = new Errors();
+        AuthTokenDTO authTokenDTO = new AuthTokenDTO();
+        authTokenDTO.setToken("no");
+        ErrorsDTO errorsDTO = new ErrorsDTO();
 
-        if(registerUserDTO == null){
-            authToken.setErrors(errors.setEmpty());
-            return gson.toJson(authToken);
+        System.out.println(registerDTO);
+
+        if(registerDTO == null){
+            errorsDTO.setEmpty();
+            authTokenDTO.setErrorsDTO(errorsDTO);
+            return gson.toJson(authTokenDTO);
         }
-
-        System.out.println(registerUserDTO);
 
         //Check and set errors
-        if(!Errors.isOk(registerUserDTO.getName()))
-            errors.setName();
-        if(!Errors.isOk(registerUserDTO.getBirthdate()))
-            errors.setBirthdate();
-        if(!Errors.isOk(registerUserDTO.getCity()))
-            errors.setAddress();
-        if(!Errors.isOk(registerUserDTO.getCountry()))
-            errors.setAddress();
-        if(!Errors.isOk(registerUserDTO.getEmail()))
-            errors.setEmail();
-        if(!Errors.isOk(registerUserDTO.getPassword()))
-            errors.setPassword();
-        if(!Errors.isOk(registerUserDTO.getRepassword()))
-            errors.setPassword();
+        if(!ErrorSpecification.isOk(registerDTO.getName()))
+            errorsDTO.setName();
+        if(!ErrorSpecification.isOk(registerDTO.getBirthdate()))
+            errorsDTO.setBirthdate();
+        if(!ErrorSpecification.isOk(registerDTO.getCity()))
+            errorsDTO.setAddress();
+        if(!ErrorSpecification.isOk(registerDTO.getCountry()))
+            errorsDTO.setAddress();
+        if(!ErrorSpecification.isOk(registerDTO.getEmail()))
+            errorsDTO.setEmail();
+        if(!ErrorSpecification.isOk(registerDTO.getPassword()))
+            errorsDTO.setPassword();
+        if(!ErrorSpecification.isOk(registerDTO.getRepassword()))
+            errorsDTO.setPassword();
 
         //Check if there were errors
-        if(!errors.hasErrors(1)){
+        if(!ErrorSpecification.hasErrors(errorsDTO,1)){
             //save registerUser to db
-            LoginUserDTO user = new LoginUserDTO(registerUserDTO.getEmail(), registerUserDTO.getPassword());
+            LoginDTO user = new LoginDTO(registerDTO.getEmail(), registerDTO.getPassword());
             user.setUserId(1);
-            authToken = AuthToken.generateToken(user);
+            authTokenDTO = AuthTokenGenerator.generateToken(user);
         }else{
-            authToken.setErrors(errors);
+            authTokenDTO.setErrorsDTO(errorsDTO);
         }
-        return gson.toJson(authToken);
+        return gson.toJson(authTokenDTO);
     }
 }

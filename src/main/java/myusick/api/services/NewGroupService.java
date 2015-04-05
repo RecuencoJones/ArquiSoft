@@ -1,11 +1,9 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
-import myusick.model.dto.LoginUserDTO;
+import myusick.model.dto.ErrorsDTO;
 import myusick.model.dto.NewGroupDTO;
-import myusick.model.dto.RegisterUserDTO;
-import myusick.util.security.AuthToken;
-import myusick.util.security.Errors;
+import myusick.util.security.ErrorSpecification;
 
 import javax.ws.rs.core.UriInfo;
 
@@ -28,7 +26,7 @@ public class NewGroupService {
      */
     public static String newGroup(UriInfo info, NewGroupDTO newGroupDTO){
         Gson gson = new Gson();
-        Errors errors = new Errors();
+        ErrorsDTO errors = new ErrorsDTO();
 
         if(newGroupDTO == null){
             errors.setEmpty();
@@ -38,15 +36,15 @@ public class NewGroupService {
         System.out.println(newGroupDTO);
 
         //Check and set errors
-        if(!Errors.isOk(newGroupDTO.getName()))
+        if(!ErrorSpecification.isOk(newGroupDTO.getName()))
             errors.setName();
-        if(!Errors.isOk(newGroupDTO.getYear()))
+        if(!ErrorSpecification.isOk(newGroupDTO.getYear()))
             errors.setYear();
-        if(!Errors.isOk(newGroupDTO.getDescription()))
+        if(!ErrorSpecification.isOk(newGroupDTO.getDescription()))
             errors.setDescription();
 
         //Check if there were errors
-        if(!errors.hasErrors(2)){
+        if(!ErrorSpecification.hasErrors(errors,2)){
             //save registerUser to db
             return "{\"ok\": \"true\"}";
         }else{
