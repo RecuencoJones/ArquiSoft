@@ -104,4 +104,19 @@ public class RegisterDTO implements Serializable{
     public void setRepassword(String repassword) {
         this.repassword = repassword;
     }
+
+    @Override
+    public String toString() {
+        return "RegisterDTO{" +
+                "name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthdate='" + birthdate + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", repassword='" + repassword + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package myusick.model.services;
 
+import myusick.model.dto.GroupDTO;
 import myusick.model.dto.LoginDTO;
 import myusick.model.dto.ProfileDTO;
 import myusick.model.dto.RegisterDTO;
@@ -39,7 +40,11 @@ public class MyusickService {
     public int registerUser(RegisterDTO rd){
         return pdao.registerUser(rd);
     }
-    
+
+    public boolean registerGroup(GroupDTO gd){
+        return gdao.registerGroup(gd);
+    }
+
     public ProfileDTO getProfileData(int uuid) {
         ProfileDTO profile = new ProfileDTO();
         if (gdao.esUnGrupo(uuid)) {

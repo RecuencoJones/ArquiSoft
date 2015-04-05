@@ -10,6 +10,12 @@ public class GroupDTO {
     private String year;
     private String description;
 
+    public GroupDTO(int creator, String name, String year) {
+        this.creator = creator;
+        this.name = name;
+        this.year = year;
+    }
+
     public int getCreator() {
         return creator;
     }
