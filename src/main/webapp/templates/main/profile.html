@@ -83,7 +83,7 @@
                             <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
                             <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput">Add tag</a>
                             <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
-                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag">
+                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag"/>
                             </form>
                         </div>
                     </div>

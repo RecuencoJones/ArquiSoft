@@ -70,6 +70,7 @@ public class TagDAO {
             }else return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            // Si está duplicado el tag entonces no asigna al publicante el tag
             return false;
         }
     }
