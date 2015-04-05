@@ -43,7 +43,7 @@
                         <!-- Nick y bio -->
                         <div class="row margin-0" style="padding-top: 10px">
                             <div class="text-center">
-                                <p>{{user.nombre}}</p>
+                                <p>{{user.name}}</p>
                                 <p>{{user.description}}</p>
                             </div>
                         </div>
@@ -73,12 +73,12 @@
                     <div class="simple-jumbo">
                         <p class="text-center">My bands</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" ng-repeat="group in user.groups" ng-href="#/group/{{group.id}}">{{group.nombre}}</a>
+                            <a class="btn btn-default" ng-repeat="group in user.groups" ng-href="#/group/{{group.id}}">{{group.name}}</a>
                             <a class="btn btn-primary" href="#/newGroup">Create group</a>
                         </div>
                     </div>
                     <div class="simple-jumbo" style="margin-top: 25px">
-                        <p class="text-center">My tags</p>
+                        <p class="text-center">Tags</p>
                         <div class="btn-group-vertical" style="display: block">
                             <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
                             <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput">Add tag</a>
