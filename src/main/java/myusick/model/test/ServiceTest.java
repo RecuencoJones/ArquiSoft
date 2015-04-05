@@ -1,5 +1,6 @@
 package myusick.model.test;
 
+import myusick.model.dto.GroupDTO;
 import myusick.model.dto.ProfileDTO;
 import myusick.model.dto.RegisterDTO;
 import myusick.model.services.MyusickService;
@@ -17,8 +18,7 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        m.registerUser(new RegisterDTO("nombre", "apellidos","456342643643453453", "city",
-                "country", "phone", "email", "password", "repassword"));
+        m.registerGroup(new GroupDTO(2,"el grupo de la mierda","2015"));
 ////        LoginDTO l = m.getLoginData("foo@bar.com","1234");
 ////        System.out.printf(l.toString());
 //        ProfileDTO p = m.getProfileData(1);
