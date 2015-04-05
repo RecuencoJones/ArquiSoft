@@ -1,7 +1,5 @@
 package myusick.api;
 
-import myusick.api.endpoints.*;
-import myusick.model.dto.RegisterUserDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -37,12 +35,12 @@ public class RestServiceEndpoints {
     public String register(@Context UriInfo info, RegisterUserDTO registerUserDTO){
         return RegisterDAO.register(info, registerUserDTO);
     }
-    
+
     @GET
     @Path("/profile/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String profile(@PathParam("userid") int userid){
         return ProfileDAO.profile(userid);
     }
-    
+
 }
