@@ -52,7 +52,7 @@ angular.module('starter')
         /*$scope.user = {
             name: "David",
             description: "Cute retarded unicorn",
-            avatar: "img/placeholder.JPG",
+            avatar: "img/placeholder.jpg",
             skills: ["Guitarra","Bajo","Retrasado"],
             groups: [
                 {

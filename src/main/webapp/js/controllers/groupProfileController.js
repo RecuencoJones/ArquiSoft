@@ -17,13 +17,13 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
 
-        /*$http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._userid)
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._groupid)
             .success(function(data){
                 console.log(data);
-                $scope.user = data;
+                $scope.band = data;
             }).error(function(data){
                 console.log("error");
-            });*/
+            });
 
         $scope.sendMessage = function() {
             if ($scope.message.trim() != "") {
@@ -49,7 +49,7 @@ angular.module('starter')
             }
         }
 
-        $scope.band = {
+        /*$scope.band = {
          name: "Metallica",
          description: "Cute metal band",
          avatar: "img/metallica.jpg",
@@ -93,6 +93,6 @@ angular.module('starter')
              "Thrash metal",
              "Speed metal",
              "BEST"
-         ]};
+         ]};*/
     }]);
 

@@ -11,16 +11,16 @@ public class ProfileDTO implements Serializable {
     private String name;
     private String description;
     private String avatar;
-    private String[] skills;
-    private String[] tags;
+    private ArrayList<String> skills;
+    private ArrayList<String> tags;
     private ArrayList<PublisherDTO> members;
     private ArrayList<PublisherDTO> groups;
     private ArrayList<PostDTO> publications;
 
     public ProfileDTO(){}
     
-    public ProfileDTO(String name, String description, String avatar, String[] skills,
-                      String[] tags, ArrayList<PublisherDTO> members, ArrayList<PublisherDTO> groups,
+    public ProfileDTO(String name, String description, String avatar, ArrayList<String> skills,
+                      ArrayList<String> tags, ArrayList<PublisherDTO> members, ArrayList<PublisherDTO> groups,
                       ArrayList<PostDTO> publications) {
         this.name = name;
         this.description = description;
@@ -56,19 +56,19 @@ public class ProfileDTO implements Serializable {
         this.avatar = avatar;
     }
 
-    public String[] getSkills() {
+    public ArrayList<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(String[] skills) {
+    public void setSkills(ArrayList<String> skills) {
         this.skills = skills;
     }
 
-    public String[] getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 
@@ -106,8 +106,8 @@ public class ProfileDTO implements Serializable {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", skills=" + Arrays.toString(skills) +
-                ", tags=" + Arrays.toString(tags) +
+                ", skills=" + skills.toString() +
+                ", tags=" + tags.toString() +
                 ", members=" + members.toString() +
                 ", groups=" + groups.toString() +
                 ", publications=" + publications.toString() +

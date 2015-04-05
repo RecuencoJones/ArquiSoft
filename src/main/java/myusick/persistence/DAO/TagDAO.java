@@ -3,6 +3,7 @@ package myusick.persistence.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
@@ -15,16 +16,16 @@ public class TagDAO {
         this.con = con;
     }
 
-    public String[] getTagsByPersona(int uuid){
+    public ArrayList<String> getTagsByPersona(int uuid){
+        ArrayList<String> result = new ArrayList<>();
         try{
             String queryString = "select nombreTag from tag where idTag in (select idTag " +
                     "from persona_tiene_tag where UUID_P=?)";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int i = 0; String[] result = new String[20];
             while(resultSet.next()){
-                result[i] = resultSet.getString(i); i++;
+                result.add(resultSet.getString(1));
             }
             return result;
         }catch (Exception e) {

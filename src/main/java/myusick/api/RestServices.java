@@ -45,15 +45,16 @@ public class RestServices {
     @GET
     @Path("/profile/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String profile(@PathParam("userid") int userid){
+    public String userProfile(@PathParam("userid") int userid){
         return ProfileService.profile(userid);
     }
     
     @POST
-    @Path("/newGroup")
+    @Path("/newgroup")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String newGroup(@Context UriInfo info, GroupDTO groupDTO){
+        System.out.println("AQUI LLEGA 1");
         return NewGroupService.newGroup(info, groupDTO);
     }
     

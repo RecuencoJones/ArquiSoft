@@ -3,6 +3,7 @@ package myusick.api.services;
 import com.google.gson.Gson;
 import myusick.model.dto.ErrorsDTO;
 import myusick.model.dto.GroupDTO;
+import myusick.model.services.MyusickService;
 import myusick.util.security.ErrorSpecification;
 
 import javax.ws.rs.core.UriInfo;
@@ -28,7 +29,9 @@ public class NewGroupService {
         Gson gson = new Gson();
         ErrorsDTO errors = new ErrorsDTO();
 
+        System.out.println("AQUI LLEGA 2");
         if(groupDTO == null){
+            System.out.println("EHEHEHEHE");
             errors.setEmpty();
             return gson.toJson(errors);
         }
@@ -45,9 +48,13 @@ public class NewGroupService {
 
         //Check if there were errors
         if(!ErrorSpecification.hasErrors(errors,2)){
-            //TODO save group to db
-            
-            return "{\"ok\": \"true\"}";
+            // save group to db
+            boolean success = new MyusickService().registerGroup(groupDTO); 
+            if(success){
+                return "{\"ok\": \"true\"}";
+            }else{
+                return gson.toJson(errors);
+            }
         }else{
             return gson.toJson(errors);
         }

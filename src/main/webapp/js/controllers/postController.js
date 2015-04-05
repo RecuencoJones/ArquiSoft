@@ -23,7 +23,7 @@ angular.module('starter')
 
         $scope.post = {
             id: "2",
-            avatar: "img/placeholder.JPG",
+            avatar: "img/placeholder.jpg",
             date: Date.now(),
             user: "anon@not.need",
             user_id: "2",
