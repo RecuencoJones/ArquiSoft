@@ -21,15 +21,33 @@ public class TagDAO {
         this.con = con;
     }
 
-    public ArrayList<String> getTagsByPersona(int uuid){
+    public ArrayList<String> getTagsByPersona(int uuid) {
         ArrayList<String> result = new ArrayList<>();
-        try{
+        try {
             String queryString = "select nombreTag from tag where idTag in (select idTag " +
                     "from persona_tiene_tag where UUID_P=?)";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
+                result.add(resultSet.getString(1));
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return null;
+        }
+    }
+
+    public ArrayList<String> getTagsByGrupo(int uuid) {
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            String queryString = "select nombreTag from tag where idTag in (select idTag " +
+                    "from grupo_tiene_tag where UUID_G=?)";
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setInt(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
                 result.add(resultSet.getString(1));
             }
             return result;
@@ -41,37 +59,74 @@ public class TagDAO {
 
     public boolean registrarTag(TagDTO td) {
         try {
-            String query = "insert into tag (nombreTag) values (?)";
-            PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, td.getNombre());
-            int insertedRows = ps.executeUpdate();
-            if(insertedRows == 1){
-                ResultSet keys = ps.getGeneratedKeys();
-                keys.next();
-                int uuid = keys.getInt(1);
-                /* anadimos ahora a la tabla de asociacion con el publicante */
-                GrupoDAO gdao = new GrupoDAO(); gdao.setConnection(ConnectionAdmin.getConnection());
-                PersonaDAO pdao = new PersonaDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
-                if(gdao.esUnGrupo(td.getPublicante())){
-                    query = "insert into grupo_tiene_tag (uuid_g,idTag) values (?,?)";
-                }else if(pdao.esUnaPersona(td.getPublicante())){
-                    query = "insert into persona_tiene_tag (uuid_p,idTag) values (?,?)";
-                }else{
-                    /* error, el publicante no existe*/
-                    return false;
-                }
-                ps = con.prepareStatement(query);
-                ps.setInt(1, td.getPublicante());
-                ps.setInt(2,uuid);
-                insertedRows = ps.executeUpdate();
-                if(insertedRows == 1){
-                    return true;
-                }else return false;
-            }else return false;
+            int existeTag = getIdByNombre(td.getNombre());
+            if (existeTag == -1) {
+                /*El tag no existe */
+                String query = "insert into tag (nombreTag) values (?)";
+                PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, td.getNombre());
+                int insertedRows = ps.executeUpdate();
+                if (insertedRows == 1) {
+                    ResultSet keys = ps.getGeneratedKeys();
+                    keys.next();
+                    int uuid = keys.getInt(1);
+                    /* anadimos ahora a la tabla de asociacion con el publicante */
+                    return asociarTag(uuid, td.getPublicante());
+
+                } else return false;
+            } else if (existeTag == -2) {
+                /*Error de BD*/
+                return false;
+            } else {
+                /*el tag existe*/
+                return asociarTag(existeTag, td.getPublicante());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Si está duplicado el tag entonces no asigna al publicante el tag
             return false;
         }
+    }
+
+    public int getIdByNombre(String nombre) {
+        try {
+            String query = "select idTag from tag where nombreTag = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+            else return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -2;
+        }
+    }
+
+    private boolean asociarTag(int idTag, int idPublicante) {
+        try {
+            GrupoDAO gdao = new GrupoDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            String query = null;
+            if (gdao.esUnGrupo(idPublicante)) {
+                query = "insert into grupo_tiene_tag (uuid_g,idTag) values (?,?)";
+            } else if (pdao.esUnaPersona(idPublicante)) {
+                query = "insert into persona_tiene_tag (uuid_p,idTag) values (?,?)";
+            } else {
+                /* error, el publicante no existe*/
+                return false;
+            }
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, idPublicante);
+            ps.setInt(2, idTag);
+            int insertedRows = ps.executeUpdate();
+            if (insertedRows == 1) {
+                return true;
+            } else return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

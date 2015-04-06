@@ -47,13 +47,13 @@ public class MyusickService {
         if (gdao.esUnGrupo(uuid)) {
         /* Cogemos los datos necesarios de la entidad grupo*/
             Grupo g = gdao.getDataProfile(uuid);
+            profile.setType(true);
             profile.setName(g.getNombre());
+            profile.setYear(g.getAnyofundacion());
             profile.setAvatar(g.getAvatar());
             profile.setDescription(g.getDescripcion());
-        /* Cogemos las aptitudes que tiene almacenadas, si las hay*/
-            profile.setSkills(adao.getAptitudesByPersona(uuid));
         /* Cogemos las tags que tiene almacenadas, si las hay*/
-            profile.setTags(tdao.getTagsByPersona(uuid));
+            profile.setTags(tdao.getTagsByGrupo(uuid));
         /* Si es un grupo, almacenamos los miembros del mismo */
             profile.setMembers(gdao.getMembersGroup(uuid));
         /* Almacenamos las publicaciones que tenga */
@@ -61,6 +61,7 @@ public class MyusickService {
         } else if (pdao.esUnaPersona(uuid)) {
         /* Cogemos los datos necesarios de la entidad persona*/
             Persona p = pdao.getDataProfile(uuid);
+            profile.setType(false);
             profile.setName(p.getNombre());
             profile.setAvatar(p.getAvatar());
             profile.setDescription(p.getDescripcion());

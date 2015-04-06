@@ -8,8 +8,10 @@ import java.util.Arrays;
  * Created by Cuenta de clase on 02/04/2015.
  */
 public class ProfileDTO implements Serializable {
+    private boolean type;
     private String name;
     private String description;
+    private long year;
     private String avatar;
     private ArrayList<String> skills;
     private ArrayList<String> tags;
@@ -32,6 +34,14 @@ public class ProfileDTO implements Serializable {
         this.publications = publications;
     }
 
+    public boolean isType() {
+        return type;
+    }
+
+    public void setType(boolean type) {
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }
@@ -46,6 +56,14 @@ public class ProfileDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getYear() {
+        return year;
+    }
+
+    public void setYear(long year) {
+        this.year = year;
     }
 
     public String getAvatar() {

@@ -2,6 +2,7 @@ angular.module('starter')
 
     .controller('GroupProfileCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
+        $scope.loggedUserBands = auth.identity().groupsIds;
         $scope.message = "";
         $scope.newtag = "";
         $scope.hidden = true;
@@ -20,7 +21,11 @@ angular.module('starter')
         $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._groupid)
             .success(function(data){
                 console.log(data);
-                $scope.band = data;
+                if(data.type){
+                    $scope.band = data;       
+                }else{
+                    $state.go("error");
+                }
             }).error(function(data){
                 console.log("error");
             });
@@ -66,6 +71,10 @@ angular.module('starter')
                         $scope.showTagInput = false;
                     });
             }
+        };
+
+        $scope.isMember = function(){
+            return (auth.identity().groupsIds.indexOf(Number($stateParams._groupid))>-1);
         };
 
         /*$scope.band = {

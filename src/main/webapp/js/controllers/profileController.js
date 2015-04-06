@@ -17,10 +17,18 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
         
+        $scope.isOwner = function(){
+            return $scope.loggedUserId == $stateParams._userid;
+        };
+        
         $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._userid)
             .success(function(data){
                 console.log(data);
-                $scope.user = data;
+                if(data.type){
+                    $state.go("error");
+                }else{
+                    $scope.user = data;
+                }
             }).error(function(data){
                 console.log("error");
             });
@@ -39,8 +47,6 @@ angular.module('starter')
                 $scope.message = "";
             }
         };
-
-
 
         $scope.submitTag = function() {
             if ($scope.newtag.trim() != "") {
