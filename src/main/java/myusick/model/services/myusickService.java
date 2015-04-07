@@ -1,9 +1,6 @@
 package myusick.model.services;
 
-import myusick.model.dto.GroupDTO;
-import myusick.model.dto.LoginDTO;
-import myusick.model.dto.ProfileDTO;
-import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.*;
 import myusick.persistence.DAO.*;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
@@ -89,6 +86,10 @@ public class MyusickService {
 
     public boolean registrarTag(String nombre, int publicante){
         return tdao.registrarTag(nombre,publicante);
+    }
+
+    public int insertarPublicacion(PublicationsDTO pdto, int publicante_uuid){
+        return pubdao.insertarPublicacion(pdto.getFecha(),pdto.getName(),publicante_uuid);
     }
 
 }
