@@ -17,13 +17,13 @@ public class ProfileDTO implements Serializable {
     private ArrayList<String> tags;
     private ArrayList<PublisherDTO> members;
     private ArrayList<PublisherDTO> groups;
-    private ArrayList<PostDTO> publications;
+    private ArrayList<PublicationsDTO> publications;
 
     public ProfileDTO(){}
     
     public ProfileDTO(String name, String description, String avatar, ArrayList<String> skills,
                       ArrayList<String> tags, ArrayList<PublisherDTO> members, ArrayList<PublisherDTO> groups,
-                      ArrayList<PostDTO> publications) {
+                      ArrayList<PublicationsDTO> publications) {
         this.name = name;
         this.description = description;
         this.avatar = avatar;
@@ -106,11 +106,11 @@ public class ProfileDTO implements Serializable {
         this.groups = groups;
     }
 
-    public ArrayList<PostDTO> getPublications() {
+    public ArrayList<PublicationsDTO> getPublications() {
         return publications;
     }
 
-    public void setPublications(ArrayList<PostDTO> publications) {
+    public void setPublications(ArrayList<PublicationsDTO> publications) {
         this.publications = publications;
     }
 

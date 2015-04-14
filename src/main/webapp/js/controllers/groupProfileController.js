@@ -33,14 +33,27 @@ angular.module('starter')
         $scope.sendMessage = function() {
             if ($scope.message.trim() != "") {
                 var newPub = {
-                    id: "999",
                     date: Date.now(),
-                    user: $scope.band.name,
-                    user_id: $scope.loggedUserId,
+                    id: $scope.loggedUserId,
                     content: $scope.message
                 };
-                //$http.post()
-                $scope.band.publications.push(newPub);
+                $http.post(API.URL + API.POST_ENDPOINT,
+                    JSON.stringify(newPub),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+
+                    .success(function(data){
+                        var temp = {
+                            date: data.date,
+                            id: data.id,
+                            user_id: $scope.loggedUserId,
+                            content: data.name
+                        };
+                        $scope.band.publications.push(temp);
+                    }).error(function(data){
+                        console.log(data);
+                    });
                 $scope.message = "";
             }
         };

@@ -2,6 +2,7 @@ package myusick.api;
 
 import myusick.api.services.*;
 import myusick.model.dto.GroupDTO;
+import myusick.model.dto.PublicationsDTO;
 import myusick.model.dto.RegisterDTO;
 import myusick.model.dto.TagDTO;
 
@@ -66,20 +67,20 @@ public class RestServices {
     public String newTag(@Context UriInfo info, TagDTO tagDTO){
         return TagService.newTag(info, tagDTO);
     }
+
+    @POST
+    @Path("/post")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newPost(@Context UriInfo info, PublicationsDTO postDTO){
+        return PostService.newPost(info, postDTO);
+    }
     
     /*@GET
     @Path("/home/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String home(@PathParam("userid") int userid){
         
-    }
-    
-    @POST
-    @Path("/post")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String newPost(@Context UriInfo, PostDTO postDTO){
-        return PostService.newPost(info, postDTO);
     }
     
     @GET

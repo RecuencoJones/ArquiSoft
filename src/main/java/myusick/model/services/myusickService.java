@@ -72,7 +72,7 @@ public class MyusickService {
         /* Almacenamos si pertenece a algun grupo y a cuales en caso afirmativo */
             profile.setGroups(pdao.getGroupsByMember(p.getPublicante_uuid()));
         /* Almacenamos las publicaciones que tenga */
-            profile.setPublications(pubdao.getPublicacionesById(p.getPublicante_uuid()));
+            profile.setPublications(pubdao.getPublicacionesById(uuid));
         } else {
             /* El usuario no existe */
             System.out.printf("No existe el usuario\n");
@@ -87,6 +87,10 @@ public class MyusickService {
 
     public boolean registrarTag(TagDTO td){
         return tdao.registrarTag(td);
+    }
+
+    public int insertarPublicacion(PublicationsDTO pdto){
+        return pubdao.insertarPublicacion(pdto.getDate(),pdto.getContent(),pdto.getId());
     }
 
 }
