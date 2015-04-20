@@ -1,6 +1,7 @@
 package myusick.persistence.DAO;
 
 import myusick.model.dto.PostDTO;
+import myusick.model.dto.PublicationsDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,6 +52,5 @@ public class PublicacionDAO {
         } catch (SQLException e) {
             return -1;
         }
-
     }
 }
