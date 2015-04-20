@@ -30,7 +30,6 @@ public class PersonaDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int i = 0; Persona p;
             if(resultSet.next())
                 return new Persona(uuid,resultSet.getString("nombre"),null,null,0,null,null,0,
                         resultSet.getString("descripcion"),null,resultSet.getString("avatar"));

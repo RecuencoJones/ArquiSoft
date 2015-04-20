@@ -2,6 +2,7 @@ angular.module('starter')
 
     .controller('GroupProfileCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
+        $scope.loggedUserBands = auth.identity().groupsIds;
         $scope.message = "";
         $scope.newtag = "";
         $scope.hidden = true;
@@ -17,39 +18,79 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
 
-        /*$http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._userid)
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._groupid)
             .success(function(data){
                 console.log(data);
-                $scope.user = data;
+                if(data.type){
+                    $scope.band = data;       
+                }else{
+                    $state.go("error");
+                }
             }).error(function(data){
                 console.log("error");
-            });*/
+            });
 
         $scope.sendMessage = function() {
             if ($scope.message.trim() != "") {
                 var newPub = {
-                    id: "999",
                     date: Date.now(),
-                    user: $scope.band.name,
-                    user_id: $scope.loggedUserId,
+                    id: $scope.loggedUserId,
                     content: $scope.message
                 };
-                //$http.post()
-                $scope.band.publications.push(newPub);
+                $http.post(API.URL + API.POST_ENDPOINT,
+                    JSON.stringify(newPub),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+
+                    .success(function(data){
+                        var temp = {
+                            date: data.date,
+                            id: data.id,
+                            user_id: $scope.loggedUserId,
+                            content: data.name
+                        };
+                        $scope.band.publications.push(temp);
+                    }).error(function(data){
+                        console.log(data);
+                    });
                 $scope.message = "";
             }
         };
 
         $scope.submitTag = function() {
             if ($scope.newtag.trim() != "") {
-                //$http.post()
-                $scope.user.tags.push($scope.newtag);
-                $scope.newtag = "";
-                $scope.showTagInput = false;
+                var tag = {
+                    nombre: $scope.newtag,
+                    publicante: $stateParams._groupid
+                };
+                $http.post(API.URL + API.TAG_ENDPOINT,
+                    JSON.stringify(tag),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+                    
+                    .success(function(data){
+                        if(data.ok){
+                            $scope.band.tags.push($scope.newtag);
+                        }else{
+                            alert("JAJAJA");
+                        }
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    }).error(function(data){
+                        console.log(data);
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    });
             }
-        }
+        };
 
-        $scope.band = {
+        $scope.isMember = function(){
+            return (auth.identity().groupsIds.indexOf(Number($stateParams._groupid))>-1);
+        };
+
+        /*$scope.band = {
          name: "Metallica",
          description: "Cute metal band",
          avatar: "img/metallica.jpg",
@@ -93,6 +134,6 @@ angular.module('starter')
              "Thrash metal",
              "Speed metal",
              "BEST"
-         ]};
+         ]};*/
     }]);
 

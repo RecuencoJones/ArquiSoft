@@ -17,10 +17,18 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
         
+        $scope.isOwner = function(){
+            return $scope.loggedUserId == $stateParams._userid;
+        };
+        
         $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._userid)
             .success(function(data){
                 console.log(data);
-                $scope.user = data;
+                if(data.type){
+                    $state.go("error");
+                }else{
+                    $scope.user = data;
+                }
             }).error(function(data){
                 console.log("error");
             });
@@ -28,31 +36,63 @@ angular.module('starter')
         $scope.sendMessage = function() {
             if ($scope.message.trim() != "") {
                 var newPub = {
-                    id: "999",
                     date: Date.now(),
-                    user: $scope.user.name,
-                    user_id: $scope.loggedUserId,
+                    id: $scope.loggedUserId,
                     content: $scope.message
                 };
-                //$http.post()
-                $scope.user.publications.push(newPub);
+                $http.post(API.URL + API.POST_ENDPOINT,
+                    JSON.stringify(newPub),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+                    
+                    .success(function(data){
+                        var temp = {
+                            date: data.date,
+                            id: data.id,
+                            user_id: $scope.loggedUserId,
+                            content: data.content
+                        };
+                        $scope.user.publications.push(temp);
+                    }).error(function(data){
+                        console.log(data);
+                    });
                 $scope.message = "";
             }
         };
-        
+
         $scope.submitTag = function() {
             if ($scope.newtag.trim() != "") {
-                //$http.post()
-                $scope.user.tags.push($scope.newtag);
-                $scope.newtag = "";
-                $scope.showTagInput = false;
+                var tag = {
+                    nombre: $scope.newtag,
+                    publicante: $stateParams._userid
+                };
+                $http.post(API.URL + API.TAG_ENDPOINT,
+                    JSON.stringify(tag),
+                    {
+                        'Content-Type': 'application/json'
+                    })
+
+                    .success(function(data){
+                        if(data.ok){
+                            $scope.user.tags.push($scope.newtag);
+                        }else{
+                            alert("JAJAJA");
+                        }
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    }).error(function(data){
+                        console.log(data);
+                        $scope.newtag = "";
+                        $scope.showTagInput = false;
+                    });
             }
-        }
+        };
         
         /*$scope.user = {
             name: "David",
             description: "Cute retarded unicorn",
-            avatar: "img/placeholder.JPG",
+            avatar: "img/placeholder.jpg",
             skills: ["Guitarra","Bajo","Retrasado"],
             groups: [
                 {

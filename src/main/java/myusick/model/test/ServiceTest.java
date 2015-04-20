@@ -18,9 +18,8 @@ import java.sql.SQLException;
 public class ServiceTest {
 
     public static void main (String [] args){
-        System.out.println("holaaaa");
-//        MyusickService m = new MyusickService();
-//        m.insertarPublicacion(new PublicationsDTO(1,"esto es una publicacion",352353242),1);
+        MyusickService m = new MyusickService();
+        //m.registrarTag("soyUnaMierda",1);
 ////        LoginDTO l = m.getLoginData("foo@bar.com","1234");
 ////        System.out.printf(l.toString());
 //        ProfileDTO p = m.getProfileData(1);

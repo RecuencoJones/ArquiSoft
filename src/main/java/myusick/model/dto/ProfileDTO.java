@@ -8,20 +8,22 @@ import java.util.Arrays;
  * Created by Cuenta de clase on 02/04/2015.
  */
 public class ProfileDTO implements Serializable {
+    private boolean type;
     private String name;
     private String description;
+    private long year;
     private String avatar;
-    private String[] skills;
-    private String[] tags;
+    private ArrayList<String> skills;
+    private ArrayList<String> tags;
     private ArrayList<PublisherDTO> members;
     private ArrayList<PublisherDTO> groups;
-    private ArrayList<PostDTO> publications;
+    private ArrayList<PublicationsDTO> publications;
 
     public ProfileDTO(){}
     
-    public ProfileDTO(String name, String description, String avatar, String[] skills,
-                      String[] tags, ArrayList<PublisherDTO> members, ArrayList<PublisherDTO> groups,
-                      ArrayList<PostDTO> publications) {
+    public ProfileDTO(String name, String description, String avatar, ArrayList<String> skills,
+                      ArrayList<String> tags, ArrayList<PublisherDTO> members, ArrayList<PublisherDTO> groups,
+                      ArrayList<PublicationsDTO> publications) {
         this.name = name;
         this.description = description;
         this.avatar = avatar;
@@ -30,6 +32,14 @@ public class ProfileDTO implements Serializable {
         this.members = members;
         this.groups = groups;
         this.publications = publications;
+    }
+
+    public boolean isType() {
+        return type;
+    }
+
+    public void setType(boolean type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -48,6 +58,14 @@ public class ProfileDTO implements Serializable {
         this.description = description;
     }
 
+    public long getYear() {
+        return year;
+    }
+
+    public void setYear(long year) {
+        this.year = year;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -56,19 +74,19 @@ public class ProfileDTO implements Serializable {
         this.avatar = avatar;
     }
 
-    public String[] getSkills() {
+    public ArrayList<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(String[] skills) {
+    public void setSkills(ArrayList<String> skills) {
         this.skills = skills;
     }
 
-    public String[] getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
-    public void setTags(String[] tags) {
+    public void setTags(ArrayList<String> tags) {
         this.tags = tags;
     }
 
@@ -88,11 +106,11 @@ public class ProfileDTO implements Serializable {
         this.groups = groups;
     }
 
-    public ArrayList<PostDTO> getPublications() {
+    public ArrayList<PublicationsDTO> getPublications() {
         return publications;
     }
 
-    public void setPublications(ArrayList<PostDTO> publications) {
+    public void setPublications(ArrayList<PublicationsDTO> publications) {
         this.publications = publications;
     }
 
@@ -106,8 +124,8 @@ public class ProfileDTO implements Serializable {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", skills=" + Arrays.toString(skills) +
-                ", tags=" + Arrays.toString(tags) +
+                ", skills=" + skills.toString() +
+                ", tags=" + tags.toString() +
                 ", members=" + members.toString() +
                 ", groups=" + groups.toString() +
                 ", publications=" + publications.toString() +

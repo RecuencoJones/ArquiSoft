@@ -5,5 +5,7 @@ angular.module('starter')
         "AUTH_ENDPOINT": "/auth",
         "REGISTER_ENDPOINT": "/register",
         "PROFILE_ENDPOINT": "/profile/",
-        "CREATE_BAND_ENDPOINT": "/newGroup"
-    })
+        "CREATE_BAND_ENDPOINT": "/newgroup",
+        "TAG_ENDPOINT": "/newtag",
+        "POST_ENDPOINT": "/post"
+    });

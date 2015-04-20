@@ -8,6 +8,7 @@ import myusick.model.services.MyusickService;
  * Created by david on 20/03/2015.
  */
 public class ProfileService {
+    
     public static String profile(int userid) {
         Gson gson = new Gson();        
         ProfileDTO user = new MyusickService().getProfileData(userid);
@@ -22,11 +23,11 @@ public class ProfileService {
         groups.add(new PublisherDTO(123,"Ceporrin"));
         groups.add(new PublisherDTO(456,"Ceporron"));
         ArrayList<PostDTO> publications = new ArrayList<>();
-        publications.add(new PostDTO(2,"img/placeholder.JPG",1676556867,"David",1,"Foo bar"));
-        publications.add(new PostDTO(1,"img/placeholder.JPG",1464646878,"David",1,"LOL"));
+        publications.add(new PostDTO(2,"img/placeholder.jpg",1676556867,"David",1,"Foo bar"));
+        publications.add(new PostDTO(1,"img/placeholder.jpg",1464646878,"David",1,"LOL"));
         ProfileDTO user = new ProfileDTO("David",
                 "Cute retarded unicorn",
-                "img/placeholder.JPG",
+                "img/placeholder.jpg",
                 skills,
                 tags,
                 null,

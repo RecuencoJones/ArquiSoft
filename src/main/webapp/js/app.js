@@ -83,6 +83,17 @@ angular.module('starter', ['ui.router'])
                         $state.go('home');
                     }
                 }
+            })
+        
+            .state('error', {
+                url: "/error",
+                templateUrl: "templates/main/error.html",
+                controller: "ErrorCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
             });
         
         $urlRouterProvider.otherwise('login');

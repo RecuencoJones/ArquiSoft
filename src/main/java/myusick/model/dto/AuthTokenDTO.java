@@ -1,6 +1,7 @@
 package myusick.model.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -10,14 +11,16 @@ public class AuthTokenDTO implements Serializable {
 
     private String token;
     private int userid;
+    private ArrayList<Integer> groupsIds;
     private ErrorsDTO errorsDTO;
 
     public AuthTokenDTO() {
     }
 
-    public AuthTokenDTO(String token, int userid) {
+    public AuthTokenDTO(String token, int userid, ArrayList<Integer> groupsIds) {
         this.token = token;
         this.userid = userid;
+        this.groupsIds = groupsIds;
     }
 
     public String getToken() {
@@ -34,6 +37,14 @@ public class AuthTokenDTO implements Serializable {
 
     public void setUserid(int userid) {
         this.userid = userid;
+    }
+
+    public ArrayList<Integer> getGroupsIds() {
+        return groupsIds;
+    }
+
+    public void setGroupsIds(ArrayList<Integer> groupsIds) {
+        this.groupsIds = groupsIds;
     }
 
     public ErrorsDTO getErrorsDTO() {

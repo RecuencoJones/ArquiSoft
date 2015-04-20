@@ -2,7 +2,11 @@ package myusick.util.security;
 
 
 import myusick.model.dto.AuthTokenDTO;
+import myusick.model.dto.GroupDTO;
 import myusick.model.dto.LoginDTO;
+import myusick.model.dto.PublisherDTO;
+
+import java.util.ArrayList;
 
 /**
  * Created by david on 11/03/2015.
@@ -22,7 +26,11 @@ public class AuthTokenGenerator {
             bytes[i] = chars[i];
             s += Integer.toBinaryString(bytes[i]);
         }
-        AuthTokenDTO token = new AuthTokenDTO(s,loginUserDTO.getUserId());
+        ArrayList<Integer> groupsIds = new ArrayList<>();
+        for(PublisherDTO g: loginUserDTO.getGroups()){
+            groupsIds.add(g.getId());
+        }
+        AuthTokenDTO token = new AuthTokenDTO(s,loginUserDTO.getUserId(),groupsIds);
         return token;
     }
 }

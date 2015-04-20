@@ -24,8 +24,7 @@ public class GrupoDAO {
         this.con = con;
     }
 
-
-    public ArrayList<PublisherDTO> getMembersGroup(int uuid) {
+    public ArrayList<PublisherDTO> getMembersGroup(int uuid){
         ArrayList<PublisherDTO> result = new ArrayList<>();
         try {
             String queryString = "select Publicante_UUID,nombre from Persona where publicante_uuid " +
@@ -62,13 +61,14 @@ public class GrupoDAO {
 
     public Grupo getDataProfile(int uuid) {
         try {
-            String queryString = "select nombre,descripcion,anyofundacion,avatar from grupo where publicante_uuid = ?";
+            String queryString = "select nombre,descripcion,anyoFundacion,avatar from grupo where publicante_uuid = ?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int i = 0;
-            return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyofundacion"),
+            if(resultSet.next())
+                return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyoFundacion"),
                     resultSet.getString("descripcion"), resultSet.getString("avatar"));
+            else return null;
         } catch (Exception e) {
             e.printStackTrace(System.err);
             return null;
@@ -79,13 +79,14 @@ public class GrupoDAO {
         try {
             PublicanteDAO pdao = new PublicanteDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
-            int uuid = pdao.insertarPublicante(false);
+            int uuid = pdao.insertarPublicante(true);
             if (uuid != -1) {
-                String query = "insert into grupo (Publicante_UUID,nombre,anyofundacion) values (?,?,?)";
+                String query = "insert into grupo (Publicante_UUID,nombre,anyofundacion,descripcion) values (?,?,?,?)";
                 PreparedStatement ps = con.prepareStatement(query);
                 ps.setInt(1, uuid);
                 ps.setString(2, gd.getName());
                 ps.setInt(3, Integer.parseInt(gd.getYear()));
+                ps.setString(4, gd.getDescription());
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
                 /* insertamos al usuario en la tabla de union con el grupo */

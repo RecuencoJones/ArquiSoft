@@ -47,13 +47,13 @@ public class MyusickService {
         if (gdao.esUnGrupo(uuid)) {
         /* Cogemos los datos necesarios de la entidad grupo*/
             Grupo g = gdao.getDataProfile(uuid);
+            profile.setType(true);
             profile.setName(g.getNombre());
+            profile.setYear(g.getAnyofundacion());
             profile.setAvatar(g.getAvatar());
             profile.setDescription(g.getDescripcion());
-        /* Cogemos las aptitudes que tiene almacenadas, si las hay*/
-            profile.setSkills(adao.getAptitudesByPersona(uuid));
         /* Cogemos las tags que tiene almacenadas, si las hay*/
-            profile.setTags(tdao.getTagsByPersona(uuid));
+            profile.setTags(tdao.getTagsByGrupo(uuid));
         /* Si es un grupo, almacenamos los miembros del mismo */
             profile.setMembers(gdao.getMembersGroup(uuid));
         /* Almacenamos las publicaciones que tenga */
@@ -61,6 +61,7 @@ public class MyusickService {
         } else if (pdao.esUnaPersona(uuid)) {
         /* Cogemos los datos necesarios de la entidad persona*/
             Persona p = pdao.getDataProfile(uuid);
+            profile.setType(false);
             profile.setName(p.getNombre());
             profile.setAvatar(p.getAvatar());
             profile.setDescription(p.getDescripcion());
@@ -71,7 +72,7 @@ public class MyusickService {
         /* Almacenamos si pertenece a algun grupo y a cuales en caso afirmativo */
             profile.setGroups(pdao.getGroupsByMember(p.getPublicante_uuid()));
         /* Almacenamos las publicaciones que tenga */
-            profile.setPublications(pubdao.getPublicacionesById(p.getPublicante_uuid()));
+            profile.setPublications(pubdao.getPublicacionesById(uuid));
         } else {
             /* El usuario no existe */
             System.out.printf("No existe el usuario\n");
@@ -84,8 +85,12 @@ public class MyusickService {
         return pdao.getLoginData(email,password);
     }
 
-    public boolean registrarTag(String nombre, int publicante){
-        return tdao.registrarTag(nombre,publicante);
+    public boolean registrarTag(TagDTO td){
+        return tdao.registrarTag(td);
+    }
+
+    public int insertarPublicacion(PublicationsDTO pdto){
+        return pubdao.insertarPublicacion(pdto.getDate(),pdto.getContent(),pdto.getId());
     }
 
     public int insertarPublicacion(PublicationsDTO pdto, int publicante_uuid){

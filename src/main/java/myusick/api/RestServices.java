@@ -2,7 +2,9 @@ package myusick.api;
 
 import myusick.api.services.*;
 import myusick.model.dto.GroupDTO;
+import myusick.model.dto.PublicationsDTO;
 import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.TagDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -45,16 +47,33 @@ public class RestServices {
     @GET
     @Path("/profile/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String profile(@PathParam("userid") int userid){
+    public String userProfile(@PathParam("userid") int userid){
         return ProfileService.profile(userid);
     }
     
     @POST
-    @Path("/newGroup")
+    @Path("/newgroup")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String newGroup(@Context UriInfo info, GroupDTO groupDTO){
+        System.out.println("AQUI LLEGA 1");
         return NewGroupService.newGroup(info, groupDTO);
+    }
+
+    @POST
+    @Path("/newtag")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newTag(@Context UriInfo info, TagDTO tagDTO){
+        return TagService.newTag(info, tagDTO);
+    }
+
+    @POST
+    @Path("/post")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String newPost(@Context UriInfo info, PublicationsDTO postDTO){
+        return PostService.newPost(info, postDTO);
     }
     
     /*@GET
@@ -64,27 +83,11 @@ public class RestServices {
         
     }
     
-    @POST
-    @Path("/post")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String newPost(@Context UriInfo, PostDTO postDTO){
-        return PostService.newPost(info, postDTO);
-    }
-    
     @GET
     @Path("/post/{postid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getPost(@PathParam("postid") int postid){
         return PostService.getPost(postid);
-    }
-    
-    @POST
-    @Path("/newTag")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String newTag(@Context UriInfo, TagDTO tagDTO){
-        return TagService.newTag(info, tagDTO);
     }
         
     @POST

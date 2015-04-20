@@ -17,15 +17,15 @@ public class PublicacionDAO {
         this.con = con;
     }
 
-    public ArrayList<PostDTO> getPublicacionesById(int uuid){
-        ArrayList<PostDTO> result = new ArrayList<>();
+    public ArrayList<PublicationsDTO> getPublicacionesById(int uuid){
+        ArrayList<PublicationsDTO> result = new ArrayList<>();
         try{
             String queryString = "select idPublicacion,contenido,fecha from Publicacion where Publicante_UUID=?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                //result.add(new PostDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getInt(3)));
+                result.add(new PublicationsDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getLong(3)));
             }
             return result;
         }catch (Exception e) {

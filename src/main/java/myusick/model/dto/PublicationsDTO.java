@@ -8,13 +8,16 @@ import java.io.Serializable;
 public class PublicationsDTO implements Serializable {
 
     private int id;
-    private String name;
-    private long fecha;
+    private String content;
+    private long date;
 
-    public PublicationsDTO(int id, String name, long fecha) {
+    public PublicationsDTO() {
+    }
+
+    public PublicationsDTO(int id, String content, long date) {
         this.id = id;
-        this.name = name;
-        this.fecha = fecha;
+        this.content = content;
+        this.date = date;
     }
 
     public int getId() {
@@ -25,19 +28,19 @@ public class PublicationsDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getContent() {
+        return content;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public long getFecha() {
-        return fecha;
+    public long getDate() {
+        return date;
     }
 
-    public void setFecha(long fecha) {
-        this.fecha = fecha;
+    public void setDate(long date) {
+        this.date = date;
     }
 }

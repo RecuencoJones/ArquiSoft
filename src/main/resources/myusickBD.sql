@@ -214,6 +214,32 @@ ENGINE = InnoDB;
 USE `myusickDB` ;
 
 
+-- -----------------------------------------------------
+-- BEST TRIGGER
+-- -----------------------------------------------------
+DELIMITER $$
+
+CREATE TRIGGER insert_user BEFORE insert ON `persona`
+FOR EACH ROW BEGIN
+IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
+SET NEW.avatar ='img/placeholder.jpg';
+END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER insert_group BEFORE insert ON `grupo`
+FOR EACH ROW BEGIN
+IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
+SET NEW.avatar ='img/placeholder.jpg';
+END IF;
+END$$
+
+DELIMITER ;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
