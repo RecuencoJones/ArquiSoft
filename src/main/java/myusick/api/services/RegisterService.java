@@ -67,6 +67,9 @@ public class RegisterService {
                 LoginDTO user = new MyusickService().getLoginData(registerDTO.getEmail(), registerDTO.getPassword());
                 user.setUserId(uuid);
                 authTokenDTO = AuthTokenGenerator.generateToken(user);
+            }else{
+                errorsDTO.setEmail();
+                authTokenDTO.setErrorsDTO(errorsDTO);
             }
         }else{
             authTokenDTO.setErrorsDTO(errorsDTO);

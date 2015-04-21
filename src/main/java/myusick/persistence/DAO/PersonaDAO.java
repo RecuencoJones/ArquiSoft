@@ -121,7 +121,7 @@ public class PersonaDAO {
             } else {
                 return -1;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }        

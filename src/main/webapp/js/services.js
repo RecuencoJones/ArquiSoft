@@ -1,39 +1,55 @@
 angular.module('starter')
 
-    .factory('auth', function() {
+    .factory('auth', function () {
         var _identity = undefined,
             _authenticated = false;
 
         return {
-            isAuthenticated: function() {
-                return _authenticated;
+            isAuthenticated: function () {
+                if (_authenticated) {
+                    //console.log('user already authenticated');
+                    return _authenticated;
+                } else {
+                    //console.log('attempting to restore session');
+                    var tmp = angular.fromJson(localStorage.userIdentity);
+                    //console.log(tmp);
+                    if (tmp !== undefined) {
+                        //console.log('session restored');
+                        this.authenticate(tmp);
+                        return _authenticated;
+                    }else{
+                        //console.log('session unavailable');
+                        return false;                        
+                    }
+                }
             },
-            authenticate: function(identity) {
+            authenticate: function (identity) {
                 _identity = identity;
                 _authenticated = identity != null && identity != undefined;
+                localStorage.userIdentity = angular.toJson(_identity);
             },
-            identity: function() {
+            identity: function () {
                 return _identity;
             }
         };
     })
 
-    .factory('sidemenu', function($location){
+    .factory('sidemenu', function ($location) {
         var hidden = true;
-        
+
         return {
-            isActive: function(viewLocation){
-                return viewLocation === $location.path();                
+            isActive: function (viewLocation) {
+                return viewLocation === $location.path();
             },
-            isHidden: function(){
-                return hidden;                
+            isHidden: function () {
+                return hidden;
             },
-            toggleMenu:  function() {
+            toggleMenu: function () {
                 hidden = !hidden;
             },
-            hide: function() {
+            hide: function () {
                 hidden = true;
             }
         };
-        
+
     });
