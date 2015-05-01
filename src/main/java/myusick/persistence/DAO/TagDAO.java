@@ -104,8 +104,8 @@ public class TagDAO {
     private boolean asociarTag(int idTag, int idPublicante) {
         try {
             GrupoDAO gdao = new GrupoDAO();
-            gdao.setConnection(ConnectionAdmin.getConnection());
             PersonaDAO pdao = new PersonaDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
             pdao.setConnection(ConnectionAdmin.getConnection());
             String query = null;
             if (gdao.esUnGrupo(idPublicante)) {
@@ -114,6 +114,8 @@ public class TagDAO {
                 query = "insert into persona_tiene_tag (uuid_p,idTag) values (?,?)";
             } else {
                 /* error, el publicante no existe*/
+                gdao.closeConnection();
+                pdao.closeConnection();
                 return false;
             }
             PreparedStatement ps = con.prepareStatement(query);
@@ -121,12 +123,27 @@ public class TagDAO {
             ps.setInt(2, idTag);
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
+                gdao.closeConnection();
+                pdao.closeConnection();
                 return true;
-            } else return false;
+            } else {
+                gdao.closeConnection();
+                pdao.closeConnection();
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
 
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

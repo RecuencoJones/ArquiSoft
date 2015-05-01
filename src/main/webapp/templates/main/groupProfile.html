@@ -58,6 +58,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- follow -->
+                        <div class="row" ng-hide="isMember()">
+                            <div class="col-md-12">
+                                <div class="btn-group btn-group-justified" ng-hide="following">
+                                    <a class="btn btn-success" ng-click="follow()">
+                                        Follow
+                                    </a>
+                                </div>
+                                <div class="btn-group btn-group-justified" ng-show="following">
+                                    <a class="btn btn-danger" ng-click="unfollow()">
+                                        Unfollow
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Panel derecho (miembros) -->

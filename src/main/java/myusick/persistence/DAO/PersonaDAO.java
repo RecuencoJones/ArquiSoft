@@ -114,16 +114,29 @@ public class PersonaDAO {
                 ps.setString(9, rd.getPhone());
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
+                    pdao.closeConnection();
                     return uuid;
                 }else{
+                    pdao.closeConnection();
                     return -1;
                 }
             } else {
+                pdao.closeConnection();
                 return -1;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }        
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

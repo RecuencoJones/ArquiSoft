@@ -96,15 +96,28 @@ public class GrupoDAO {
                     ps.setInt(1, uuid);
                     ps.setInt(2,gd.getCreator());
                     insertedRows = ps.executeUpdate();
+                    pdao.closeConnection();
                     if(insertedRows == 1){
                         return true;
                     }else return false;
                 } else {
+                    pdao.closeConnection();
                     return false;
                 }
             } else {
+                pdao.closeConnection();
                 return false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

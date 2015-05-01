@@ -16,7 +16,12 @@ angular.module('starter', ['ui.router'])
                     if(!auth.isAuthenticated()){
                         $state.go('login');
                     }
-                }
+                }/*,
+                onExit: function($http,API,auth){
+                    if(auth.isAuthenticated()) {
+                        $http.get(API.WS_URL_UNSUB + auth.identity().userid);
+                    }
+                }*/
             })
             
             .state('profile', {

@@ -30,4 +30,14 @@ public class PublicanteDAO {
         }
         
     }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
