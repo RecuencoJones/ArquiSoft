@@ -5,16 +5,16 @@
             <input class="form-control" type="text">
         </form>
     </li>
-    <li ng-class="{ active: isActive('/profile')}">
+    <li ng-class="{ my_active: isActive('/profile/'+loggedUserId)}">
         <a ng-href="#/profile/{{loggedUserId}}">My profile</a>
     </li>
-    <li ng-class="{ active: isActive('/friends')}">
+    <li ng-class="{ my_active: isActive('/friends')}">
         <a href="#/friends">Friends</a>
     </li>
-    <li ng-class="{ active: isActive('/favs')}">
+    <li ng-class="{ my_active: isActive('/favs')}">
         <a href="#/favs">Favs</a>
     </li>
-    <li ng-class="{ active: isActive('/settings')}">
+    <li ng-class="{ my_active: isActive('/settings')}">
         <a href="#/settings">
             <span class=" glyphicon glyphicon-cog"></span> Settings
         </a>

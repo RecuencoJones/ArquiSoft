@@ -25,7 +25,7 @@ public class PublicacionDAO {
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                result.add(new PublicationsDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getLong(3)));
+                result.add(new PublicationsDTO(uuid,resultSet.getString(2),resultSet.getLong(3)));
             }
             return result;
         }catch (Exception e) {

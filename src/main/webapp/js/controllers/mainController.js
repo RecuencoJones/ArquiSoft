@@ -13,6 +13,20 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
 
+        $scope.user = {};
+
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.loggedUserId)
+            .success(function(data){
+                console.log(data);
+                if(data.type){
+                    $state.go("error");
+                }else{
+                    $scope.user = data;
+                }
+            }).error(function(data){
+                console.log("error");
+            });
+
         $scope.source = "";
         $scope.id = "";
         $scope.text = "";

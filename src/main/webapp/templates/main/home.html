@@ -9,7 +9,23 @@
     <div id="page-content-wrapper">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2">
+                    <div class="simple-jumbo">
+                        <div class="row margin-0">
+                            <!-- Foto de perfil -->
+                            <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
+                                <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
+                            </div>
+                        </div>
+                        <!-- Nick -->
+                        <div class="row margin-0" style="padding-top: 10px">
+                            <div class="text-center">
+                                <p>{{user.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
                     <div class="simple-jumbo">
                         <form class="form-group" ng-submit="send()">
                             <input class="form-control" type="text" placeholder="Say something" ng-model="text"/>

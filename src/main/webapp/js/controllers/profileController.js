@@ -99,7 +99,7 @@ angular.module('starter')
         $scope.follow = function(){
             $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
                 .success(function(data){
-                    $scope.following = true;
+                    $scope.following = false;
                 });
         };
 

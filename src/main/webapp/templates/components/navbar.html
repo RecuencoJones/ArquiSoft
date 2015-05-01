@@ -30,7 +30,7 @@
                 <li ng-hide="principal.isAuthenticated()" ng-class="{ active: isActive('/register')}" class="pull-left">
                     <a class="no-collapse-item" href="#/register">Register</a>
                 </li>
-                <li ng-show="principal.isAuthenticated()" ng-class="{ active: isActive('/profile')}" class="pull-left">
+                <li ng-show="principal.isAuthenticated()" ng-class="{ active: isActive('/profile/'+loggedUserId)}" class="pull-left">
                     <a class="cursor-pointer no-collapse-item" ng-href="#/profile/{{loggedUserId}}" title="Profile">
                         <span class="glyphicon glyphicon-user"></span>
                     </a>
