@@ -3,6 +3,7 @@ angular.module('starter')
     .controller('GroupProfileCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
         $scope.loggedUserBands = auth.identity().groupsIds;
+        $scope.bandId = $stateParams._groupid;
         $scope.message = "";
         $scope.newtag = "";
         $scope.hidden = true;
@@ -18,7 +19,7 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
 
-        $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._groupid)
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.bandId)
             .success(function(data){
                 console.log(data);
                 if(data.type){
@@ -34,7 +35,7 @@ angular.module('starter')
             if ($scope.message.trim() != "") {
                 var newPub = {
                     date: Date.now(),
-                    id: $scope.loggedUserId,
+                    id: $scope.bandId,
                     content: $scope.message
                 };
                 $http.post(API.URL + API.POST_ENDPOINT,
@@ -47,8 +48,8 @@ angular.module('starter')
                         var temp = {
                             date: data.date,
                             id: data.id,
-                            user_id: $scope.loggedUserId,
-                            content: data.name
+                            user_id: $scope.bandId,
+                            content: data.content
                         };
                         $scope.band.publications.push(temp);
                     }).error(function(data){
@@ -62,7 +63,7 @@ angular.module('starter')
             if ($scope.newtag.trim() != "") {
                 var tag = {
                     nombre: $scope.newtag,
-                    publicante: $stateParams._groupid
+                    publicante: $scope.bandId
                 };
                 $http.post(API.URL + API.TAG_ENDPOINT,
                     JSON.stringify(tag),

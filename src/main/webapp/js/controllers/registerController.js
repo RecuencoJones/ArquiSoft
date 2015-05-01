@@ -10,7 +10,7 @@ angular.module('starter')
         
         $scope.register = function(){
             
-            $scope.errors = {};
+            $scope.errors;
             $scope.hiddenErrorMessage = true;
             
             if($scope.password==undefined
@@ -42,13 +42,16 @@ angular.module('starter')
                         console.log(data);
                         if (data.token == "no") {
                             $scope.hiddenErrorMessage = false;
-                            $scope.errors = data.errors;
+                            $scope.errors = data.errorsDTO;
+                            console.log($scope.errors);
                         } else {
                             auth.authenticate(data);
                             $state.go('home');
                         }
                     })
-                    .error(function () {
+                    .error(function (data) {
+                        $scope.errors = data.errorsDTO;
+                        console.log($scope.errors);
                         $scope.hiddenErrorMessage = false;
                     });
             }

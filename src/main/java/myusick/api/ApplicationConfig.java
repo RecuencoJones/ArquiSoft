@@ -1,5 +1,6 @@
 package myusick.api;
 
+import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 import org.glassfish.jersey.server.ResourceConfig;
 
 /**
@@ -14,10 +15,10 @@ public class ApplicationConfig extends ResourceConfig {
      * Todas las peticiones se harán a través de esta clase
      */
     public ApplicationConfig() {
+        register(MOXyJsonProvider.class);
         register(CrossDomainFilter.class);
         register(RestServices.class);
-        //register(WebsocketProvider.class);
-        //register(MOXyJsonProvider.class);
+        register(WebsocketProvider.class);
 
     }
 }

@@ -31,7 +31,8 @@ public class ConnectionAdmin {
     private ConnectionAdmin() {}
     /**
      * Conecta con la base de datos de datos meteorologicos
-     * @throws java.sql.SQLException
+     * @return a Connection with the database
+     * @throws java.sql.SQLException an exception
      */
     public final static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DRIVER_URL, USER, PASSWORD);

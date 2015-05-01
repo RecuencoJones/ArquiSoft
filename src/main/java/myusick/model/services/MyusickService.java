@@ -26,7 +26,6 @@ public class MyusickService {
             pdao = new PersonaDAO(); pdao.setConnection (ConnectionAdmin.getConnection());
             pubdao = new PublicacionDAO(); pubdao.setConnection (ConnectionAdmin.getConnection());
             tdao = new TagDAO(); tdao.setConnection (ConnectionAdmin.getConnection());
-
         }catch (SQLException e){
             /* Problema con la BD */
             e.printStackTrace();

@@ -49,7 +49,7 @@ CREATE  TABLE IF NOT EXISTS `myusickDB`.`Persona` (
   `pais` VARCHAR(45) NOT NULL ,
   `telefono` VARCHAR(10) NULL ,
   `descripcion` VARCHAR(144) NULL ,
-  PRIMARY KEY (`Publicante_UUID`) ,
+  PRIMARY KEY (`Publicante_UUID`, `email`) ,
   INDEX `fk_Persona_Publicante1_idx` (`Publicante_UUID` ASC) ,
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) ,
   CONSTRAINT `fk_Persona_Publicante1`
@@ -219,7 +219,7 @@ USE `myusickDB` ;
 -- -----------------------------------------------------
 DELIMITER $$
 
-CREATE TRIGGER insert_user BEFORE insert ON `persona`
+CREATE TRIGGER insert_user BEFORE insert ON `Persona`
 FOR EACH ROW BEGIN
 IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
 SET NEW.avatar ='img/placeholder.jpg';
@@ -230,7 +230,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER insert_group BEFORE insert ON `grupo`
+CREATE TRIGGER insert_group BEFORE insert ON `Grupo`
 FOR EACH ROW BEGIN
 IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
 SET NEW.avatar ='img/placeholder.jpg';

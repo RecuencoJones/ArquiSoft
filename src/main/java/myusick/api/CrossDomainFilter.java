@@ -17,9 +17,9 @@ public class CrossDomainFilter implements ContainerResponseFilter {
 
     /**te
      * Configuración del filtro CORS
-     * @param cres
-     * @param arg1
-     * @throws IOException
+     * @param cres container request
+     * @param arg1 container response
+     * @throws IOException an exception
      */
     @Override
     public void filter(ContainerRequestContext cres, ContainerResponseContext arg1) throws IOException {
