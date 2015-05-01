@@ -11,18 +11,34 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="simple-jumbo">
-                        <form class="form-group">
-                            <input class="form-control" type="text" placeholder="Say hello!"/>
+                        <form class="form-group" ng-submit="send()">
+                            <input class="form-control" type="text" placeholder="Say something" ng-model="text"/>
                         </form>
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <p class="">Herp derp</p>
-                            </li>
-                            <li class="list-group-item">
-                                <p class="">Foo bar</p>
-                            </li>
-                            <li class="list-group-item">
-                                <p class="">Hello world!</p>
+                            <li class="list-group-item list-group-item-warning" ng-show="newMessages.length" ng-click="flush()">{{newMessages.length}} new posts</li>
+                            <li class="list-group-item" ng-repeat="message in messages | orderBy: '-date'">
+                                <div class="row">
+                                    <div class="col-md-2 col-xs-3">
+                                        <img class="img-responsive img-bordered" ng-src="{{user.avatar}}" style="max-height: 50px">
+                                    </div>
+                                    <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
+                                        <p class="pull-left"><a ng-href="#/profile/{{loggedUserId}}"><strong>{{message.id}}</strong></a></p>
+                                        <em class="pull-right">{{message.date | date: 'dd/MM/yyyy'}}</em>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-top: 10px;">
+                                        <p class="">{{message.content}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-right">
+                                            <a class="btn" ng-href="#/post/{{pub.id}}"><span class="glyphicon glyphicon-share"></span></a>
+                                            <a class="btn"><span class="glyphicon glyphicon-star"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>

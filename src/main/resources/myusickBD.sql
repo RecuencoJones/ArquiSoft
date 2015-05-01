@@ -219,7 +219,7 @@ USE `myusickDB` ;
 -- -----------------------------------------------------
 DELIMITER $$
 
-CREATE TRIGGER insert_user BEFORE insert ON `persona`
+CREATE TRIGGER insert_user BEFORE insert ON `Persona`
 FOR EACH ROW BEGIN
 IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
 SET NEW.avatar ='img/placeholder.jpg';
@@ -230,7 +230,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE TRIGGER insert_group BEFORE insert ON `grupo`
+CREATE TRIGGER insert_group BEFORE insert ON `Grupo`
 FOR EACH ROW BEGIN
 IF (NEW.avatar IS NULL OR NEW.avatar = '') THEN
 SET NEW.avatar ='img/placeholder.jpg';
