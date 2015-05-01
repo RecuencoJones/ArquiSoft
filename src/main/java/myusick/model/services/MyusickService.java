@@ -94,7 +94,7 @@ public class MyusickService {
     }
 
     public int insertarPublicacion(PublicationsDTO pdto, int publicante_uuid){
-        return pubdao.insertarPublicacion(pdto.getFecha(),pdto.getName(),publicante_uuid);
+        return pubdao.insertarPublicacion(pdto.getDate(),pdto.getContent(),publicante_uuid);
     }
 
 }
