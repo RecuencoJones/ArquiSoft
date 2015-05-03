@@ -3,6 +3,7 @@ package myusick.api.services;
 import com.google.gson.Gson;
 import myusick.api.WebsocketDispatcher;
 import myusick.api.WebsocketProvider;
+import myusick.model.dto.PostDTO;
 import myusick.model.dto.PublicationsDTO;
 import myusick.model.services.MyusickService;
 
@@ -28,5 +29,11 @@ public class PostService {
         }
         System.out.println("======================");
         return gson.toJson(newPub);
+    }
+
+    public static String getPost(int id) {
+        Gson gson = new Gson();
+        PostDTO pub = new MyusickService().getPost(id);
+        return gson.toJson(pub);
     }
 }

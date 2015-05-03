@@ -55,6 +55,26 @@ public class PublicacionDAO {
 
     }
 
+    public PostDTO getPostById(int id) {
+        try {
+            String query = "select pu.idpublicacion, pe.avatar, pu.fecha, pe.nombre, pe.publicante_uuid, pu.contenido " +
+                    "from persona pe, publicacion pu " +
+                    "where pu.idpublicacion=? and pe.publicante_uuid=pu.Publicante_UUID";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+//               TODO if (gdao.esUnGrupo(uuid)) {} else { v }
+                PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+                return res;
+            }else {
+                return null;
+            }
+        }catch (SQLException e){
+            return null;
+        }
+    }
+
     public boolean closeConnection(){
         try {
             con.close();

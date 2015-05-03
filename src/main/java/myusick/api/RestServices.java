@@ -68,6 +68,13 @@ public class RestServices {
         return TagService.newTag(info, tagDTO);
     }
 
+    @GET
+    @Path("/post/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPost(@PathParam("id") int id){
+        return PostService.getPost(id);
+    }
+    
     @POST
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)

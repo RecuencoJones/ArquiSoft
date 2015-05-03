@@ -75,7 +75,7 @@ public class GrupoDAO {
         }
     }
 
-    public boolean registerGroup(GroupDTO gd) {
+    public int registerGroup(GroupDTO gd) {
         try {
             PublicanteDAO pdao = new PublicanteDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
@@ -98,19 +98,19 @@ public class GrupoDAO {
                     insertedRows = ps.executeUpdate();
                     pdao.closeConnection();
                     if(insertedRows == 1){
-                        return true;
-                    }else return false;
+                        return uuid;
+                    }else return uuid;
                 } else {
                     pdao.closeConnection();
-                    return false;
+                    return -1;
                 }
             } else {
                 pdao.closeConnection();
-                return false;
+                return -1;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 

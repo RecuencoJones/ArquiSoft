@@ -8,8 +8,11 @@
     <li ng-class="{ my_active: isActive('/profile/'+loggedUserId)}">
         <a ng-href="#/profile/{{loggedUserId}}">My profile</a>
     </li>
-    <li ng-class="{ my_active: isActive('/friends')}">
-        <a href="#/friends">Friends</a>
+    <li ng-class="{ my_active: isActive('/followers')}">
+        <a href="#/followers">Followers</a>
+    </li>
+    <li ng-class="{ my_active: isActive('/following')}">
+        <a href="#/following">Following</a>
     </li>
     <li ng-class="{ my_active: isActive('/favs')}">
         <a href="#/favs">Favs</a>

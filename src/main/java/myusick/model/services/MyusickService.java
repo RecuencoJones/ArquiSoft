@@ -30,16 +30,16 @@ public class MyusickService {
         }
     }
 
-    public boolean registerGroup(GroupDTO gd){
+    public int registerGroup(GroupDTO gd){
         GrupoDAO gdao = new GrupoDAO();
         try{
             gdao.setConnection(ConnectionAdmin.getConnection());
-            boolean res = gdao.registerGroup(gd);
+            int res = gdao.registerGroup(gd);
             gdao.closeConnection();
             return res;
         }catch (SQLException e){
             e.printStackTrace();
-            return false;
+            return -1;
         }
     }
 
@@ -200,4 +200,16 @@ public class MyusickService {
         }
     }
 
+    public PostDTO getPost(int id) {
+        PublicacionDAO pdao = new PublicacionDAO();
+        try{
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            PostDTO res = pdao.getPostById(id);
+            pdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

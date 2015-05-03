@@ -30,6 +30,10 @@ angular.module('starter')
             },
             identity: function () {
                 return _identity;
+            },
+            addGroup: function(id) {
+                _identity.groupsIds.push(id);
+                localStorage.userIdentity = angular.toJson(_identity);
             }
         };
     })

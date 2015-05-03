@@ -9,12 +9,12 @@ public class PostDTO implements Serializable {
 
     private int id;
     private String avatar;
-    private int date;
+    private long date;
     private String user;
     private int user_id;
     private String content;
 
-    public PostDTO(int id, String avatar, int date, String user, int user_id, String content) {
+    public PostDTO(int id, String avatar, long date, String user, int user_id, String content) {
         this.id = id;
         this.avatar = avatar;
         this.date = date;
@@ -39,11 +39,11 @@ public class PostDTO implements Serializable {
         this.avatar = avatar;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
