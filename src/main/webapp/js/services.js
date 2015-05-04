@@ -1,5 +1,22 @@
 angular.module('starter')
 
+    .factory('SSE', function(){
+        var already = false;
+        var eventSource;
+        
+        return {
+            subscribe: function(url){
+                if(!already){
+                    eventSource = new EventSource(url);
+                    already = true;
+                    return eventSource;
+                }else{
+                    return eventSource;
+                }
+            }            
+        }
+    })
+    
     .factory('auth', function () {
         var _identity = undefined,
             _authenticated = false;

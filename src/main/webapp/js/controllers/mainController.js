@@ -1,6 +1,6 @@
 angular.module('starter')
 
-    .controller('MainCtrl', [ '$scope', '$state', '$location', '$http', 'auth', 'API', function($scope,$state,$location,$http,auth,API){
+    .controller('MainCtrl', [ '$scope', '$state', '$location', '$http', 'auth', 'API', 'SSE', function($scope,$state,$location,$http,auth,API,SSE){
         $scope.loggedUserId = auth.identity().userid;
 
         $scope.hidden = true;
@@ -33,7 +33,8 @@ angular.module('starter')
         $scope.messages = [ ];
         $scope.newMessages = [ ];
 
-        $scope.source = new EventSource(API.WS_URL+$scope.loggedUserId);
+        //$scope.source = new EventSource(API.WS_URL+$scope.loggedUserId);
+        $scope.source = SSE.subscribe(API.WS_URL+$scope.loggedUserId);
         $scope.source.onopen = function(event){
             console.log("opened");
         };
