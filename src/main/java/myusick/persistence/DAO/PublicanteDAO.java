@@ -10,7 +10,12 @@ public class PublicanteDAO {
     private Connection con;
 
     public void setConnection(Connection con){
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     public int insertarPublicante(boolean tipo){
         try {
@@ -22,10 +27,17 @@ public class PublicanteDAO {
                 ResultSet keys = ps.getGeneratedKeys();
                 keys.next();
                 int uuid = keys.getInt(1);
+                con.commit();
                 return uuid;
-            }else return -1;
+            }else{
+                con.rollback();
+                return -1;
+            }
 
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return -1;
         }

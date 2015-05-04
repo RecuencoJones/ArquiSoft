@@ -21,7 +21,12 @@ public class GrupoDAO {
     private Connection con;
 
     public void setConnection(Connection con) {
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<PublisherDTO> getMembersGroup(int uuid){
@@ -35,8 +40,12 @@ public class GrupoDAO {
             while (resultSet.next()) {
                 result.add(new PublisherDTO(resultSet.getInt(1), resultSet.getString(2)));
             }
+            con.commit();
             return result;
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -51,10 +60,18 @@ public class GrupoDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
+            if (resultSet.next()) {
+                con.commit();
                 return resultSet.getBoolean(1) == true;
-            else return false;
+            }
+            else{
+                con.rollback();
+                return false;
+            }
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -66,11 +83,19 @@ public class GrupoDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
+            if(resultSet.next()) {
+                con.commit();
                 return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyoFundacion"),
-                    resultSet.getString("descripcion"), resultSet.getString("avatar"));
-            else return null;
+                        resultSet.getString("descripcion"), resultSet.getString("avatar"));
+            }
+            else{
+                con.rollback();
+                return null;
+            }
         } catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         }
@@ -97,19 +122,25 @@ public class GrupoDAO {
                     ps.setInt(1, uuid);
                     ps.setInt(2,gd.getCreator());
                     insertedRows = ps.executeUpdate();
+                    con.commit();
                     pdao.closeConnection();
                     if(insertedRows == 1){
                         return uuid;
                     }else return uuid;
                 } else {
+                    con.rollback();
                     pdao.closeConnection();
                     return -1;
                 }
             } else {
+                con.rollback();
                 pdao.closeConnection();
                 return -1;
             }
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return -1;
         }

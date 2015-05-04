@@ -18,7 +18,12 @@ public class TagDAO {
     private Connection con;
 
     public void setConnection(Connection con) {
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getTagsByPersona(int uuid) {
@@ -32,8 +37,12 @@ public class TagDAO {
             while (resultSet.next()) {
                 result.add(resultSet.getString(1));
             }
+            con.commit();
             return result;
         } catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace(System.err);
             return null;
         }
@@ -50,8 +59,12 @@ public class TagDAO {
             while (resultSet.next()) {
                 result.add(resultSet.getString(1));
             }
+            con.commit();
             return result;
         } catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace(System.err);
             return null;
         }
@@ -71,17 +84,26 @@ public class TagDAO {
                     keys.next();
                     int uuid = keys.getInt(1);
                     /* anadimos ahora a la tabla de asociacion con el publicante */
+                    con.commit();
                     return asociarTag(uuid, td.getPublicante());
 
-                } else return false;
+                } else{
+                    con.rollback();
+                    return false;
+                }
             } else if (existeTag == -2) {
                 /*Error de BD*/
+                con.rollback();
                 return false;
             } else {
                 /*el tag existe*/
+                con.rollback();
                 return asociarTag(existeTag, td.getPublicante());
             }
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -93,9 +115,18 @@ public class TagDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, nombre);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) return rs.getInt(1);
-            else return -1;
+            if(rs.next()){
+                con.commit();
+                return rs.getInt(1);
+            }
+            else{
+                con.rollback();
+                return -1;
+            }
         }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return -2;
         }
@@ -114,6 +145,7 @@ public class TagDAO {
                 query = "insert into persona_tiene_tag (uuid_p,idTag) values (?,?)";
             } else {
                 /* error, el publicante no existe*/
+                con.rollback();
                 gdao.closeConnection();
                 pdao.closeConnection();
                 return false;
@@ -123,15 +155,20 @@ public class TagDAO {
             ps.setInt(2, idTag);
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
+                con.commit();
                 gdao.closeConnection();
                 pdao.closeConnection();
                 return true;
             } else {
+                con.rollback();
                 gdao.closeConnection();
                 pdao.closeConnection();
                 return false;
             }
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
