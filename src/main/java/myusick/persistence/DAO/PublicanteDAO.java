@@ -44,6 +44,70 @@ public class PublicanteDAO {
         
     }
 
+    public String getAvatarById(int id){
+        try{
+            /* Primero intentamos ver si es una persona */
+            String query="select avatar from persona where publicante_uuid = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()){
+                /* No es una persona, probamos con grupo */
+                con.rollback();
+                query = "select avatar from grupo where publicante_uuid = ?";
+                ps = con.prepareStatement(query);
+                ps.setInt(1,id);
+                rs = ps.executeQuery();
+                if(!rs.next()){
+                    /* este publicante no tiene avatar */
+                    con.rollback();
+                    return null;
+                }
+            }
+            /* Si llegamos aqui es que hay avatar */
+            return rs.getString(1);
+
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getNombreById(int id){
+        try{
+            /* Primero intentamos ver si es una persona */
+            String query="select nombre from persona where publicante_uuid = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()){
+                /* No es una persona, probamos con grupo */
+                con.rollback();
+                query = "select nombre from grupo where publicante_uuid = ?";
+                ps = con.prepareStatement(query);
+                ps.setInt(1,id);
+                rs = ps.executeQuery();
+                if(!rs.next()){
+                    /* este publicante no tiene avatar */
+                    con.rollback();
+                    return null;
+                }
+            }
+            /* Si llegamos aqui es que hay avatar */
+            return rs.getString(1);
+
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean closeConnection(){
         try {
             con.close();

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
@@ -143,6 +144,136 @@ public class GrupoDAO {
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    public boolean solicitudInsercionGrupo(int persona, int grupo){
+        try{
+            String query = "insert into Pendiente_aceptacion (Grupo,Persona) values (?,?)";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, grupo);
+            ps.setInt(2, persona);
+            int insertedRows = ps.executeUpdate();
+            if (insertedRows == 1) {
+                con.commit();
+                return true;
+            }
+            else{
+                con.rollback();
+                return false;
+            }
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean rechazarDeGrupo (int persona, int grupo){
+        try{
+            String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, grupo);
+            ps.setInt(2, persona);
+            int insertedRows = ps.executeUpdate();
+            if (insertedRows == 1) {
+                con.commit();
+                return true;
+            }else{
+                con.rollback();
+                return false;
+            }
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean anadirAGrupo(int persona, int grupo){
+        /* Primero lo eliminamos de la tabla de pendientes por aceptar */
+        try{
+            String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, grupo);
+            ps.setInt(2, persona);
+            int insertedRows = ps.executeUpdate();
+            if (insertedRows == 1) {
+                /* Ahora, lo anadimos al grupo al que solicito entrar */
+                query = "insert into es_integrante(UUID_G,UUID_P) values (?,?)";
+                ps = con.prepareStatement(query);
+                ps.setInt(1, grupo);
+                ps.setInt(2, persona);
+                insertedRows = ps.executeUpdate();
+                if (insertedRows == 1) {
+                    con.commit();
+                    return true;
+                }else{
+                    con.rollback();
+                    return false;
+                }
+            }
+            else{
+                /* Esa persona no tenia una solicitud pendiente, error */
+                con.rollback();
+                return false;
+            }
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean eliminarDeGrupo(int persona, int grupo){
+        try{
+            String query = "delete from es_integrante where persona = ? and grupo = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, grupo);
+            ps.setInt(2, persona);
+            int insertedRows = ps.executeUpdate();
+            if (insertedRows == 1) {
+                con.commit();
+                return true;
+            }
+            else{
+                con.rollback();
+                return false;
+            }
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Integer> pendientesDeAceptar(int grupo){
+        List<Integer> pendientes = new ArrayList<Integer>();
+        try{
+            String query = "select persona from pendientes_aceptacion where grupo = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, grupo);
+            ResultSet rs = ps.executeQuery();
+            con.commit();
+            while (rs.next()) {
+                pendientes.add(rs.getInt(1));
+            }
+            return pendientes;
+        }catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
         }
     }
 
