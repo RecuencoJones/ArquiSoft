@@ -32,8 +32,18 @@ public class AptitudDAO {
             }
             return result;
         }catch(Exception e){
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

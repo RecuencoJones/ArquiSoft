@@ -8,6 +8,7 @@ angular.module('starter')
         $scope.newtag = "";
         $scope.hidden = true;
         $scope.showTagInput = false;
+        $scope.following = false;
 
         $scope.band = {};
 
@@ -29,6 +30,11 @@ angular.module('starter')
                 }
             }).error(function(data){
                 console.log("error");
+            });
+
+        $http.get(API.URL+API.ISFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
+            .success(function(data){
+                $scope.following = data.res;
             });
 
         $scope.sendMessage = function() {
@@ -89,6 +95,20 @@ angular.module('starter')
 
         $scope.isMember = function(){
             return (auth.identity().groupsIds.indexOf(Number($stateParams._groupid))>-1);
+        };
+
+        $scope.follow = function(){
+            $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
+                .success(function(data){
+                    $scope.following = true;
+                });
+        };
+
+        $scope.unfollow = function(){
+            $http.get(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
+                .success(function(data){
+                    $scope.following = false;
+                });
         };
 
         /*$scope.band = {

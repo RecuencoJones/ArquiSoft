@@ -47,9 +47,9 @@ public class NewGroupService {
         //Check if there were errors
         if(!ErrorSpecification.hasErrors(errors,2)){
             // save group to db
-            boolean success = new MyusickService().registerGroup(groupDTO); 
-            if(success){
-                return "{\"ok\": \"true\"}";
+            int success = new MyusickService().registerGroup(groupDTO);
+            if(success >= 0){
+                return "{\"ok\": \"true\",\"id\":"+success+"}";
             }else{
                 return gson.toJson(errors);
             }

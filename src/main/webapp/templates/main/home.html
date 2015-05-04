@@ -9,7 +9,23 @@
     <div id="page-content-wrapper">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-md-2">
+                    <div class="simple-jumbo">
+                        <div class="row margin-0">
+                            <!-- Foto de perfil -->
+                            <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
+                                <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
+                            </div>
+                        </div>
+                        <!-- Nick -->
+                        <div class="row margin-0" style="padding-top: 10px">
+                            <div class="text-center">
+                                <p>{{user.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
                     <div class="simple-jumbo">
                         <form class="form-group" ng-submit="send()">
                             <input class="form-control" type="text" placeholder="Say something" ng-model="text"/>
@@ -19,10 +35,10 @@
                             <li class="list-group-item" ng-repeat="message in messages | orderBy: '-date'">
                                 <div class="row">
                                     <div class="col-md-2 col-xs-3">
-                                        <img class="img-responsive img-bordered" ng-src="{{user.avatar}}" style="max-height: 50px">
+                                        <img class="img-responsive img-bordered" src="img/placeholder.jpg" style="max-height: 50px">
                                     </div>
                                     <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
-                                        <p class="pull-left"><a ng-href="#/profile/{{loggedUserId}}"><strong>{{message.id}}</strong></a></p>
+                                        <p class="pull-left"><a ng-href="#/profile/{{message.id}}"><strong>Placeholder name for {{message.id}}</strong></a></p>
                                         <em class="pull-right">{{message.date | date: 'dd/MM/yyyy'}}</em>
                                     </div>
                                 </div>

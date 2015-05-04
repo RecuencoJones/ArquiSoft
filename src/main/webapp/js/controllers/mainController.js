@@ -1,6 +1,6 @@
 angular.module('starter')
 
-    .controller('MainCtrl', [ '$scope', '$state', '$location', '$http', 'auth', 'API', function($scope,$state,$location,$http,auth,API){
+    .controller('MainCtrl', [ '$scope', '$state', '$location', '$http', 'auth', 'API', 'SSE', function($scope,$state,$location,$http,auth,API,SSE){
         $scope.loggedUserId = auth.identity().userid;
 
         $scope.hidden = true;
@@ -13,13 +13,28 @@ angular.module('starter')
             return viewLocation === $location.path();
         };
 
+        $scope.user = {};
+
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.loggedUserId)
+            .success(function(data){
+                console.log(data);
+                if(data.type){
+                    $state.go("error");
+                }else{
+                    $scope.user = data;
+                }
+            }).error(function(data){
+                console.log("error");
+            });
+
         $scope.source = "";
         $scope.id = "";
         $scope.text = "";
         $scope.messages = [ ];
         $scope.newMessages = [ ];
 
-        $scope.source = new EventSource(API.WS_URL+$scope.loggedUserId);
+        //$scope.source = new EventSource(API.WS_URL+$scope.loggedUserId);
+        $scope.source = SSE.subscribe(API.WS_URL+$scope.loggedUserId);
         $scope.source.onopen = function(event){
             console.log("opened");
         };

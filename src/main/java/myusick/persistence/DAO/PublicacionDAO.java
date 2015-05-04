@@ -25,11 +25,11 @@ public class PublicacionDAO {
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                result.add(new PublicationsDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getLong(3)));
+                result.add(new PublicationsDTO(uuid,resultSet.getString(2),resultSet.getLong(3)));
             }
             return result;
         }catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }
@@ -50,7 +50,39 @@ public class PublicacionDAO {
             }else return -1;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
+        }
+    }
+
+    public PostDTO getPostById(int id) {
+        try {
+            String query = "select pu.idpublicacion, pe.avatar, pu.fecha, pe.nombre, pe.publicante_uuid, pu.contenido " +
+                    "from persona pe, publicacion pu " +
+                    "where pu.idpublicacion=? and pe.publicante_uuid=pu.Publicante_UUID";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+//               TODO if (gdao.esUnGrupo(uuid)) {} else { v }
+                PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+                return res;
+            }else {
+                return null;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

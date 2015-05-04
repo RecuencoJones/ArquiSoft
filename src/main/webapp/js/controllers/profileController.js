@@ -2,10 +2,12 @@ angular.module('starter')
 
     .controller('ProfileCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
+        $scope.user_id = $stateParams._userid;
         $scope.message = "";
         $scope.newtag = "";
         $scope.hidden = true;
         $scope.showTagInput = false;
+        $scope.following = false;
         
         $scope.user = {};
         
@@ -31,6 +33,11 @@ angular.module('starter')
                 }
             }).error(function(data){
                 console.log("error");
+            });
+
+        $http.get(API.URL+API.ISFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
+            .success(function(data){
+                $scope.following = data.res;
             });
         
         $scope.sendMessage = function() {
@@ -87,6 +94,20 @@ angular.module('starter')
                         $scope.showTagInput = false;
                     });
             }
+        };
+        
+        $scope.follow = function(){
+            $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
+                .success(function(data){
+                    $scope.following = true;
+                });
+        };
+
+        $scope.unfollow = function(){
+            $http.get(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
+                .success(function(data){
+                    $scope.following = false;
+                });
         };
         
         /*$scope.user = {

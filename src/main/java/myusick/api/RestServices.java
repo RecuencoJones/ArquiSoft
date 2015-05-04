@@ -68,12 +68,37 @@ public class RestServices {
         return TagService.newTag(info, tagDTO);
     }
 
+    @GET
+    @Path("/post/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getPost(@PathParam("id") int id){
+        return PostService.getPost(id);
+    }
+    
     @POST
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String newPost(@Context UriInfo info, PublicationsDTO postDTO){
         return PostService.newPost(info, postDTO);
+    }
+
+    @GET
+    @Path("/follow/{seguidor}/{seguido}")
+    public String follow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
+        return FollowService.follow(seguidor,seguido);
+    }
+
+    @GET
+    @Path("/unfollow/{seguidor}/{seguido}")
+    public String unfollow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
+        return FollowService.unfollow(seguidor, seguido);
+    }
+
+    @GET
+    @Path("/isfollowing/{seguidor}/{seguido}")
+    public String isFollowing(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
+        return FollowService.isFollowing(seguidor, seguido);
     }
     
     /*@GET

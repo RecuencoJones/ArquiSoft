@@ -7,93 +7,209 @@ import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
  */
 public class MyusickService {
 
-    private GrupoDAO gdao;
-    private AptitudDAO adao;
-    private PersonaDAO pdao;
-    private PublicacionDAO pubdao;
-    private TagDAO tdao;
-
     public MyusickService() {
-        try{
-            gdao = new GrupoDAO(); gdao.setConnection(ConnectionAdmin.getConnection());
-            adao = new AptitudDAO(); adao.setConnection (ConnectionAdmin.getConnection());
-            pdao = new PersonaDAO(); pdao.setConnection (ConnectionAdmin.getConnection());
-            pubdao = new PublicacionDAO(); pubdao.setConnection (ConnectionAdmin.getConnection());
-            tdao = new TagDAO(); tdao.setConnection (ConnectionAdmin.getConnection());
-        }catch (SQLException e){
-            /* Problema con la BD */
-            e.printStackTrace();
-            System.out.println("EJEJEJEJEJEJE");
-        }
     }
 
     public int registerUser(RegisterDTO rd){
-        return pdao.registerUser(rd);
+        PersonaDAO pdao = new PersonaDAO();
+        try {
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            int res = pdao.registerUser(rd);
+            pdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
-    public boolean registerGroup(GroupDTO gd){
-        return gdao.registerGroup(gd);
+    public int registerGroup(GroupDTO gd){
+        GrupoDAO gdao = new GrupoDAO();
+        try{
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            int res = gdao.registerGroup(gd);
+            gdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public ProfileDTO getProfileData(int uuid) {
         ProfileDTO profile = new ProfileDTO();
-        if (gdao.esUnGrupo(uuid)) {
+        GrupoDAO gdao = new GrupoDAO();
+        PersonaDAO pdao = new PersonaDAO();
+        TagDAO tdao = new TagDAO();
+        AptitudDAO adao = new AptitudDAO();
+        PublicacionDAO pubdao = new PublicacionDAO();
+        try {
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            tdao.setConnection(ConnectionAdmin.getConnection());
+            adao.setConnection(ConnectionAdmin.getConnection());
+            pubdao.setConnection(ConnectionAdmin.getConnection());
+            
+            if (gdao.esUnGrupo(uuid)) {
         /* Cogemos los datos necesarios de la entidad grupo*/
-            Grupo g = gdao.getDataProfile(uuid);
-            profile.setType(true);
-            profile.setName(g.getNombre());
-            profile.setYear(g.getAnyofundacion());
-            profile.setAvatar(g.getAvatar());
-            profile.setDescription(g.getDescripcion());
+                Grupo g = gdao.getDataProfile(uuid);
+                profile.setType(true);
+                profile.setName(g.getNombre());
+                profile.setYear(g.getAnyofundacion());
+                profile.setAvatar(g.getAvatar());
+                profile.setDescription(g.getDescripcion());
         /* Cogemos las tags que tiene almacenadas, si las hay*/
-            profile.setTags(tdao.getTagsByGrupo(uuid));
+                profile.setTags(tdao.getTagsByGrupo(uuid));
         /* Si es un grupo, almacenamos los miembros del mismo */
-            profile.setMembers(gdao.getMembersGroup(uuid));
+                profile.setMembers(gdao.getMembersGroup(uuid));
         /* Almacenamos las publicaciones que tenga */
-            profile.setPublications(pubdao.getPublicacionesById(uuid));
-        } else if (pdao.esUnaPersona(uuid)) {
+                profile.setPublications(pubdao.getPublicacionesById(uuid));
+            } else if (pdao.esUnaPersona(uuid)) {
         /* Cogemos los datos necesarios de la entidad persona*/
-            Persona p = pdao.getDataProfile(uuid);
-            profile.setType(false);
-            profile.setName(p.getNombre());
-            profile.setAvatar(p.getAvatar());
-            profile.setDescription(p.getDescripcion());
+                Persona p = pdao.getDataProfile(uuid);
+                profile.setType(false);
+                profile.setName(p.getNombre());
+                profile.setAvatar(p.getAvatar());
+                profile.setDescription(p.getDescripcion());
         /* Cogemos las aptitudes que tiene almacenadas, si las hay*/
-            profile.setSkills(adao.getAptitudesByPersona(uuid));
+                profile.setSkills(adao.getAptitudesByPersona(uuid));
         /* Cogemos las tags que tiene almacenadas, si las hay*/
-            profile.setTags(tdao.getTagsByPersona(uuid));
+                profile.setTags(tdao.getTagsByPersona(uuid));
         /* Almacenamos si pertenece a algun grupo y a cuales en caso afirmativo */
-            profile.setGroups(pdao.getGroupsByMember(p.getPublicante_uuid()));
+                profile.setGroups(pdao.getGroupsByMember(p.getPublicante_uuid()));
         /* Almacenamos las publicaciones que tenga */
-            profile.setPublications(pubdao.getPublicacionesById(uuid));
-        } else {
+                profile.setPublications(pubdao.getPublicacionesById(uuid));
+            } else {
             /* El usuario no existe */
-            System.out.printf("No existe el usuario\n");
-            profile = null;
+                System.out.printf("No existe el usuario\n");
+                profile = null;
+            }
+            gdao.closeConnection();
+            pdao.closeConnection();
+            tdao.closeConnection();
+            adao.closeConnection();
+            pubdao.closeConnection();
+            
+            return profile;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
         }
-        return profile;
     }
 
     public LoginDTO getLoginData(String email, String password){
-        return pdao.getLoginData(email,password);
+        PersonaDAO pdao = new PersonaDAO();
+        try {
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            LoginDTO res =pdao.getLoginData(email, password);
+            pdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean registrarTag(TagDTO td){
-        return tdao.registrarTag(td);
+        TagDAO tdao = new TagDAO();
+        try {
+            tdao.setConnection(ConnectionAdmin.getConnection());
+            boolean res = tdao.registrarTag(td);
+            tdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public int insertarPublicacion(PublicationsDTO pdto){
-        return pubdao.insertarPublicacion(pdto.getDate(),pdto.getContent(),pdto.getId());
+        PublicacionDAO pubdao = new PublicacionDAO();
+        try {
+            pubdao.setConnection(ConnectionAdmin.getConnection());
+            int res = pubdao.insertarPublicacion(pdto.getDate(), pdto.getContent(), pdto.getId());
+            pubdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
     }
 
-    public int insertarPublicacion(PublicationsDTO pdto, int publicante_uuid){
-        return pubdao.insertarPublicacion(pdto.getDate(),pdto.getContent(),publicante_uuid);
+    /**
+     * Devuelve la lista de ids de publicantes
+     * @param uuid id del publicante
+     * @return lista de enteros con los ids de publicantes
+     */
+    public ArrayList<Integer> getFollowers(int uuid){
+        SeguirDAO sdao = new SeguirDAO();
+        try {
+            sdao.setConnection(ConnectionAdmin.getConnection());
+            ArrayList<Integer> res = sdao.getFollowers(uuid);
+            sdao.closeConnection();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public boolean follow(int seguidor, int seguido){
+        SeguirDAO sdao = new SeguirDAO();
+        try {
+            sdao.setConnection(ConnectionAdmin.getConnection());
+            boolean res = sdao.follow(seguidor,seguido);
+            sdao.closeConnection();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    public boolean unfollow(int seguidor, int seguido){
+        SeguirDAO sdao = new SeguirDAO();
+        try {
+            sdao.setConnection(ConnectionAdmin.getConnection());
+            boolean res = sdao.unfollow(seguidor, seguido);
+            sdao.closeConnection();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isfollow(int seguidor, int seguido){
+        SeguirDAO sdao = new SeguirDAO();
+        try {
+            sdao.setConnection(ConnectionAdmin.getConnection());
+            boolean res = sdao.isfollow(seguidor, seguido);
+            sdao.closeConnection();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public PostDTO getPost(int id) {
+        PublicacionDAO pdao = new PublicacionDAO();
+        try{
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            PostDTO res = pdao.getPostById(id);
+            pdao.closeConnection();
+            return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

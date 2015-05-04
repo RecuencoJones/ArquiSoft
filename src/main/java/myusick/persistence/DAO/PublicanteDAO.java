@@ -26,8 +26,19 @@ public class PublicanteDAO {
             }else return -1;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
         
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

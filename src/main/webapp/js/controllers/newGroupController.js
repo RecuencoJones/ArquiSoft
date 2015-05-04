@@ -30,6 +30,7 @@ angular.module('starter')
                         $scope.errors = data;
                     } else {
                         //auth.authenticate(data);
+                        auth.addGroup(data.id);
                         $state.go('profile', { _userid: auth.identity().userid});
                     }
                 })

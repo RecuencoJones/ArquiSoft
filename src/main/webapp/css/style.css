@@ -122,6 +122,10 @@ body {
     margin-bottom: 10px;
 }
 
+.my_active {
+    background-color: #000;
+}
+
 @media(min-width:990px) {
     .custom-nav-toggle {
         margin-bottom: 0;

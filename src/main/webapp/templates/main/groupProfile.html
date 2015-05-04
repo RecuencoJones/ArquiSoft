@@ -58,6 +58,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- follow -->
+                        <div class="row" ng-hide="isMember()">
+                            <div class="col-md-12">
+                                <div class="btn-group btn-group-justified" ng-hide="following">
+                                    <a class="btn btn-success" ng-click="follow()">
+                                        Follow
+                                    </a>
+                                </div>
+                                <div class="btn-group btn-group-justified" ng-show="following">
+                                    <a class="btn btn-danger" ng-click="unfollow()">
+                                        Unfollow
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Panel derecho (miembros) -->
@@ -84,7 +99,7 @@
                 <div class="col-md-6 col-md-pull-3">
                     <div class="simple-jumbo">
                         <form class="form-group" ng-submit="sendMessage()" ng-show="isMember()">
-                            <input class="form-control" type="text" ng-model="message" placeholder="Say hello!"/>
+                            <input class="form-control" type="text" ng-model="message" placeholder="Say something"/>
                         </form>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="pub in band.publications | orderBy: '-date'">

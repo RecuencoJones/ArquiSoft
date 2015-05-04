@@ -1,7 +1,10 @@
 package myusick.api;
 
 import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import java.util.logging.Logger;
 
 /**
  * Created by david on 10/03/2015.
@@ -19,6 +22,6 @@ public class ApplicationConfig extends ResourceConfig {
         register(CrossDomainFilter.class);
         register(RestServices.class);
         register(WebsocketProvider.class);
-
+        registerInstances(new LoggingFilter(Logger.getLogger(ApplicationConfig.class.getName()),true));
     }
 }

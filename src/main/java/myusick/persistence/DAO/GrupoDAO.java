@@ -37,10 +37,10 @@ public class GrupoDAO {
             }
             return result;
         } catch (SQLException e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return result;
         }
     }
@@ -55,6 +55,7 @@ public class GrupoDAO {
                 return resultSet.getBoolean(1) == true;
             else return false;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -70,12 +71,12 @@ public class GrupoDAO {
                     resultSet.getString("descripcion"), resultSet.getString("avatar"));
             else return null;
         } catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }
 
-    public boolean registerGroup(GroupDTO gd) {
+    public int registerGroup(GroupDTO gd) {
         try {
             PublicanteDAO pdao = new PublicanteDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
@@ -96,15 +97,28 @@ public class GrupoDAO {
                     ps.setInt(1, uuid);
                     ps.setInt(2,gd.getCreator());
                     insertedRows = ps.executeUpdate();
+                    pdao.closeConnection();
                     if(insertedRows == 1){
-                        return true;
-                    }else return false;
+                        return uuid;
+                    }else return uuid;
                 } else {
-                    return false;
+                    pdao.closeConnection();
+                    return -1;
                 }
             } else {
-                return false;
+                pdao.closeConnection();
+                return -1;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean closeConnection(){
+        try {
+            con.close();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
