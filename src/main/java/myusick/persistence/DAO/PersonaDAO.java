@@ -35,7 +35,7 @@ public class PersonaDAO {
                         resultSet.getString("descripcion"),null,resultSet.getString("avatar"));
             else return null;
         }catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }
@@ -48,7 +48,10 @@ public class PersonaDAO {
             if(resultSet.next())
                 return resultSet.getBoolean(1)==false;
             else return false;
-        }catch(SQLException e){return false;}
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public ArrayList<PublisherDTO> getGroupsByMember(int member){
@@ -64,7 +67,7 @@ public class PersonaDAO {
             }
             return result;
         }catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }

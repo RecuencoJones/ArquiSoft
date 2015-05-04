@@ -32,7 +32,7 @@ public class AptitudDAO {
             }
             return result;
         }catch(Exception e){
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }

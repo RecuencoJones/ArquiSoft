@@ -29,7 +29,7 @@ public class PublicacionDAO {
             }
             return result;
         }catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }
@@ -50,6 +50,7 @@ public class PublicacionDAO {
             }else return -1;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
 
@@ -71,6 +72,7 @@ public class PublicacionDAO {
                 return null;
             }
         }catch (SQLException e){
+            e.printStackTrace();
             return null;
         }
     }

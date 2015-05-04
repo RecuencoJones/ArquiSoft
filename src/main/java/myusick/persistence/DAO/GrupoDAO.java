@@ -37,10 +37,10 @@ public class GrupoDAO {
             }
             return result;
         } catch (SQLException e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return result;
         }
     }
@@ -55,6 +55,7 @@ public class GrupoDAO {
                 return resultSet.getBoolean(1) == true;
             else return false;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -70,7 +71,7 @@ public class GrupoDAO {
                     resultSet.getString("descripcion"), resultSet.getString("avatar"));
             else return null;
         } catch (Exception e) {
-            e.printStackTrace(System.err);
+            e.printStackTrace();
             return null;
         }
     }
