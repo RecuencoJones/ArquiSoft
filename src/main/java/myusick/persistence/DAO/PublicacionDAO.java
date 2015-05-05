@@ -2,6 +2,7 @@ package myusick.persistence.DAO;
 
 import myusick.model.dto.PostDTO;
 import myusick.model.dto.PublicationsDTO;
+import myusick.persistence.connection.ConnectionAdmin;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -124,6 +125,7 @@ public class PublicacionDAO {
             ResultSet rs = ps.executeQuery();
             con.commit();
             int id; PublicanteDAO pdao = new PublicanteDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 id = rs.getInt("publicante_uuid");
                 publicaciones.add(new PostDTO(rs.getInt("idPublicacion"),

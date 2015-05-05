@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebsocketProvider {
 
     private static ConcurrentHashMap<String,SseBroadcaster> listenerMap = new ConcurrentHashMap<>();
-    private static WebsocketDispatcher websocketDispatcher = new WebsocketDispatcher();
+    private static WebSocketDispatcher WebSocketDispatcher = new WebSocketDispatcher();
 
     @Path("/sub/{id}")
     @GET
@@ -37,8 +37,8 @@ public class WebsocketProvider {
         return "Unsubscribed from broker";
     }
 
-    public static WebsocketDispatcher getWebsocketDispatcher() {
-        return websocketDispatcher;
+    public static WebSocketDispatcher getWebSocketDispatcher() {
+        return WebSocketDispatcher;
     }
 
     protected static ConcurrentHashMap<String, SseBroadcaster> getListenerMap() {

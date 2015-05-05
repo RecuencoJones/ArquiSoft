@@ -203,6 +203,7 @@ public class GrupoDAO {
             ps.setInt(2, persona);
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
+                System.out.println("Ha llegado a borrar peticion");
                 /* Ahora, lo anadimos al grupo al que solicito entrar */
                 query = "insert into es_integrante(UUID_G,UUID_P) values (?,?)";
                 ps = con.prepareStatement(query);
@@ -214,11 +215,13 @@ public class GrupoDAO {
                     return true;
                 }else{
                     con.rollback();
+                    System.out.println("No ha insertado nada en es_integrante");
                     return false;
                 }
             }
             else{
                 /* Esa persona no tenia una solicitud pendiente, error */
+                System.out.println("No hay solicitud pendiente");
                 con.rollback();
                 return false;
             }
@@ -234,7 +237,7 @@ public class GrupoDAO {
 
     public boolean eliminarDeGrupo(int persona, int grupo){
         try{
-            String query = "delete from es_integrante where persona = ? and grupo = ?";
+            String query = "delete from es_integrante where uuid_p = ? and uuid_g = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, grupo);
             ps.setInt(2, persona);
@@ -244,6 +247,7 @@ public class GrupoDAO {
                 return true;
             }
             else{
+                System.out.println("No hace el delete");
                 con.rollback();
                 return false;
             }
@@ -259,7 +263,7 @@ public class GrupoDAO {
     public List<Integer> pendientesDeAceptar(int grupo){
         List<Integer> pendientes = new ArrayList<Integer>();
         try{
-            String query = "select persona from pendientes_aceptacion where grupo = ?";
+            String query = "select persona from pendiente_aceptacion where grupo = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, grupo);
             ResultSet rs = ps.executeQuery();

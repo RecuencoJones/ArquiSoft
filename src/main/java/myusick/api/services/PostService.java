@@ -1,7 +1,7 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
-import myusick.api.WebsocketDispatcher;
+import myusick.api.WebSocketDispatcher;
 import myusick.api.WebsocketProvider;
 import myusick.model.dto.PostDTO;
 import myusick.model.dto.PublicationsDTO;
@@ -23,7 +23,7 @@ public class PostService {
         //broadcast
 //        String subs = "1,2,3,4,5";
         ArrayList<Integer> subs = new MyusickService().getFollowers(postDTO.getId());
-        WebsocketDispatcher wsd = WebsocketProvider.getWebsocketDispatcher();
+        WebSocketDispatcher wsd = WebsocketProvider.getWebSocketDispatcher();
         for(Integer s : subs){
             wsd.dispatch(newPub,s.toString());
         }
