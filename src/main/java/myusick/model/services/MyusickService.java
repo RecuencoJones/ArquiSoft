@@ -8,6 +8,7 @@ import myusick.persistence.connection.ConnectionAdmin;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
@@ -165,7 +166,7 @@ public class MyusickService {
         SeguirDAO sdao = new SeguirDAO();
         try {
             sdao.setConnection(ConnectionAdmin.getConnection());
-            boolean res = sdao.follow(seguidor,seguido);
+            boolean res = sdao.follow(seguidor, seguido);
             sdao.closeConnection();
             return res;
         } catch (SQLException e) {
@@ -207,6 +208,78 @@ public class MyusickService {
             PostDTO res = pdao.getPostById(id);
             pdao.closeConnection();
             return res;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean solicitudInsercionGrupo(int persona, int grupo){
+        GrupoDAO gdao = new GrupoDAO();
+        try{
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            boolean resultado = gdao.solicitudInsercionGrupo(persona, grupo);
+            gdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean responderPeticion(int persona, int grupo, boolean decision){
+        GrupoDAO gdao = new GrupoDAO();
+        boolean resultado;
+        try{
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            if(decision){
+                /* El miembro ha sido anadido al grupo */
+                resultado = gdao.anadirAGrupo(persona, grupo);
+            }else{
+                /* El miembro ha sido rechazado del grupo */
+                resultado = gdao.rechazarDeGrupo(persona,grupo);
+            }
+            gdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarDeGrupo(int persona, int grupo){
+        GrupoDAO gdao = new GrupoDAO();
+        try{
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            boolean resultado = gdao.eliminarDeGrupo(persona, grupo);
+            gdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Integer> pendientesDeAceptar(int grupo){
+        GrupoDAO gdao = new GrupoDAO();
+        try{
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            List<Integer> resultado = gdao.pendientesDeAceptar(grupo);
+            gdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<PostDTO> ultimasPublicaciones(int seguidor){
+        PublicacionDAO pdao = new PublicacionDAO();
+        try{
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<PostDTO> resultado = pdao.ultimasPublicaciones(seguidor);
+            pdao.closeConnection();
+            return resultado;
         }catch (SQLException e){
             e.printStackTrace();
             return null;

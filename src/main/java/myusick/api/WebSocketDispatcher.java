@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * Created by david on 30/04/2015.
  */
-public class WebsocketDispatcher {
+public class WebSocketDispatcher {
 
     public void dispatch(PublicationsDTO message, String listener) {
         SseBroadcaster b = WebsocketProvider.getListenerMap().get(listener);

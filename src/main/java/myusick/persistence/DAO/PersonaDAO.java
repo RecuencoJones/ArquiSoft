@@ -21,7 +21,12 @@ public class PersonaDAO {
     private Connection con;
 
     public void setConnection(Connection con){
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public Persona getDataProfile(int uuid){
@@ -35,6 +40,9 @@ public class PersonaDAO {
                         resultSet.getString("descripcion"),null,resultSet.getString("avatar"));
             else return null;
         }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         }
@@ -45,10 +53,18 @@ public class PersonaDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
+            if(resultSet.next()){
+                con.commit();
                 return resultSet.getBoolean(1)==false;
-            else return false;
+            }
+            else{
+                con.rollback();
+                return false;
+            }
         }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -65,8 +81,12 @@ public class PersonaDAO {
             while(resultSet.next()){
                 result.add(new PublisherDTO(resultSet.getInt(1),resultSet.getString(2)));
             }
+            con.commit();
             return result;
         }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         }
@@ -86,12 +106,17 @@ public class PersonaDAO {
             if(rs.next()){
                 l.setUserId(rs.getInt(1));
                 l.setGroups(getGroupsByMember(l.getUserId()));
+                con.commit();
                 return l;
             }else{
                 /* El usuario no existe */
+                con.rollback();
                 return null;
             }
         } catch (SQLException e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return new LoginDTO();
         }
@@ -118,16 +143,22 @@ public class PersonaDAO {
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
                     pdao.closeConnection();
+                    con.commit();
                     return uuid;
                 }else{
                     pdao.closeConnection();
+                    con.rollback();
                     return -1;
                 }
             } else {
                 pdao.closeConnection();
+                con.rollback();
                 return -1;
             }
         } catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return -1;
         }        
