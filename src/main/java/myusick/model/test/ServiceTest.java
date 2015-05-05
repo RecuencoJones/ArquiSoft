@@ -19,9 +19,7 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        //System.out.println(m.responderPeticion(3,6,true));
-        //System.out.println(m.eliminarDeGrupo(1,5));
-        System.out.println(m.ultimasPublicaciones(1));
+        System.out.println(m.responderPeticion(3,6,true));
 
 
 

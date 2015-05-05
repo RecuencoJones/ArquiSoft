@@ -7,10 +7,7 @@ import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,10 +196,10 @@ public class GrupoDAO {
         try{
             String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, grupo);
-            ps.setInt(2, persona);
+            ps.setInt(1, persona);
+            ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
-            if (insertedRows == 1) {
+            if (insertedRows != 0) {
                 System.out.println("Ha llegado a borrar peticion");
                 /* Ahora, lo anadimos al grupo al que solicito entrar */
                 query = "insert into es_integrante(UUID_G,UUID_P) values (?,?)";
@@ -242,7 +239,7 @@ public class GrupoDAO {
             ps.setInt(1, grupo);
             ps.setInt(2, persona);
             int insertedRows = ps.executeUpdate();
-            if (insertedRows == 1) {
+            if (insertedRows != 0) {
                 con.commit();
                 return true;
             }
