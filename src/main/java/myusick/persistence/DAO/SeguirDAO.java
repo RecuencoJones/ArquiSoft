@@ -13,7 +13,12 @@ public class SeguirDAO {
     private Connection con;
 
     public void setConnection(Connection con) {
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     
     public boolean follow(int seguidor, int seguido){
@@ -23,8 +28,12 @@ public class SeguirDAO {
             ps.setInt(1, seguidor);
             ps.setInt(2, seguido);
             ps.executeUpdate();
+            con.commit();
             return true;
         }catch (SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -37,8 +46,12 @@ public class SeguirDAO {
             ps.setInt(1, seguidor);
             ps.setInt(2, seguido);
             ps.executeUpdate();
+            con.commit();
             return true;
         }catch (SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -51,9 +64,20 @@ public class SeguirDAO {
             ps.setInt(1, seguidor);
             ps.setInt(2, seguido);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) return true;
-            else return false;
+            if(rs.next()){
+                con.commit();
+                return true;
+            }
+            else{
+                try{
+                    con.rollback();
+                }catch(SQLException e2){e2.printStackTrace();}
+                return false;
+            }
         }catch (SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return false;
         }
@@ -69,8 +93,12 @@ public class SeguirDAO {
             while(rs.next()){
                 result.add(rs.getInt(1));
             }
+            con.commit();
             return result;
         }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         }

@@ -16,7 +16,12 @@ public class AptitudDAO {
     private Connection con;
 
     public void setConnection(Connection con){
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getAptitudesByPersona(int uuid){
@@ -30,8 +35,12 @@ public class AptitudDAO {
             while(resultSet.next()){
                 result.add(resultSet.getString(1));
             }
+            con.commit();
             return result;
         }catch(Exception e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
             return null;
         }

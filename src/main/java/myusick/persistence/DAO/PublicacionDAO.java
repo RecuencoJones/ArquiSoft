@@ -2,9 +2,11 @@ package myusick.persistence.DAO;
 
 import myusick.model.dto.PostDTO;
 import myusick.model.dto.PublicationsDTO;
+import myusick.persistence.connection.ConnectionAdmin;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
@@ -14,7 +16,12 @@ public class PublicacionDAO {
     private Connection con;
 
     public void setConnection(Connection con){
-        this.con = con;
+        try{
+            this.con = con;
+            this.con.setAutoCommit(false);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<PublicationsDTO> getPublicacionesById(int uuid){
@@ -27,8 +34,14 @@ public class PublicacionDAO {
             while(resultSet.next()){
                 result.add(new PublicationsDTO(uuid,resultSet.getString(2),resultSet.getLong(3)));
             }
+            con.commit();
             return result;
         }catch (Exception e) {
+            try {con.rollback();}
+            catch(SQLException e2){
+                e2.printStackTrace();
+                return null;
+            }
             e.printStackTrace();
             return null;
         }
@@ -46,14 +59,22 @@ public class PublicacionDAO {
                 ResultSet keys = ps.getGeneratedKeys();
                 keys.next();
                 int idpub = keys.getInt(1);
+                con.commit();
                 return idpub;
-            }else return -1;
+            }else{
+                con.rollback();
+                return -1;
+            }
 
         } catch (SQLException e) {
+            try {con.rollback();}
+            catch(SQLException e2){
+                e2.printStackTrace();
+                return -1;
+            }
             e.printStackTrace();
             return -1;
         }
-
     }
 
     public PostDTO getPostById(int id) {
@@ -64,14 +85,60 @@ public class PublicacionDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-//               TODO if (gdao.esUnGrupo(uuid)) {} else { v }
-                PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
-                return res;
-            }else {
+            if(!rs.next()){
+                /* Probamos a ver si es la publicacion de un grupo */
+                query = "select pu.idpublicacion, g.avatar, pu.fecha, g.nombre, g.publicante_uuid, pu.contenido " +
+                        "from grupo g, publicacion pu " +
+                        "where pu.idpublicacion=? and g.publicante_uuid=pu.Publicante_UUID";
+                ps = con.prepareStatement(query);
+                ps.setInt(1,id);
+                rs = ps.executeQuery();
+                if(!rs.next()){
+                    /* No existe publicacion con ese id */
+                    con.rollback();
+                    return null;
+                }
+            }
+            /* Si llegamos aqui, es que la publicacion existe y tenemos el rs con el contenido */
+            PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+            con.commit();
+            return res;
+        }catch (SQLException e){
+            try {con.rollback();}
+            catch(SQLException e2){
+                e2.printStackTrace();
                 return null;
             }
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<PostDTO> ultimasPublicaciones(int seguidor){
+        List<PostDTO> publicaciones = new ArrayList<PostDTO>();
+        try {
+            String query = "select * from publicacion where publicante_uuid in (" +
+                    "select seguido from seguir where seguidor = ?" +
+                    ") order by fecha asc limit 10";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, seguidor);
+            ResultSet rs = ps.executeQuery();
+            con.commit();
+            int id; PublicanteDAO pdao = new PublicanteDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            while(rs.next()){
+                id = rs.getInt("publicante_uuid");
+                publicaciones.add(new PostDTO(rs.getInt("idPublicacion"),
+                        pdao.getAvatarById(id),rs.getLong("fecha"),pdao.getNombreById(id),id,
+                        rs.getString("contenido")));
+            }
+            return publicaciones;
         }catch (SQLException e){
+            try {con.rollback();}
+            catch(SQLException e2){
+                e2.printStackTrace();
+                return null;
+            }
             e.printStackTrace();
             return null;
         }

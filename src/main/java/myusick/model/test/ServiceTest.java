@@ -2,6 +2,7 @@ package myusick.model.test;
 
 import myusick.model.dto.GroupDTO;
 import myusick.model.dto.ProfileDTO;
+import myusick.model.dto.PublicationsDTO;
 import myusick.model.dto.RegisterDTO;
 import myusick.model.services.MyusickService;
 import myusick.persistence.connection.ConnectionAdmin;
@@ -18,6 +19,10 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
+        System.out.println(m.responderPeticion(3,6,true));
+
+
+
         //m.registrarTag("soyUnaMierda",1);
 ////        LoginDTO l = m.getLoginData("foo@bar.com","1234");
 ////        System.out.printf(l.toString());
