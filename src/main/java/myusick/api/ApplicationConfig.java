@@ -22,6 +22,6 @@ public class ApplicationConfig extends ResourceConfig {
         register(CrossDomainFilter.class);
         register(RestServices.class);
         register(WebsocketProvider.class);
-        registerInstances(new LoggingFilter(Logger.getLogger(ApplicationConfig.class.getName()),true));
+//        registerInstances(new LoggingFilter(Logger.getLogger(ApplicationConfig.class.getName()),true));
     }
 }

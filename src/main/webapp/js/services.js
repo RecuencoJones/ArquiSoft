@@ -14,7 +14,7 @@ angular.module('starter')
                     return eventSource;
                 }
             }            
-        }
+        };
     })
     
     .factory('auth', function () {
