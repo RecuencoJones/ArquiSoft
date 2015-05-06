@@ -167,6 +167,10 @@ angular.module('starter')
                     }
                 });
         };
+        
+        $scope.hideSuccessMessage = function(){
+            $scope.showSuccessApplianceMessage = false;
+        };
 
         /*$scope.band = {
          name: "Metallica",

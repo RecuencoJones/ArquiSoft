@@ -83,6 +83,7 @@
                             <a class="btn btn-default" ng-repeat="member in band.members" ng-href="#/profile/{{member.id}}">{{member.name}}</a>
                             <a class="btn btn-success" ng-click="apply()" ng-hide="userIsMember">Apply for group</a>
                             <a class="btn btn-danger" ng-click="leave()" ng-show="userIsMember">Leave group</a>
+                            <a class="btn btn-info" ng-click="hideSuccessMessage()" ng-show="showSuccessApplianceMessage">Applied!</a>
                         </div>
                     </div>
                     <div class="simple-jumbo" style="margin-top: 25px">
