@@ -31,13 +31,13 @@ Directorio de servicios REST
 | __POST__ | /newtag | application/json | application/json | Crea y/o añade un tag a un usuario |
 | __POST__ | /post | application/json | application/json | Crea un post para un usuario |
 | __GET__ | /post/{id} | PathParam(id: int) | application/json | Busca el comentario cuyo id es {id} |
-| __GET__ | /follow/{seguidor}/{seguido} | PathParam(seguidor: int, seguido: int) | application/json | El usuario {seguidor} sigue a {seguido} |
-| __GET__ | /unfollow/{seguidor}/{seguido} | PathParam(seguidor: int, seguido: int) | application/json | El usuario {seguidor} deja de seguir a {seguido} |
+| __PUT__ | /follow/{seguidor}/{seguido} | PathParam(seguidor: int, seguido: int) | application/json | El usuario {seguidor} sigue a {seguido} |
+| __DELETE__ | /unfollow/{seguidor}/{seguido} | PathParam(seguidor: int, seguido: int) | application/json | El usuario {seguidor} deja de seguir a {seguido} |
 | __GET__ | /isfollowing/{seguidor}/{seguido} | PathParam(seguidor: int, seguido: int) | application/json | Comprueba si el usuario {seguidor} sigue a {seguido} |
-| __GET__ | /band/apply/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Agrega un nuevo miembro {userid} pendiente de aceptacion a la banda {bandid} |
-| __GET__ | /band/leave/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Elimina un nuevo miembro {userid} existente de la banda {bandid} |
-| __GET__ | /band/accept/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Acepta un nuevo miembro {userid} en la banda {bandid} |
-| __GET__ | /band/reject/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Rechaza un nuevo miembro {userid} en la banda {bandid} |
+| __PUT__ | /band/apply/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Agrega un nuevo miembro {userid} pendiente de aceptacion a la banda {bandid} |
+| __DELETE__ | /band/leave/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Elimina un nuevo miembro {userid} existente de la banda {bandid} |
+| __PUT__ | /band/accept/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Acepta un nuevo miembro {userid} en la banda {bandid} |
+| __DELETE__ | /band/reject/{bandid}/{userid} | PathParam(bandid: int, userid: int) | application/json | Rechaza un nuevo miembro {userid} en la banda {bandid} |
 | __GET__ | /band/applicants/{bandid} | PathParam(bandid: int) | application/json | Busca los miembros pendientes de aceptacion de la banda cuyo id es {bandid} |
 | __GET__ | /groups/{userid} | PathParam(userid: int) | application/json | Busca los grupos del usuario cuyo id es {userid} |
 | __GET__ | /last/{userid} | PathParam(userid: int) | application/json | Busca los ultimos mensajes de los publicantes a los cuales esta suscrito el usuario cuyo id es {userid} |
@@ -48,7 +48,7 @@ Directorio de servicios SSE
 | Verb | URI | Consumes | Response-Type | Definition |
 |------------|--------------|--------------|-------------|------------|
 | __GET__ | /ws/sub/{id} | PathParam(id: int) | text/event-stream | Suscribe a un usuario a su canal |
-| __GET__ | /ws/unsub/{id} | PathParam(id: int) | text/event-stream | Desuscribe a un usuario de su canal |
+| __DELETE__ | /ws/unsub/{id} | PathParam(id: int) | text/event-stream | Desuscribe a un usuario de su canal |
 
 Compatibilidad en navegadores
 =====
