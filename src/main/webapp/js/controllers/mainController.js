@@ -32,6 +32,14 @@ angular.module('starter')
         $scope.text = "";
         $scope.messages = [ ];
         $scope.newMessages = [ ];
+        
+        $http.get(API.URL + API.LAST_MESSAGES_ENDPOINT + $scope.loggedUserId)
+            .success(function(data){
+                console.log(data);
+                $scope.messages = data;
+            }).error(function(data){
+                console.log("error");
+            });
 
         //$scope.source = new EventSource(API.WS_URL+$scope.loggedUserId);
         $scope.source = SSE.subscribe(API.WS_URL+$scope.loggedUserId);

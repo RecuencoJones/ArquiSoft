@@ -12,5 +12,11 @@ angular.module('starter')
         "POST_ENDPOINT": "/post/",
         "FOLLOW_ENDPOINT": "/follow/",
         "UNFOLLOW_ENDPOINT": "/unfollow/",
-        "ISFOLLOW_ENDPOINT": "/isfollowing/"
+        "ISFOLLOW_ENDPOINT": "/isfollowing/",
+        "BAND_APPLICANTS_ENDPOINT": "/band/applicants/",
+        "ACCEPT_APPLICANT_ENDPOINT": "/band/accept/",
+        "REJECT_APPLICANT_ENDPOINT": "/band/reject/",
+        "BAND_APPLY_ENDPOINT": "/band/apply/",
+        "USER_GROUPS_ENDPOINT": "/groups/",
+        "LAST_MESSAGES_ENDPOINT": "/last/"
     });

@@ -172,8 +172,8 @@ public class GrupoDAO {
         try{
             String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, grupo);
-            ps.setInt(2, persona);
+            ps.setInt(1, persona);
+            ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
                 con.commit();

@@ -49,6 +49,7 @@ public class NewGroupService {
             // save group to db
             int success = new MyusickService().registerGroup(groupDTO);
             if(success >= 0){
+                new MyusickService().follow(groupDTO.getCreator(),success);
                 return "{\"ok\": \"true\",\"id\":"+success+"}";
             }else{
                 return gson.toJson(errors);

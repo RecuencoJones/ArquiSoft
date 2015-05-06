@@ -85,52 +85,65 @@ public class RestServices {
 
     @GET
     @Path("/follow/{seguidor}/{seguido}")
+    @Produces(MediaType.APPLICATION_JSON)
     public String follow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
         return FollowService.follow(seguidor,seguido);
     }
 
     @GET
     @Path("/unfollow/{seguidor}/{seguido}")
+    @Produces(MediaType.APPLICATION_JSON)
     public String unfollow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
         return FollowService.unfollow(seguidor, seguido);
     }
 
     @GET
     @Path("/isfollowing/{seguidor}/{seguido}")
+    @Produces(MediaType.APPLICATION_JSON)
     public String isFollowing(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
         return FollowService.isFollowing(seguidor, seguido);
     }
     
-    /*@GET
-    @Path("/home/{userid}")
+    @GET
+    @Path("/band/apply/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String home(@PathParam("userid") int userid){
-        
+    public String applyForGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
+        return BandService.apply(bandid,personid);
     }
     
     @GET
-    @Path("/post/{postid}")
+    @Path("/band/accept/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPost(@PathParam("postid") int postid){
-        return PostService.getPost(postid);
-    }
-        
-    @POST
-    @Path("/apply/{userid}/{groupid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String applyForGroup(@PathParam("userid") int userid,
-                                @PathParam("groupid") int groupid){
-        return ApplyService(userid, groupid);
+    public String acceptFromGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
+        return BandService.accept(bandid,personid);
     }
     
     @GET
-    @Path("events")
-    @Produces(SseFeature.SERVER_SENT_EVENTS)
-    public EventOutput getEvents(){
-        EventOutput eo = new EventOutput();
-        
-        return eo;
+    @Path("/band/reject/{bandid}/{personid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rejectIntoGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
+        return BandService.reject(bandid,personid);
     }
-    */
+    
+    @GET
+    @Path("/band/applicants/{bandid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getApplicants(@PathParam("bandid") int bandid){
+        return BandService.getApplicants(bandid);
+    }
+    
+    @GET
+    @Path("/groups/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getGroups(@PathParam("userid") int userid){
+        return ProfileService.getGroups(userid);
+    }
+
+    @GET
+    @Path("/last/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getLatestPosts(@PathParam("userid") int userid){
+        return PostService.getLatestPosts(userid);
+    }
     
 }

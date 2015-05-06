@@ -2,7 +2,11 @@ package myusick.api.services;
 
 import com.google.gson.Gson;
 import myusick.model.dto.ProfileDTO;
+import myusick.model.dto.PublisherDTO;
 import myusick.model.services.MyusickService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by david on 20/03/2015.
@@ -13,6 +17,16 @@ public class ProfileService {
         Gson gson = new Gson();        
         ProfileDTO user = new MyusickService().getProfileData(userid);
         return gson.toJson(user);
+    }
+
+    public static String getGroups(int userid) {
+        Gson gson = new Gson();
+        ProfileDTO user = new MyusickService().getProfileData(userid);
+        ArrayList<Integer> bands = new ArrayList<>();
+        for (PublisherDTO band : user.getGroups()){
+            bands.add(band.getId());
+        }
+        return gson.toJson(bands);
     }
 }
 

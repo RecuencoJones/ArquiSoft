@@ -211,6 +211,27 @@ CREATE  TABLE IF NOT EXISTS `myusickDB`.`Seguir` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `myusickDB`.`Pendiente_aceptacion`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `myusickDB`.`Pendiente_aceptacion` (
+  `Grupo` INT NOT NULL ,
+  `Persona` INT NOT NULL ,
+  PRIMARY KEY (`Grupo`, `Persona`) ,
+  INDEX `fk_Grupo_has_Persona_Persona2_idx` (`Persona` ASC) ,
+  INDEX `fk_Grupo_has_Persona_Grupo2_idx` (`Grupo` ASC) ,
+  CONSTRAINT `fk_Grupo_has_Persona_Grupo2`
+  FOREIGN KEY (`Grupo` )
+  REFERENCES `myusickDB`.`Grupo` (`Publicante_UUID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Grupo_has_Persona_Persona2`
+  FOREIGN KEY (`Persona` )
+  REFERENCES `myusickDB`.`Persona` (`Publicante_UUID` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+  ENGINE = InnoDB;
+
 USE `myusickDB` ;
 
 

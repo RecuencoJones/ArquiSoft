@@ -51,6 +51,10 @@ angular.module('starter')
             addGroup: function(id) {
                 _identity.groupsIds.push(id);
                 localStorage.userIdentity = angular.toJson(_identity);
+            },
+            setGroups: function(groups){
+                _identity.groupsIds = groups;
+                localStorage.userIdentity = angular.toJson(_identity);
             }
         };
     })

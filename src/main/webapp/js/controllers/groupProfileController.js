@@ -9,8 +9,10 @@ angular.module('starter')
         $scope.hidden = true;
         $scope.showTagInput = false;
         $scope.following = false;
+        $scope.userIsMember = false;
 
         $scope.band = {};
+        $scope.applicants = "";
 
         $scope.toggleMenu = function() {
             $scope.hidden = !$scope.hidden;
@@ -19,7 +21,7 @@ angular.module('starter')
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-
+        
         $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.bandId)
             .success(function(data){
                 console.log(data);
@@ -31,6 +33,26 @@ angular.module('starter')
             }).error(function(data){
                 console.log("error");
             });
+        
+        $http.get(API.URL + API.USER_GROUPS_ENDPOINT + $scope.loggedUserId)
+            .success(function(data){
+                $scope.loggedUserBands = data;
+                auth.setGroups(data);
+                $scope.userIsMember = $scope.isMember();
+            });
+
+        $scope.isMember = function(){
+            return ($scope.loggedUserBands.indexOf(Number($stateParams._groupid))>-1);
+        };
+        $scope.userIsMember = $scope.isMember();
+        
+        if($scope.isMember()){
+            $http.get(API.URL + API.BAND_APPLICANTS_ENDPOINT + $scope.bandId)
+                .success(function(data){
+                    console.log(data);
+                    $scope.applicants = data;
+                });
+        }
 
         $http.get(API.URL+API.ISFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
             .success(function(data){
@@ -93,10 +115,6 @@ angular.module('starter')
             }
         };
 
-        $scope.isMember = function(){
-            return (auth.identity().groupsIds.indexOf(Number($stateParams._groupid))>-1);
-        };
-
         $scope.follow = function(){
             $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
                 .success(function(data){
@@ -108,6 +126,34 @@ angular.module('starter')
             $http.get(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
                 .success(function(data){
                     $scope.following = false;
+                });
+        };
+        
+        $scope.apply = function(){
+            $http.get(API.URL+API.BAND_APPLY_ENDPOINT+$scope.bandId+"/"+$scope.loggedUserId)
+                .success(function(data){
+                    console.log(data);
+                });
+        };
+        
+        $scope.accept = function(id,index){
+            $http.get(API.URL+API.ACCEPT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
+                .success(function(data){
+                    console.log(data);
+                    if(data.res){
+                        $scope.band.members.push({id: id, name: "Placeholder for "+id});
+                        $scope.applicants.splice(index,1);
+                    }
+                });
+        };
+
+        $scope.reject = function(id,index){
+            $http.get(API.URL+API.REJECT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
+                .success(function(data){
+                    console.log(data);
+                    if(data.res) {
+                        $scope.applicants.splice(index,1);
+                    }
                 });
         };
 
