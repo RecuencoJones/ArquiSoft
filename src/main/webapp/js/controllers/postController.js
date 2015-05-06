@@ -21,6 +21,14 @@ angular.module('starter')
                 console.log("error");
             });
 
+        $scope.goTo = function(id,type){
+            if(type){
+                $state.go('group', { _groupid: id});
+            }else{
+                $state.go('profile', { _userid: id});
+            }
+        };
+
         //$scope.post = {
         //    id: "2",
         //    avatar: "img/placeholder.jpg",

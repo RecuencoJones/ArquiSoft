@@ -1,5 +1,6 @@
 package myusick.model.dto;
 
+import javax.ws.rs.POST;
 import java.io.Serializable;
 
 /**
@@ -13,7 +14,10 @@ public class PostDTO implements Serializable {
     private String user;
     private int user_id;
     private String content;
+    private boolean type;
 
+    public PostDTO(){}
+    
     public PostDTO(int id, String avatar, long date, String user, int user_id, String content) {
         this.id = id;
         this.avatar = avatar;
@@ -71,15 +75,15 @@ public class PostDTO implements Serializable {
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "PostDTO{" +
-                "id=" + id +
-                ", avatar='" + avatar + '\'' +
-                ", date=" + date +
-                ", user='" + user + '\'' +
-                ", user_id=" + user_id +
-                ", content='" + content + '\'' +
-                '}';
+    public boolean isType() {
+        return type;
+    }
+
+    /**
+     * *
+     * @param type true if group, false if person
+     */
+    public void setType(boolean type) {
+        this.type = type;
     }
 }

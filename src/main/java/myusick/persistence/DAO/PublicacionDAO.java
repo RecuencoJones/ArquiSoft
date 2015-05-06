@@ -32,7 +32,7 @@ public class PublicacionDAO {
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                result.add(new PublicationsDTO(uuid,resultSet.getString(2),resultSet.getLong(3)));
+                result.add(new PublicationsDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getLong(3)));
             }
             con.commit();
             return result;
@@ -79,6 +79,7 @@ public class PublicacionDAO {
 
     public PostDTO getPostById(int id) {
         try {
+            boolean isGroup = false;
             String query = "select pu.idpublicacion, pe.avatar, pu.fecha, pe.nombre, pe.publicante_uuid, pu.contenido " +
                     "from persona pe, publicacion pu " +
                     "where pu.idpublicacion=? and pe.publicante_uuid=pu.Publicante_UUID";
@@ -87,6 +88,7 @@ public class PublicacionDAO {
             ResultSet rs = ps.executeQuery();
             if(!rs.next()){
                 /* Probamos a ver si es la publicacion de un grupo */
+                isGroup = true;
                 query = "select pu.idpublicacion, g.avatar, pu.fecha, g.nombre, g.publicante_uuid, pu.contenido " +
                         "from grupo g, publicacion pu " +
                         "where pu.idpublicacion=? and g.publicante_uuid=pu.Publicante_UUID";
@@ -101,6 +103,7 @@ public class PublicacionDAO {
             }
             /* Si llegamos aqui, es que la publicacion existe y tenemos el rs con el contenido */
             PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
+            res.setType(isGroup);
             con.commit();
             return res;
         }catch (SQLException e){
@@ -119,19 +122,27 @@ public class PublicacionDAO {
         try {
             String query = "select * from publicacion where publicante_uuid in (" +
                     "select seguido from seguir where seguidor = ?" +
-                    ") order by fecha asc limit 10";
+                    ") or publicante_uuid = ? order by fecha desc limit 10";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, seguidor);
+            ps.setInt(2, seguidor);
             ResultSet rs = ps.executeQuery();
             con.commit();
-            int id; PublicanteDAO pdao = new PublicanteDAO();
+            int id; 
+            PublicanteDAO pdao = new PublicanteDAO();
+            GrupoDAO gdao = new GrupoDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
+            gdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 id = rs.getInt("publicante_uuid");
-                publicaciones.add(new PostDTO(rs.getInt("idPublicacion"),
+                PostDTO post = new PostDTO(rs.getInt("idPublicacion"),
                         pdao.getAvatarById(id),rs.getLong("fecha"),pdao.getNombreById(id),id,
-                        rs.getString("contenido")));
+                        rs.getString("contenido"));
+                post.setType(gdao.esUnGrupo(id));
+                publicaciones.add(post);
             }
+            pdao.closeConnection();
+            gdao.closeConnection();
             return publicaciones;
         }catch (SQLException e){
             try {con.rollback();}
