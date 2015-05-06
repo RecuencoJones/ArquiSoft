@@ -285,4 +285,29 @@ public class MyusickService {
             return null;
         }
     }
+
+    public List<ProfileDTO> buscarPorNombre(String nombre){
+        /* Primero intentamos ver si es una persona */
+        try{
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = pdao.buscarPorNombre(nombre);
+            pdao.closeConnection();
+            if(resultado == null){
+                /* No se han encontrado resultados, buscamos por grupo */
+                GrupoDAO gdao = new GrupoDAO();
+                gdao.setConnection(ConnectionAdmin.getConnection());
+                resultado = gdao.buscarPorNombre(nombre);
+                gdao.closeConnection();
+            }
+            /*
+             * Tanto en caso de que se haya encontrado persona, grupo o no se hayan
+             * encontrado resultados, se devuelve la lista igualmente (completa o null)
+             */
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
