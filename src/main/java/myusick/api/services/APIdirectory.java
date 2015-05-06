@@ -31,6 +31,7 @@ public class APIdirectory {
         s += DocUtil.docService("GET", "/unfollow/{seguidor}/{seguido}", "PathParam(seguidor: int, seguido: int)", "application/json", "El usuario {seguidor} deja de sseguir a {seguido}");
         s += DocUtil.docService("GET", "/isfollowing/{seguidor}/{seguido}", "PathParam(seguidor: int, seguido: int)", "application/json", "Comprueba si el usuario {seguidor} sigue a {seguido}");
         s += DocUtil.docService("GET", "/band/apply/{bandid}/{userid}", "PathParam(bandid: int, userid: int)", "application/json", "Agrega un nuevo miembro pendiente de aceptacion a la banda");
+        s += DocUtil.docService("GET", "/band/leave/{bandid}/{userid}", "PathParam(bandid: int, userid: int)", "application/json", "Elimina un miembro existente de la banda");
         s += DocUtil.docService("GET", "/band/accept/{bandid}/{userid}", "PathParam(bandid: int, userid: int)", "application/json", "Acepta un nuevo miembro en la banda");
         s += DocUtil.docService("GET", "/band/reject/{bandid}/{userid}", "PathParam(bandid: int, userid: int)", "application/json", "Rechaza un nuevo miembro en la banda");
         s += DocUtil.docService("GET", "/band/applicants/{bandid}", "PathParam(bandid: int)", "application/json", "Busca los miembros pendientes de aceptacion de la banda cuyo id es {bandid}");

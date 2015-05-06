@@ -236,9 +236,10 @@ public class GrupoDAO {
         try{
             String query = "delete from es_integrante where uuid_p = ? and uuid_g = ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, grupo);
-            ps.setInt(2, persona);
+            ps.setInt(1, persona);
+            ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
+            System.out.println(insertedRows);
             if (insertedRows != 0) {
                 con.commit();
                 return true;

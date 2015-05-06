@@ -10,6 +10,7 @@ angular.module('starter')
         $scope.showTagInput = false;
         $scope.following = false;
         $scope.userIsMember = false;
+        $scope.showSuccessApplianceMessage = false;
 
         $scope.band = {};
         $scope.applicants = "";
@@ -133,7 +134,17 @@ angular.module('starter')
             $http.get(API.URL+API.BAND_APPLY_ENDPOINT+$scope.bandId+"/"+$scope.loggedUserId)
                 .success(function(data){
                     console.log(data);
+                    $scope.showSuccessApplianceMessage = true;
                 });
+        };
+        
+        $scope.leave = function(){
+            if(confirm("Are you sure?")) {
+                $http.get(API.URL + API.BAND_LEAVE_ENDPOINT + $scope.bandId + "/" + $scope.loggedUserId)
+                    .success(function (data) {
+                        $state.go('profile', {_userid: $scope.loggedUserId});
+                    });
+            }
         };
         
         $scope.accept = function(id,index){

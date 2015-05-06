@@ -179,6 +179,19 @@ public class RestServices {
     }
 
     /**
+     * Elimina un miembro existente de la banda
+     * @param bandid
+     * @param personid
+     * @return
+     */
+    @GET
+    @Path("/band/leave/{bandid}/{personid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String leaveGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid) {
+        return BandService.leave(bandid,personid);
+    }
+
+    /**
      * Acepta un nuevo miembro en la banda
      * @param bandid
      * @param personid

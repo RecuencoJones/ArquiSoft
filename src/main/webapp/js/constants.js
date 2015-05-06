@@ -17,6 +17,7 @@ angular.module('starter')
         "ACCEPT_APPLICANT_ENDPOINT": "/band/accept/",
         "REJECT_APPLICANT_ENDPOINT": "/band/reject/",
         "BAND_APPLY_ENDPOINT": "/band/apply/",
+        "BAND_LEAVE_ENDPOINT": "/band/leave/",
         "USER_GROUPS_ENDPOINT": "/groups/",
         "LAST_MESSAGES_ENDPOINT": "/last/"
     });

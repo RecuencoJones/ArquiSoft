@@ -14,14 +14,21 @@ public class BandService {
         return "{\"res\":"+res+"}";
     }
 
+    // TODO
+    public static String leave(int bandid, int personid) {
+        boolean res = new MyusickService().eliminarDeGrupo(personid,bandid);
+        res = res && new MyusickService().unfollow(personid,bandid);
+        return "{\"res\":"+res+"}";
+    }
+
     public static String accept(int bandid, int personid) {
         boolean res = new MyusickService().responderPeticion(personid,bandid,true);
-        new MyusickService().follow(personid,bandid);
+        res = res && new MyusickService().follow(personid,bandid);
         return "{\"res\":"+res+"}";
     }
 
     public static String reject(int bandid, int personid) {
-        boolean res = new MyusickService().responderPeticion(personid,bandid,false);
+        boolean res = new MyusickService().responderPeticion(personid, bandid, false);
         return "{\"res\":"+res+"}";
     }
 
