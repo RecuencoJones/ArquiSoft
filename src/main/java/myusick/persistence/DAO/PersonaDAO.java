@@ -101,7 +101,7 @@ public class PersonaDAO {
         try {
             String query="select publicante_uuid from persona where email=? and password=?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1,email);
+            ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             int i = 1;
@@ -179,6 +179,72 @@ public class PersonaDAO {
             while(rs.next()){
                 int uuid = rs.getInt(1);
                 ProfileDTO perfil = new ProfileDTO(nombre,rs.getString("descripcion"),
+                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
+                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                resultado.add(perfil);
+            }
+            adao.closeConnection();
+            tdao.closeConnection();
+            pdao.closeConnection();
+            return resultado;
+        }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProfileDTO> buscarPorTag(String tag){
+        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+        try{
+            String query = "select nombre,avatar, descripcion, Publicante_UUID from persona where publicante_uuid in(" +
+                    "  select UUID_P from persona_tiene_tag where idTag in (" +
+                    "    select idTag from tag where nombreTag=?" +
+                    "))";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, tag);
+            ResultSet rs = ps.executeQuery();
+            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
+            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
+            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            while(rs.next()){
+                int uuid = rs.getInt("Publicante_UUID");
+                ProfileDTO perfil = new ProfileDTO(rs.getString("nombre"),rs.getString("descripcion"),
+                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
+                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                resultado.add(perfil);
+            }
+            adao.closeConnection();
+            tdao.closeConnection();
+            pdao.closeConnection();
+            return resultado;
+        }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProfileDTO> buscarPorAptitud(String aptitud){
+        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+        try{
+            String query = "select nombre,avatar, descripcion, Publicante_UUID from persona where publicante_uuid in(" +
+                    "  select UUID_P from tiene_aptitud where idAptitud in (" +
+                    "    select idAptitud from aptitud where nombre=?" +
+                    "))";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, aptitud);
+            ResultSet rs = ps.executeQuery();
+            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
+            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
+            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            while(rs.next()){
+                int uuid = rs.getInt("Publicante_UUID");
+                ProfileDTO perfil = new ProfileDTO(rs.getString("nombre"),rs.getString("descripcion"),
                         rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
                         null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
                 resultado.add(perfil);

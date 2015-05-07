@@ -1,16 +1,15 @@
 package myusick.model.test;
 
-import myusick.model.dto.GroupDTO;
-import myusick.model.dto.ProfileDTO;
-import myusick.model.dto.PublicationsDTO;
-import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.*;
 import myusick.model.services.MyusickService;
 import myusick.persistence.connection.ConnectionAdmin;
+import org.eclipse.persistence.tools.profiler.Profile;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +19,8 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-//        List<ProfileDTO> l = m.buscarPorNombre("Foo");
-//        if(l == null){
-//            System.out.println("Ha salido null");
-//        }else
-//            System.out.println(l);
-        System.out.println(m.pendientesDeAceptar(6));
+        System.out.println(m.buscarPorAptitud("Guitarra"));
+//        System.out.println(m.pendientesDeAceptar(6));
 
 
         //m.registrarTag("soyUnaMierda",1);
