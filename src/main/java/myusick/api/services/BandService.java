@@ -1,6 +1,7 @@
 package myusick.api.services;
 
 import com.google.gson.Gson;
+import myusick.model.dto.PublisherDTO;
 import myusick.model.services.MyusickService;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class BandService {
 
     public static String getApplicants(int bandid) {
         Gson gson = new Gson();
-        List<Integer> ids = new MyusickService().pendientesDeAceptar(bandid);
+        List<PublisherDTO> ids = new MyusickService().pendientesDeAceptar(bandid);
         return gson.toJson(ids);
     }
 }

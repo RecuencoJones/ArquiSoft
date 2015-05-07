@@ -1,6 +1,7 @@
 package myusick.persistence.DAO;
 
 import myusick.model.dto.GroupDTO;
+import myusick.model.dto.ProfileDTO;
 import myusick.model.dto.PublisherDTO;
 import myusick.model.dto.RegisterDTO;
 import myusick.persistence.VO.Grupo;
@@ -258,16 +259,17 @@ public class GrupoDAO {
         }
     }
 
-    public List<Integer> pendientesDeAceptar(int grupo){
-        List<Integer> pendientes = new ArrayList<Integer>();
+    public List<PublisherDTO> pendientesDeAceptar(int grupo){
+        List<PublisherDTO> pendientes = new ArrayList<PublisherDTO>();
         try{
-            String query = "select persona from pendiente_aceptacion where grupo = ?";
+            String query = "select pa.persona, p.nombre from " +
+                    "pendiente_aceptacion pa, persona p where grupo=? and pa.persona=p.publicante_uuid";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, grupo);
             ResultSet rs = ps.executeQuery();
             con.commit();
             while (rs.next()) {
-                pendientes.add(rs.getInt(1));
+                pendientes.add(new PublisherDTO(rs.getInt(1),rs.getString(2)));
             }
             return pendientes;
         }catch (SQLException e) {
@@ -279,6 +281,36 @@ public class GrupoDAO {
         }
     }
 
+    public List<ProfileDTO> buscarPorNombre(String nombre){
+        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+        try{
+            String query = "select Publicante_uuid, descripcion, avatar from persona where nombre = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
+            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
+            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            GrupoDAO gdao = new GrupoDAO(); gdao.setConnection(ConnectionAdmin.getConnection());
+            while(rs.next()){
+                int uuid = rs.getInt(1);
+                ProfileDTO perfil = new ProfileDTO(nombre,rs.getString("descripcion"),
+                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
+                        gdao.getMembersGroup(uuid),null,pdao.getPublicacionesById(uuid));
+                resultado.add(perfil);
+            }
+            adao.closeConnection();
+            tdao.closeConnection();
+            pdao.closeConnection();
+            return resultado;
+        }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
+    }
     public boolean closeConnection(){
         try {
             con.close();

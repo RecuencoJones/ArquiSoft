@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Cuenta de clase on 04/04/2015.
@@ -19,8 +20,12 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        System.out.println(m.responderPeticion(3,6,true));
-
+//        List<ProfileDTO> l = m.buscarPorNombre("Foo");
+//        if(l == null){
+//            System.out.println("Ha salido null");
+//        }else
+//            System.out.println(l);
+        System.out.println(m.pendientesDeAceptar(6));
 
 
         //m.registrarTag("soyUnaMierda",1);

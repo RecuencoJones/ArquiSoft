@@ -1,5 +1,6 @@
 package myusick.model.dto;
 
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,20 +116,27 @@ public class ProfileDTO implements Serializable {
     }
 
     public boolean isAGroup(){
-        return members!=null && members == null;
+        return members!=null && groups == null;
     }
 
     @Override
     public String toString() {
-        return "ProfileDTO{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", skills=" + skills.toString() +
-                ", tags=" + tags.toString() +
-                ", members=" + members.toString() +
-                ", groups=" + groups.toString() +
-                ", publications=" + publications.toString() +
-                '}';
+        String resultado = null;
+        try{
+            if(name.equals(null)) name = "";
+            if(description.equals(null)) description = "";
+            if(avatar.equals(null)) avatar = "";
+            resultado = "ProfileDTO{" +
+                    "name='" + name + '\'' +
+                    ", description='" + description + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", skills=" + skills.toString() +
+                    ", tags=" + tags.toString() +
+                    ", members=" + members.toString() +
+                    ", groups=" + groups.toString() +
+                    ", publications=" + publications.toString() +
+                    '}';
+        }catch(NullPointerException e){}
+        return resultado;
     }
 }

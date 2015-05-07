@@ -1,6 +1,7 @@
 package myusick.persistence.DAO;
 
 import myusick.model.dto.LoginDTO;
+import myusick.model.dto.ProfileDTO;
 import myusick.model.dto.PublisherDTO;
 import myusick.model.dto.RegisterDTO;
 import myusick.persistence.VO.Grupo;
@@ -12,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cuenta de clase on 02/04/2015.
@@ -100,7 +102,7 @@ public class PersonaDAO {
             String query="select publicante_uuid from persona where email=? and password=?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1,email);
-            ps.setString(2,password);
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             int i = 1;
             if(rs.next()){
@@ -162,6 +164,36 @@ public class PersonaDAO {
             e.printStackTrace();
             return -1;
         }        
+    }
+
+    public List<ProfileDTO> buscarPorNombre(String nombre){
+        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+        try{
+            String query = "select Publicante_uuid, descripcion, avatar from persona where nombre = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, nombre);
+            ResultSet rs = ps.executeQuery();
+            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
+            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
+            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            while(rs.next()){
+                int uuid = rs.getInt(1);
+                ProfileDTO perfil = new ProfileDTO(nombre,rs.getString("descripcion"),
+                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
+                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                resultado.add(perfil);
+            }
+            adao.closeConnection();
+            tdao.closeConnection();
+            pdao.closeConnection();
+            return resultado;
+        }catch (Exception e) {
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean closeConnection(){
