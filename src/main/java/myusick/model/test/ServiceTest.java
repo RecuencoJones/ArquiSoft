@@ -25,7 +25,7 @@ public class ServiceTest {
 //            System.out.println("Ha salido null");
 //        }else
 //            System.out.println(l);
-        System.out.println(m.eliminarDeGrupo(1,6));
+        System.out.println(m.pendientesDeAceptar(6));
 
 
         //m.registrarTag("soyUnaMierda",1);

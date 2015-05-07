@@ -259,16 +259,17 @@ public class GrupoDAO {
         }
     }
 
-    public List<Integer> pendientesDeAceptar(int grupo){
-        List<Integer> pendientes = new ArrayList<Integer>();
+    public List<PublisherDTO> pendientesDeAceptar(int grupo){
+        List<PublisherDTO> pendientes = new ArrayList<PublisherDTO>();
         try{
-            String query = "select persona from pendiente_aceptacion where grupo = ?";
+            String query = "select pa.persona, p.nombre from " +
+                    "pendiente_aceptacion pa, persona p where grupo=? and pa.persona=p.publicante_uuid";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, grupo);
             ResultSet rs = ps.executeQuery();
             con.commit();
             while (rs.next()) {
-                pendientes.add(rs.getInt(1));
+                pendientes.add(new PublisherDTO(rs.getInt(1),rs.getString(2)));
             }
             return pendientes;
         }catch (SQLException e) {

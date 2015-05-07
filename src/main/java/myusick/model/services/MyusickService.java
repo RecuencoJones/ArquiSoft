@@ -260,11 +260,11 @@ public class MyusickService {
         }
     }
 
-    public List<Integer> pendientesDeAceptar(int grupo){
+    public List<PublisherDTO> pendientesDeAceptar(int grupo){
         GrupoDAO gdao = new GrupoDAO();
         try{
             gdao.setConnection(ConnectionAdmin.getConnection());
-            List<Integer> resultado = gdao.pendientesDeAceptar(grupo);
+            List<PublisherDTO> resultado = gdao.pendientesDeAceptar(grupo);
             gdao.closeConnection();
             return resultado;
         }catch (SQLException e){
