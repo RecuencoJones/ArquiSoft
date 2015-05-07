@@ -240,6 +240,7 @@ public class GrupoDAO {
             ps.setInt(1, persona);
             ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
+            System.out.println(insertedRows);
             if (insertedRows != 0) {
                 con.commit();
                 return true;

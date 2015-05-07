@@ -19,17 +19,18 @@ public class PostService {
     public static String newPost(UriInfo info, PublicationsDTO postDTO) {
         Gson gson = new Gson();
         int pubid = new MyusickService().insertarPublicacion(postDTO);
-        PublicationsDTO newPub = new PublicationsDTO(postDTO.getId(), postDTO.getContent(), postDTO.getDate());
+        PostDTO post = new MyusickService().getPost(pubid);
+//        PublicationsDTO newPub = new PublicationsDTO(postDTO.getId(), postDTO.getContent(), postDTO.getDate());
         
         //broadcast
 //        String subs = "1,2,3,4,5";
         ArrayList<Integer> subs = new MyusickService().getFollowers(postDTO.getId());
         WebSocketDispatcher wsd = WebsocketProvider.getWebSocketDispatcher();
         for(Integer s : subs){
-            wsd.dispatch(newPub,s.toString());
+            wsd.dispatch(post,s.toString());
         }
         System.out.println("======================");
-        return gson.toJson(newPub);
+        return gson.toJson(post);
     }
 
     public static String getPost(int id) {

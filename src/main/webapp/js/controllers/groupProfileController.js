@@ -10,6 +10,7 @@ angular.module('starter')
         $scope.showTagInput = false;
         $scope.following = false;
         $scope.userIsMember = false;
+        $scope.showSuccessApplianceMessage = false;
 
         $scope.band = {};
         $scope.applicants = "";
@@ -116,28 +117,38 @@ angular.module('starter')
         };
 
         $scope.follow = function(){
-            $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
+            $http.put(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
                 .success(function(data){
                     $scope.following = true;
                 });
         };
 
         $scope.unfollow = function(){
-            $http.get(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
+            $http.delete(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$scope.bandId)
                 .success(function(data){
                     $scope.following = false;
                 });
         };
         
         $scope.apply = function(){
-            $http.get(API.URL+API.BAND_APPLY_ENDPOINT+$scope.bandId+"/"+$scope.loggedUserId)
+            $http.put(API.URL+API.BAND_APPLY_ENDPOINT+$scope.bandId+"/"+$scope.loggedUserId)
                 .success(function(data){
                     console.log(data);
+                    $scope.showSuccessApplianceMessage = true;
                 });
         };
         
+        $scope.leave = function(){
+            if(confirm("Are you sure?")) {
+                $http.delete(API.URL + API.BAND_LEAVE_ENDPOINT + $scope.bandId + "/" + $scope.loggedUserId)
+                    .success(function (data) {
+                        $state.go('profile', {_userid: $scope.loggedUserId});
+                    });
+            }
+        };
+        
         $scope.accept = function(id,index){
-            $http.get(API.URL+API.ACCEPT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
+            $http.put(API.URL+API.ACCEPT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
                 .success(function(data){
                     console.log(data);
                     if(data.res){
@@ -148,13 +159,17 @@ angular.module('starter')
         };
 
         $scope.reject = function(id,index){
-            $http.get(API.URL+API.REJECT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
+            $http.delete(API.URL+API.REJECT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
                 .success(function(data){
                     console.log(data);
                     if(data.res) {
                         $scope.applicants.splice(index,1);
                     }
                 });
+        };
+        
+        $scope.hideSuccessMessage = function(){
+            $scope.showSuccessApplianceMessage = false;
         };
 
         /*$scope.band = {

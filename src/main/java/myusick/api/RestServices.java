@@ -132,7 +132,7 @@ public class RestServices {
      * @param seguido
      * @return
      */
-    @GET
+    @PUT
     @Path("/follow/{seguidor}/{seguido}")
     @Produces(MediaType.APPLICATION_JSON)
     public String follow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
@@ -145,7 +145,7 @@ public class RestServices {
      * @param seguido
      * @return
      */
-    @GET
+    @DELETE
     @Path("/unfollow/{seguidor}/{seguido}")
     @Produces(MediaType.APPLICATION_JSON)
     public String unfollow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
@@ -171,11 +171,24 @@ public class RestServices {
      * @param personid
      * @return
      */
-    @GET
+    @PUT
     @Path("/band/apply/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String applyForGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
         return BandService.apply(bandid,personid);
+    }
+
+    /**
+     * Elimina un miembro existente de la banda
+     * @param bandid
+     * @param personid
+     * @return
+     */
+    @DELETE
+    @Path("/band/leave/{bandid}/{personid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String leaveGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid) {
+        return BandService.leave(bandid,personid);
     }
 
     /**
@@ -184,7 +197,7 @@ public class RestServices {
      * @param personid
      * @return
      */
-    @GET
+    @PUT
     @Path("/band/accept/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String acceptFromGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
@@ -197,7 +210,7 @@ public class RestServices {
      * @param personid
      * @return
      */
-    @GET
+    @DELETE
     @Path("/band/reject/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String rejectIntoGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){

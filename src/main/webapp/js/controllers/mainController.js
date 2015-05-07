@@ -54,6 +54,7 @@ angular.module('starter')
             $scope.$apply();
         };
         $scope.source.onerror = function(event){
+            console.log(event.data);
             console.log("error");
         };
         $scope.source.onclose = function(event){
@@ -81,6 +82,14 @@ angular.module('starter')
                 .error(function(data){
                     console.log("Kinda erroneous");
                 });
+        };
+        
+        $scope.goTo = function(id,type){
+            if(type){
+                $state.go('group', { _groupid: id});
+            }else{
+                $state.go('profile', { _userid: id});
+            }
         };
 
     }]);

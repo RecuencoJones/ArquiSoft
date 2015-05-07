@@ -3,9 +3,7 @@ package myusick.api;
 import org.glassfish.jersey.media.sse.EventOutput;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,7 +28,7 @@ public class WebsocketProvider {
     }
 
     @Path("/unsub/{id}")
-    @GET
+    @DELETE
     public String unsubscribe(@PathParam("id") String id){
         SseBroadcaster b = listenerMap.remove(id);
         b.closeAll();

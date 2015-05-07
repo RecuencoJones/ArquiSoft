@@ -35,6 +35,11 @@ angular.module('starter')
                 console.log("error");
             });
 
+        $http.get(API.URL + API.USER_GROUPS_ENDPOINT + $scope.loggedUserId)
+            .success(function(data){
+                auth.setGroups(data);
+            });
+
         $http.get(API.URL+API.ISFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
             .success(function(data){
                 $scope.following = data.res;
@@ -97,14 +102,14 @@ angular.module('starter')
         };
         
         $scope.follow = function(){
-            $http.get(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
+            $http.put(API.URL+API.FOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
                 .success(function(data){
                     $scope.following = true;
                 });
         };
 
         $scope.unfollow = function(){
-            $http.get(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
+            $http.delete(API.URL+API.UNFOLLOW_ENDPOINT+$scope.loggedUserId+"/"+$stateParams._userid)
                 .success(function(data){
                     $scope.following = false;
                 });

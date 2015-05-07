@@ -18,7 +18,7 @@
                                         <img class=" img-responsive img-bordered" ng-src="{{post.avatar}}" style="max-height: 50px">
                                     </div>
                                     <div class="col-md-10 col-xs-9" style="padding-left: 0;;padding-top: 10px;">
-                                        <p class="pull-left"><a ng-href="#/profile/{{post.user_id}}"><strong>{{post.user}}</strong></a></p>
+                                        <p class="pull-left"><a ng-click="goTo(post.user_id,post.type)"><strong>{{post.user}}</strong></a></p>
                                         <em class="pull-right">{{post.date | date: 'dd/MM/yyyy'}}</em>
                                     </div>
                                 </div>

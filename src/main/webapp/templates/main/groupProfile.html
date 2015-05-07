@@ -52,7 +52,7 @@
                         <div class="row" ng-show="userIsMember">
                             <div class="col-md-12">
                                 <div class="btn-group btn-group-justified">
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary" ng-href="#/profile/{{bandId}}/edit">
                                         <span class=" glyphicon glyphicon-cog"></span> Edit
                                     </a>
                                 </div>
@@ -81,7 +81,9 @@
                         <p class="text-center">Members</p>
                         <div class="btn-group-vertical" style="display: block">
                             <a class="btn btn-default" ng-repeat="member in band.members" ng-href="#/profile/{{member.id}}">{{member.name}}</a>
-                            <a class="btn btn-primary" ng-click="apply()" ng-hide="userIsMember">Apply for group</a>
+                            <a class="btn btn-success" ng-click="apply()" ng-hide="userIsMember">Apply for group</a>
+                            <a class="btn btn-danger" ng-click="leave()" ng-show="userIsMember">Leave group</a>
+                            <a class="btn btn-info" ng-click="hideSuccessMessage()" ng-show="showSuccessApplianceMessage">Applied!</a>
                         </div>
                     </div>
                     <div class="simple-jumbo" style="margin-top: 25px">

@@ -16,12 +16,7 @@ angular.module('starter', ['ui.router'])
                     if(!auth.isAuthenticated()){
                         $state.go('login');
                     }
-                }/*,
-                onExit: function($http,API,auth){
-                    if(auth.isAuthenticated()) {
-                        $http.get(API.WS_URL_UNSUB + auth.identity().userid);
-                    }
-                }*/
+                }
             })
             
             .state('profile', {
@@ -35,10 +30,32 @@ angular.module('starter', ['ui.router'])
                 }
             })
 
+            .state('profile_edit', {
+                url: "/profile/:_userid/edit",
+                templateUrl: "templates/main/profileEdit.html",
+                controller: "ProfileEditCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('login');
+                    }
+                }
+            })
+
             .state('group', {
                 url: "/group/:_groupid",
                 templateUrl: "templates/main/groupProfile.html",
                 controller: "GroupProfileCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('login');
+                    }
+                }
+            })
+
+            .state('group_edit', {
+                url: "/group/:_groupid/edit",
+                templateUrl: "templates/main/groupProfileEdit.html",
+                controller: "GroupProfileEditCtrl",
                 onEnter: function($state,auth){
                     if(!auth.isAuthenticated()){
                         $state.go('login');
@@ -83,6 +100,39 @@ angular.module('starter', ['ui.router'])
                 url: "/post/:_postid",
                 templateUrl: "templates/main/post.html",
                 controller: "PostCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
+            })
+
+            .state('followers', {
+                url: "/followers/:_userid",
+                templateUrl: "templates/main/followers.html",
+                controller: "FollowersCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
+            })
+
+            .state('following', {
+                url: "/following/:_userid",
+                templateUrl: "templates/main/followers.html",
+                controller: "FollowingCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
+            })
+
+            .state('settings', {
+                url: "/settings",
+                templateUrl: "templates/main/settings.html",
+                controller: "SettingsCtrl",
                 onEnter: function($state,auth){
                     if(!auth.isAuthenticated()){
                         $state.go('home');
