@@ -293,17 +293,52 @@ public class MyusickService {
             pdao.setConnection(ConnectionAdmin.getConnection());
             List<ProfileDTO> resultado = pdao.buscarPorNombre(nombre);
             pdao.closeConnection();
-            if(resultado == null){
-                /* No se han encontrado resultados, buscamos por grupo */
-                GrupoDAO gdao = new GrupoDAO();
-                gdao.setConnection(ConnectionAdmin.getConnection());
-                resultado = gdao.buscarPorNombre(nombre);
-                gdao.closeConnection();
-            }
+            /* Buscamos si hay coincidencias por grupo */
+            GrupoDAO gdao = new GrupoDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            resultado.addAll(gdao.buscarPorNombre(nombre));
+            gdao.closeConnection();
             /*
              * Tanto en caso de que se haya encontrado persona, grupo o no se hayan
              * encontrado resultados, se devuelve la lista igualmente (completa o null)
              */
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProfileDTO> buscarPorTag(String tag){
+        /* Primero intentamos ver si es una persona */
+        try{
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = pdao.buscarPorTag(tag);
+            pdao.closeConnection();
+            /* Buscamos si hay coincidencias por grupo */
+            GrupoDAO gdao = new GrupoDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            resultado.addAll(gdao.buscarPorTag(tag));
+            gdao.closeConnection();
+            /*
+             * Tanto en caso de que se haya encontrado persona, grupo o no se hayan
+             * encontrado resultados, se devuelve la lista igualmente (completa o null)
+             */
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<ProfileDTO> buscarPorAptitud(String aptitud){
+        /* Primero intentamos ver si es una persona */
+        try{
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = pdao.buscarPorAptitud(aptitud);
+            pdao.closeConnection();
             return resultado;
         }catch (SQLException e){
             e.printStackTrace();
