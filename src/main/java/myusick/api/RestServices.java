@@ -278,7 +278,7 @@ public class RestServices {
     }
 
     /**
-     * TODO 
+     * Busca todas las personas cuyo nombre incluya {term}
      * @param term
      * @return
      */
@@ -290,7 +290,7 @@ public class RestServices {
     }
 
     /**
-     * TODO
+     * Busca todos los grupos cuyo nombre incluya {term}
      * @param term
      * @return
      */
@@ -302,7 +302,7 @@ public class RestServices {
     }
 
     /**
-     * TODO
+     * Busca todos los publicantes que tengan la etiqueta {term}
      * @param term
      * @return
      */
@@ -314,7 +314,7 @@ public class RestServices {
     }
 
     /**
-     * TODO
+     * Busca todas las personas que tengan la aptitud {term}
      * @param term
      * @return
      */

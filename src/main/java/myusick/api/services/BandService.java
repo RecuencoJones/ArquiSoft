@@ -15,7 +15,6 @@ public class BandService {
         return "{\"res\":"+res+"}";
     }
 
-    // TODO
     public static String leave(int bandid, int personid) {
         boolean res = new MyusickService().eliminarDeGrupo(personid,bandid);
         new MyusickService().unfollow(personid,bandid);

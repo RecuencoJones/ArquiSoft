@@ -37,6 +37,10 @@ public class APIdirectory {
         s += DocUtil.docService("GET", "/band/applicants/{bandid}", "PathParam(bandid: int)", "application/json", "Busca los miembros pendientes de aceptacion de la banda cuyo id es {bandid}");
         s += DocUtil.docService("GET", "/groups/{userid}", "PathParam(userid: int)", "application/json", "Busca los grupos del usuario cuyo id es {userid}");
         s += DocUtil.docService("GET", "/last/{userid}", "PathParam(userid: int)", "application/json", "Busca los ultimos mensajes de los publicantes a los cuales esta suscrito el usuario cuyo id es {userid}");
+        s += DocUtil.docService("GET", "/search/person/{term}","PathParam(term: string)", "application/json", "Busca todas las personas cuyo nombre incluya {term}");
+        s += DocUtil.docService("GET", "/search/group/{term}","PathParam(term: string)", "application/json", "Busca todos los grupos cuyo nombre incluya {term}");
+        s += DocUtil.docService("GET", "/search/tag/{term}","PathParam(term: string)", "application/json", "Busca todos los publicantes que tengan la etiqueta {term}");
+        s += DocUtil.docService("GET", "/search/skill/{term}","PathParam(term: string)", "application/json", "Busca todas las personas que tengan la aptitud {term}");
         //WebsocketProvider
         s += DocUtil.header("SSE");
         s += DocUtil.docService("GET", "/ws/sub/{id}", "PathParam(id: int)", "text/event-stream", "Suscribe a un usuario a su canal");

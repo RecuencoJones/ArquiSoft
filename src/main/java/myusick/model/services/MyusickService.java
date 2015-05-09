@@ -285,21 +285,19 @@ public class MyusickService {
             return null;
         }
     }
-
-    public List<ProfileDTO> buscarPorNombre(String nombre){
+    
+    public List<ProfileDTO> buscarPorTag(String tag){
         /* Primero intentamos ver si es una persona */
         try{
             PersonaDAO pdao = new PersonaDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
-            List<ProfileDTO> resultado = pdao.buscarPorNombre(nombre);
+            List<ProfileDTO> resultado = pdao.buscarPorTag(tag);
             pdao.closeConnection();
-            if(resultado == null){
-                /* No se han encontrado resultados, buscamos por grupo */
-                GrupoDAO gdao = new GrupoDAO();
-                gdao.setConnection(ConnectionAdmin.getConnection());
-                resultado = gdao.buscarPorNombre(nombre);
-                gdao.closeConnection();
-            }
+            /* Buscamos si hay coincidencias por grupo */
+            GrupoDAO gdao = new GrupoDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            resultado.addAll(gdao.buscarPorTag(tag));
+            gdao.closeConnection();
             /*
              * Tanto en caso de que se haya encontrado persona, grupo o no se hayan
              * encontrado resultados, se devuelve la lista igualmente (completa o null)
@@ -311,20 +309,43 @@ public class MyusickService {
         }
     }
 
-    //TODO
-    public void buscarPersonaPorNombre(String term) {
+    public List<ProfileDTO> buscarPorAptitud(String aptitud){
+        try{
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = pdao.buscarPorAptitud(aptitud);
+            pdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    //TODO
-    public void buscarGrupoPorNombre(String term) {
+    public List<ProfileDTO> buscarPersonaPorNombre(String term) {
+        try{
+            PersonaDAO pdao = new PersonaDAO();
+            pdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = pdao.buscarPorNombre(term);
+            pdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    //TODO
-    public void buscarPublicantePorTag(String term) {
-    }
-
-    //TODO
-    public void buscarPersonaPorAptitud(String term) {
+    public List<ProfileDTO> buscarGrupoPorNombre(String term) {
+        try{
+            GrupoDAO gdao = new GrupoDAO();
+            gdao.setConnection(ConnectionAdmin.getConnection());
+            List<ProfileDTO> resultado = gdao.buscarPorNombre(term);
+            gdao.closeConnection();
+            return resultado;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //TODO
@@ -333,5 +354,6 @@ public class MyusickService {
 
     //TODO
     public void getFollowing(int userid) {
+
     }
 }

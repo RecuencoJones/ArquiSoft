@@ -121,22 +121,22 @@ public class ProfileDTO implements Serializable {
 
     @Override
     public String toString() {
-        String resultado = null;
-        try{
-            if(name.equals(null)) name = "";
-            if(description.equals(null)) description = "";
-            if(avatar.equals(null)) avatar = "";
-            resultado = "ProfileDTO{" +
-                    "name='" + name + '\'' +
-                    ", description='" + description + '\'' +
-                    ", avatar='" + avatar + '\'' +
-                    ", skills=" + skills.toString() +
-                    ", tags=" + tags.toString() +
-                    ", members=" + members.toString() +
-                    ", groups=" + groups.toString() +
-                    ", publications=" + publications.toString() +
-                    '}';
-        }catch(NullPointerException e){}
+        String provMembers;
+        if(members == null || members.isEmpty()) provMembers="";
+        else provMembers = members.toString();
+        String provGroups;
+        if(groups == null || groups.isEmpty()) provGroups="";
+        else provGroups = groups.toString();
+        String resultado = "ProfileDTO{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", skills=" + skills.toString() +
+                ", tags=" + tags.toString() +
+                ", members=" + provMembers +
+                ", groups=" + provGroups +
+                ", publications=" + publications.toString() +
+                '}';
         return resultado;
     }
 }
