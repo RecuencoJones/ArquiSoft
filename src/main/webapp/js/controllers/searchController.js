@@ -20,65 +20,13 @@ angular.module('starter')
             $state.go('search', {_term: $scope.search_value});
         };
 
-        $scope.results_0 = [
-            {
-                name: 'Derp1'
-            },
-            {
-                name: 'Derp2'
-            },
-            {
-                name: 'Derp3'
-            },
-            {
-                name: 'asdf'
-            }
-        ];
-        $scope.results_1 = [
-            {
-                name: 'Defgafrp'
-            },
-            {
-                name: '1337'
-            },
-            {
-                name: 'foobar'
-            },
-            {
-                name: 'gfdkjlghdfña'
-            }
-        ];
-        $scope.results_2 = [
-            {
-                name: 'caca'
-            },
-            {
-                name: 'pene'
-            },
-            {
-                name: 'uma'
-            },
-            {
-                name: 'ahahahaha'
-            }
-        ];
-        $scope.results_3 = [
-            {
-                name: 'not even'
-            },
-            {
-                name: 'close'
-            },
-            {
-                name: 'Derp3'
-            },
-            {
-                name: 'bitch'
-            }
-        ];
-        
+        $scope.results_0 = "";
+        $scope.results_1 = "";
+        $scope.results_2 = "";
+        $scope.results_3 = "";
+
         $scope.results_array = [$scope.results_0,$scope.results_1,$scope.results_2,$scope.results_3];
-        $scope.results = $scope.results_array[0];
+        $scope.results = $scope.results_array[$scope.category];
         
         $scope.changeCategory = function(int){
             $scope.category = int;
@@ -87,18 +35,34 @@ angular.module('starter')
 
         $http.get(API.URL + API.SEARCH_PERSON_ENDPOINT + $scope.term)
             .success(function(data){
+                $scope.results_array[0] = data;
+                $scope.results = $scope.results_array[$scope.category];
                 console.log(data);
             });
         $http.get(API.URL + API.SEARCH_GROUP_ENDPOINT + $scope.term)
             .success(function(data){
+                $scope.results_array[1] = data;
+                $scope.results = $scope.results_array[$scope.category];
                 console.log(data);
             });
         $http.get(API.URL + API.SEARCH_TAG_ENDPOINT + $scope.term)
             .success(function(data){
+                $scope.results_array[2] = data;
+                $scope.results = $scope.results_array[$scope.category];
                 console.log(data);
             });
         $http.get(API.URL + API.SEARCH_SKILL_ENDPOINT + $scope.term)
             .success(function(data){
+                $scope.results_array[3] = data;
+                $scope.results = $scope.results_array[$scope.category];
                 console.log(data);
             });
+
+        $scope.goTo = function(id,type){
+            if(type){
+                $state.go('group', { _groupid: id});
+            }else{
+                $state.go('profile', { _userid: id});
+            }
+        };
     }]);

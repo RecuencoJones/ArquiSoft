@@ -41,6 +41,10 @@ Directorio de servicios REST
 | __GET__ | /band/applicants/{bandid} | PathParam(bandid: int) | application/json | Busca los miembros pendientes de aceptacion de la banda cuyo id es {bandid} |
 | __GET__ | /groups/{userid} | PathParam(userid: int) | application/json | Busca los grupos del usuario cuyo id es {userid} |
 | __GET__ | /last/{userid} | PathParam(userid: int) | application/json | Busca los ultimos mensajes de los publicantes a los cuales esta suscrito el usuario cuyo id es {userid} |
+| __GET__ | /search/person/{term} | PathParam(term: string) | application/json | Busca todas las personas cuyo nombre incluya {term} |
+| __GET__ | /search/group/{term} | PathParam(term: string) | application/json | Busca todos los grupos cuyo nombre incluya {term} |
+| __GET__ | /search/tag/{term} | PathParam(term: string) | application/json | Busca todos los publicantes que tengan la etiqueta {term} |
+| __GET__ | /search/skill/{term} | PathParam(term: string) | application/json | Busca todas las personas que tengan la aptitud {term} |
 
 Directorio de servicios SSE
 =====

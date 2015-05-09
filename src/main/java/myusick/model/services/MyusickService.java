@@ -286,12 +286,12 @@ public class MyusickService {
         }
     }
     
-    public List<ProfileDTO> buscarPorTag(String tag){
+    public List<ShortProfileDTO> buscarPorTag(String tag){
         /* Primero intentamos ver si es una persona */
         try{
             PersonaDAO pdao = new PersonaDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
-            List<ProfileDTO> resultado = pdao.buscarPorTag(tag);
+            List<ShortProfileDTO> resultado = pdao.buscarPorTag(tag);
             pdao.closeConnection();
             /* Buscamos si hay coincidencias por grupo */
             GrupoDAO gdao = new GrupoDAO();
@@ -309,11 +309,11 @@ public class MyusickService {
         }
     }
 
-    public List<ProfileDTO> buscarPorAptitud(String aptitud){
+    public List<ShortProfileDTO> buscarPorAptitud(String aptitud){
         try{
             PersonaDAO pdao = new PersonaDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
-            List<ProfileDTO> resultado = pdao.buscarPorAptitud(aptitud);
+            List<ShortProfileDTO> resultado = pdao.buscarPorAptitud(aptitud);
             pdao.closeConnection();
             return resultado;
         }catch (SQLException e){
@@ -322,11 +322,11 @@ public class MyusickService {
         }
     }
 
-    public List<ProfileDTO> buscarPersonaPorNombre(String term) {
+    public List<ShortProfileDTO> buscarPersonaPorNombre(String term) {
         try{
             PersonaDAO pdao = new PersonaDAO();
             pdao.setConnection(ConnectionAdmin.getConnection());
-            List<ProfileDTO> resultado = pdao.buscarPorNombre(term);
+            List<ShortProfileDTO> resultado = pdao.buscarPorNombre(term);
             pdao.closeConnection();
             return resultado;
         }catch (SQLException e){
@@ -335,11 +335,11 @@ public class MyusickService {
         }
     }
 
-    public List<ProfileDTO> buscarGrupoPorNombre(String term) {
+    public List<ShortProfileDTO> buscarGrupoPorNombre(String term) {
         try{
             GrupoDAO gdao = new GrupoDAO();
             gdao.setConnection(ConnectionAdmin.getConnection());
-            List<ProfileDTO> resultado = gdao.buscarPorNombre(term);
+            List<ShortProfileDTO> resultado = gdao.buscarPorNombre(term);
             gdao.closeConnection();
             return resultado;
         }catch (SQLException e){

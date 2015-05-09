@@ -1,9 +1,6 @@
 package myusick.persistence.DAO;
 
-import myusick.model.dto.LoginDTO;
-import myusick.model.dto.ProfileDTO;
-import myusick.model.dto.PublisherDTO;
-import myusick.model.dto.RegisterDTO;
+import myusick.model.dto.*;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
@@ -166,26 +163,18 @@ public class PersonaDAO {
         }        
     }
 
-    public List<ProfileDTO> buscarPorNombre(String nombre){
-        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+    public List<ShortProfileDTO> buscarPorNombre(String nombre){
+        List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
-            String query = "select Publicante_uuid, descripcion, avatar from persona where nombre = ?";
+            String query = "select Publicante_uuid, nombre, avatar from persona where nombre like ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, nombre);
+            ps.setString(1, "%"+nombre+"%");
             ResultSet rs = ps.executeQuery();
-            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
-            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
-            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 int uuid = rs.getInt(1);
-                ProfileDTO perfil = new ProfileDTO(nombre,rs.getString("descripcion"),
-                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
-                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
-            adao.closeConnection();
-            tdao.closeConnection();
-            pdao.closeConnection();
             return resultado;
         }catch (Exception e) {
             try{
@@ -196,29 +185,21 @@ public class PersonaDAO {
         }
     }
 
-    public List<ProfileDTO> buscarPorTag(String tag){
-        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+    public List<ShortProfileDTO> buscarPorTag(String tag){
+        List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
-            String query = "select nombre,avatar, descripcion, Publicante_UUID from persona where publicante_uuid in(" +
+            String query = "select nombre,avatar, Publicante_UUID from persona where publicante_uuid in(" +
                     "  select UUID_P from persona_tiene_tag where idTag in (" +
                     "    select idTag from tag where nombreTag=?" +
                     "))";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, tag);
             ResultSet rs = ps.executeQuery();
-            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
-            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
-            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 int uuid = rs.getInt("Publicante_UUID");
-                ProfileDTO perfil = new ProfileDTO(rs.getString("nombre"),rs.getString("descripcion"),
-                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
-                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
-            adao.closeConnection();
-            tdao.closeConnection();
-            pdao.closeConnection();
             return resultado;
         }catch (Exception e) {
             try{
@@ -229,10 +210,10 @@ public class PersonaDAO {
         }
     }
 
-    public List<ProfileDTO> buscarPorAptitud(String aptitud){
-        List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
+    public List<ShortProfileDTO> buscarPorAptitud(String aptitud){
+        List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
-            String query = "select nombre,avatar, descripcion, Publicante_UUID from persona where publicante_uuid in(" +
+            String query = "select nombre, avatar, Publicante_UUID from persona where publicante_uuid in(" +
                     "  select UUID_P from tiene_aptitud where idAptitud in (" +
                     "    select idAptitud from aptitud where nombre=?" +
                     "))";
@@ -244,9 +225,7 @@ public class PersonaDAO {
             PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 int uuid = rs.getInt("Publicante_UUID");
-                ProfileDTO perfil = new ProfileDTO(rs.getString("nombre"),rs.getString("descripcion"),
-                        rs.getString("avatar"),adao.getAptitudesByPersona(uuid),tdao.getTagsByPersona(uuid),
-                        null,this.getGroupsByMember(uuid),pdao.getPublicacionesById(uuid));
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
             adao.closeConnection();

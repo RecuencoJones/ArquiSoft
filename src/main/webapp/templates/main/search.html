@@ -22,19 +22,19 @@
                             <ul class="list-group">
                                 <a class="list-group-item" ng-class="{active: category==0}" ng-click="changeCategory(0)">
                                     Users
-                                    <span class="badge">{{results_0.length}}</span>
+                                    <span class="badge">{{results_array[0].length}}</span>
                                 </a>
                                 <a class="list-group-item" ng-class="{active: category==1}" ng-click="changeCategory(1)">
                                     Bands
-                                    <span class="badge">{{results_1.length}}</span>
+                                    <span class="badge">{{results_array[1].length}}</span>
                                 </a>
                                 <a class="list-group-item" ng-class="{active: category==2}" ng-click="changeCategory(2)">
                                     Tags
-                                    <span class="badge">{{results_2.length}}</span>
+                                    <span class="badge">{{results_array[2].length}}</span>
                                 </a>
                                 <a class="list-group-item" ng-class="{active: category==3}" ng-click="changeCategory(3)">
                                     Skills
-                                    <span class="badge">{{results_3.length}}</span>
+                                    <span class="badge">{{results_array[3].length}}</span>
                                 </a>
                             </ul>
                         </div>
@@ -47,8 +47,18 @@
                             <input class="form-control" type="text" placeholder="Filter" ng-model="filter"/>
                         </form>
                         <ul class="list-group">
-                            <li class="list-group-item list-hover" ng-repeat="result in results | filter:filter">
-                                {{result.name}}
+                            <li class="list-group-item list-hover" ng-repeat="result in results | filter:filter" ng-click="goTo(result.id,result.type)">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img class="img-responsive img-bordered" style="max-height: 50px" ng-src="{{result.avatar}}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{result.name}}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item" ng-hide="results.length">
+                                No results for this query
                             </li>
                         </ul>
                     </div>
