@@ -10,7 +10,32 @@
         <div class="container">
 
             <div class="row">
-                <h1>Hello world</h1>
+                <div class="col-md-3">
+                    <div class="simple-jumbo">
+                        <div class="row margin-0">
+                            <!-- Foto de perfil -->
+                            <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
+                                <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
+                            </div>
+                        </div>
+                        <!-- Nick -->
+                        <div class="row margin-0" style="padding-top: 10px">
+                            <div class="text-center">
+                                <p>{{user.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="simple-jumbo">
+                        <h2 class="page-header text-center" style="margin-top: 10px;">{{view_name}}</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item list-hover" ng-repeat="pub in publishers">
+                                {{pub.name}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

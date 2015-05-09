@@ -129,6 +129,17 @@ angular.module('starter', ['ui.router'])
                 }
             })
 
+            .state('search', {
+                url: "/search/:_term",
+                templateUrl: "templates/main/search.html",
+                controller: "SearchCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
+            })
+
             .state('settings', {
                 url: "/settings",
                 templateUrl: "templates/main/settings.html",

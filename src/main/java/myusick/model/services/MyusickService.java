@@ -149,7 +149,7 @@ public class MyusickService {
      * @param uuid id del publicante
      * @return lista de enteros con los ids de publicantes
      */
-    public ArrayList<Integer> getFollowers(int uuid){
+    public ArrayList<Integer> getFollowersIds(int uuid){
         SeguirDAO sdao = new SeguirDAO();
         try {
             sdao.setConnection(ConnectionAdmin.getConnection());
@@ -309,5 +309,29 @@ public class MyusickService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    //TODO
+    public void buscarPersonaPorNombre(String term) {
+    }
+
+    //TODO
+    public void buscarGrupoPorNombre(String term) {
+    }
+
+    //TODO
+    public void buscarPublicantePorTag(String term) {
+    }
+
+    //TODO
+    public void buscarPersonaPorAptitud(String term) {
+    }
+
+    //TODO
+    public void getFollowers(int userid) {
+    }
+
+    //TODO
+    public void getFollowing(int userid) {
     }
 }

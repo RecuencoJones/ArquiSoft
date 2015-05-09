@@ -43,7 +43,7 @@
                         <!-- Nick y bio -->
                         <div class="row margin-0" style="padding-top: 10px">
                             <div class="text-center">
-                                <p>{{band.name}}</p>
+                                <p style="font-weight: bold">{{band.name}}</p>
                                 <p>{{band.year}}</p>
                                 <p>{{band.description}}</p>
                             </div>
@@ -78,7 +78,7 @@
                 <!-- Panel derecho (miembros) -->
                 <div class="col-md-3 col-md-push-6">
                     <div class="simple-jumbo">
-                        <p class="text-center">Members</p>
+                        <p class="text-center" style="font-weight: bold">Members</p>
                         <div class="btn-group-vertical" style="display: block">
                             <a class="btn btn-default" ng-repeat="member in band.members" ng-href="#/profile/{{member.id}}">{{member.name}}</a>
                             <a class="btn btn-success" ng-click="apply()" ng-hide="userIsMember">Apply for group</a>
@@ -87,25 +87,25 @@
                         </div>
                     </div>
                     <div class="simple-jumbo" style="margin-top: 25px">
-                        <p class="text-center">Tags</p>
+                        <p class="text-center" style="font-weight: bold">Tags</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" ng-repeat="tag in band.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
+                            <a class="btn btn-default" ng-repeat="tag in band.tags" ng-href="#/search/{{tag}}">{{tag}}</a>
                             <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput || !userIsMember">Add tag</a>
                             <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
                                 <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag"/>
                             </form>
                         </div>
                     </div>
-                    <div class="simple-jumbo" style="margin-top: 25px" ng-show="userIsMember">
-                        <p class="text-center">Applicants</p>
+                    <div class="simple-jumbo" style="margin-top: 25px" ng-show="userIsMember && applicants.length">
+                        <p class="text-center" style="font-weight: bold">Applicants</p>
                         <div style="display: block">
                             <div ng-repeat="applicant in applicants track by $index">
                                 <div class="btn-group-justified">
-                                    <a class="btn btn-default no-bot-radius" ng-href="#/profile/{{applicant}}">Placeholder name for {{applicant}}</a>
+                                    <a class="btn btn-default no-bot-radius" ng-href="#/profile/{{applicant.id}}">{{applicant.name}}</a>
                                 </div>
                                 <div class="btn-group-justified">
-                                    <a class="btn btn-success no-right-radius" ng-click="accept(applicant,$index)"><span class="glyphicon glyphicon-ok"></span></a>
-                                    <a class="btn btn-danger no-left-radius" ng-click="reject(applicant,$index)"><span class="glyphicon glyphicon-remove"></span></a>
+                                    <a class="btn btn-success no-right-radius" ng-click="accept(applicant.id,applicant.name,$index)"><span class="glyphicon glyphicon-ok"></span></a>
+                                    <a class="btn btn-danger no-left-radius" ng-click="reject(applicant.id,$index)"><span class="glyphicon glyphicon-remove"></span></a>
                                 </div>
                             </div>
                         </div>

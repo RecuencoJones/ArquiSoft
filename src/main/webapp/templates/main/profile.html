@@ -43,7 +43,7 @@
                         <!-- Nick y bio -->
                         <div class="row margin-0" style="padding-top: 10px">
                             <div class="text-center">
-                                <p>{{user.name}}</p>
+                                <p style="font-weight: bold">{{user.name}}</p>
                                 <p>{{user.description}}</p>
                             </div>
                         </div>
@@ -51,8 +51,10 @@
                         <div class="row margin-0">
                             <ul class="list-group">
                                 <li class="list-group-item" ng-repeat="apt in user.skills">
-                                    <span class="badge">10</span>
-                                    {{apt}}
+                                    <a ng-href="#/search/{{apt}}">
+                                        {{apt}}
+                                        <span class="badge">10</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -86,16 +88,16 @@
                 <!-- Panel derecho (grupos) -->
                 <div class="col-md-3 col-md-push-6">
                     <div class="simple-jumbo">
-                        <p class="text-center">Bands</p>
+                        <p class="text-center" style="font-weight: bold">Bands</p>
                         <div class="btn-group-vertical" style="display: block">
                             <a class="btn btn-default" ng-repeat="group in user.groups" ng-href="#/group/{{group.id}}">{{group.name}}</a>
                             <a class="btn btn-primary" href="#/newGroup" ng-show="isOwner()">Create group</a>
                         </div>
                     </div>
                     <div class="simple-jumbo" style="margin-top: 25px">
-                        <p class="text-center">Tags</p>
+                        <p class="text-center" style="font-weight: bold">Tags</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/tagged/{{tag}}">{{tag}}</a>
+                            <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/search/{{tag}}">{{tag}}</a>
                             <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput || !isOwner()">Add tag</a>
                             <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
                                 <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag"/>

@@ -136,7 +136,7 @@ public class RestServices {
     @Path("/follow/{seguidor}/{seguido}")
     @Produces(MediaType.APPLICATION_JSON)
     public String follow(@PathParam("seguidor") int seguidor, @PathParam("seguido") int seguido){
-        return FollowService.follow(seguidor,seguido);
+        return FollowService.follow(seguidor, seguido);
     }
 
     /**
@@ -166,6 +166,30 @@ public class RestServices {
     }
 
     /**
+     * TODO
+     * @param userid
+     * @return
+     */
+    @GET
+    @Path("/followers/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getFollowers(@PathParam("userid") int userid){
+        return FollowService.getFollowers(userid);
+    }
+
+    /**
+     * TODO
+     * @param userid
+     * @return
+     */
+    @GET
+    @Path("/following/{userid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getFollowing(@PathParam("userid") int userid){
+        return FollowService.getFollowing(userid);
+    }
+
+    /**
      * Agrega un nuevo miembro pendiente de aceptacion a la banda
      * @param bandid
      * @param personid
@@ -175,7 +199,7 @@ public class RestServices {
     @Path("/band/apply/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String applyForGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
-        return BandService.apply(bandid,personid);
+        return BandService.apply(bandid, personid);
     }
 
     /**
@@ -188,7 +212,7 @@ public class RestServices {
     @Path("/band/leave/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String leaveGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid) {
-        return BandService.leave(bandid,personid);
+        return BandService.leave(bandid, personid);
     }
 
     /**
@@ -201,7 +225,7 @@ public class RestServices {
     @Path("/band/accept/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String acceptFromGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
-        return BandService.accept(bandid,personid);
+        return BandService.accept(bandid, personid);
     }
 
     /**
@@ -214,7 +238,7 @@ public class RestServices {
     @Path("/band/reject/{bandid}/{personid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String rejectIntoGroup(@PathParam("bandid") int bandid, @PathParam("personid") int personid){
-        return BandService.reject(bandid,personid);
+        return BandService.reject(bandid, personid);
     }
 
     /**
@@ -252,5 +276,52 @@ public class RestServices {
     public String getLatestPosts(@PathParam("userid") int userid){
         return PostService.getLatestPosts(userid);
     }
-    
+
+    /**
+     * TODO 
+     * @param term
+     * @return
+     */
+    @GET
+    @Path("/search/person/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchPerson(@PathParam("term") String term){
+        return SearchService.searchPerson(term);        
+    }
+
+    /**
+     * TODO
+     * @param term
+     * @return
+     */
+    @GET
+    @Path("/search/group/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchGroup(@PathParam("term") String term){
+        return SearchService.searchGroup(term);
+    }
+
+    /**
+     * TODO
+     * @param term
+     * @return
+     */
+    @GET
+    @Path("/search/tag/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchTag(@PathParam("term") String term){
+        return SearchService.searchTag(term);
+    }
+
+    /**
+     * TODO
+     * @param term
+     * @return
+     */
+    @GET
+    @Path("/search/skill/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String searchSkill(@PathParam("term") String term){
+        return SearchService.searchSkill(term);
+    }
 }

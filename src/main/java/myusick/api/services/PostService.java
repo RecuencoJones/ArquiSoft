@@ -24,7 +24,7 @@ public class PostService {
         
         //broadcast
 //        String subs = "1,2,3,4,5";
-        ArrayList<Integer> subs = new MyusickService().getFollowers(postDTO.getId());
+        ArrayList<Integer> subs = new MyusickService().getFollowersIds(postDTO.getId());
         WebSocketDispatcher wsd = WebsocketProvider.getWebSocketDispatcher();
         for(Integer s : subs){
             wsd.dispatch(post,s.toString());

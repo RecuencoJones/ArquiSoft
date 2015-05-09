@@ -147,12 +147,12 @@ angular.module('starter')
             }
         };
         
-        $scope.accept = function(id,index){
+        $scope.accept = function(id,name,index){
             $http.put(API.URL+API.ACCEPT_APPLICANT_ENDPOINT+$scope.bandId+"/"+id)
                 .success(function(data){
                     console.log(data);
                     if(data.res){
-                        $scope.band.members.push({id: id, name: "Placeholder for "+id});
+                        $scope.band.members.push({id: id, name: name});
                         $scope.applicants.splice(index,1);
                     }
                 });

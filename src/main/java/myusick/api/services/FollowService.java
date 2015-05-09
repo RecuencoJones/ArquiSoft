@@ -1,5 +1,6 @@
 package myusick.api.services;
 
+import com.google.gson.Gson;
 import myusick.model.services.MyusickService;
 
 /**
@@ -19,5 +20,19 @@ public class FollowService {
     public static String isFollowing(int seguidor, int seguido) {
         boolean res = new MyusickService().isfollow(seguidor, seguido);
         return "{\"res\": "+res+"}";
+    }
+
+    //TODO
+    public static String getFollowers(int userid) {
+        Gson gson = new Gson();
+        new MyusickService().getFollowers(userid);
+        return null;
+    }
+
+    //TODO
+    public static String getFollowing(int userid) {
+        Gson gson = new Gson();
+        new MyusickService().getFollowing(userid);
+        return null;
     }
 }
