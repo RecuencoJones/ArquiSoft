@@ -9,6 +9,7 @@ angular.module('starter')
         "PROFILE_ENDPOINT": "/profile/",
         "CREATE_BAND_ENDPOINT": "/newgroup",
         "TAG_ENDPOINT": "/newtag",
+        "SKILL_ENDPOINT": "/newskill",
         "POST_ENDPOINT": "/post/",
         "FOLLOW_ENDPOINT": "/follow/",
         "UNFOLLOW_ENDPOINT": "/unfollow/",

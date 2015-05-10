@@ -1,6 +1,6 @@
 package myusick.util.security;
 
-import myusick.model.dto.ErrorsDTO;
+import myusick.controller.dto.ErrorsDTO;
 
 /**
  * Created by david on 05/04/2015.

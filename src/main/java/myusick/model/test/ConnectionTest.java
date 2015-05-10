@@ -1,6 +1,6 @@
 package myusick.model.test;
 
-import myusick.persistence.connection.ConnectionAdmin;
+import myusick.model.connection.ConnectionAdmin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

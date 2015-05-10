@@ -28,7 +28,7 @@
                 <div class="col-md-8">
                     <div class="simple-jumbo">
                         <form class="form-group" ng-submit="send()">
-                            <input class="form-control" type="text" placeholder="Say something" ng-model="text"/>
+                            <input class="form-control" type="text" placeholder="Say something" ng-model="text" required/>
                         </form>
                         <ul class="list-group">
                             <li class="list-group-item list-group-item-warning" ng-show="newMessages.length" ng-click="flush()">{{newMessages.length}} new posts</li>

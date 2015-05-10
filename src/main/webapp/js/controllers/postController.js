@@ -1,7 +1,7 @@
 angular.module('starter')
 
     .controller('PostCtrl', [ '$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
-        $scope.loggedUserId = auth.identity().userid;
+        //$scope.loggedUserId = auth.identity().userid;
         $scope.hidden = true;
         $scope.post = "";
 

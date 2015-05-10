@@ -49,17 +49,15 @@
                         </div>
                         <!-- Aptitudes -->
                         <div class="row margin-0">
-                            <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="apt in user.skills">
-                                    <a ng-href="#/search/{{apt}}">
+                                <div class="btn-group-vertical" style="width: 100%">
+                                    <a class="btn btn-default" ng-repeat="apt in user.skills" ng-href="#/search/{{apt}}">
                                         {{apt}}
-                                        <span class="badge">10</span>
+                                        <span class="badge">0</span>
                                     </a>
-                                </li>
-                            </ul>
+                                </div>
                         </div>
                         <!-- Editar perfil -->
-                        <div class="row" ng-show="isOwner()">
+                        <div class="row" ng-show="isOwner()" style="margin-top: 25px">
                             <div class="col-md-12">
                                 <div class="btn-group btn-group-justified">
                                     <a class="btn btn-primary" ng-href="#/profile/{{loggedUserId}}/edit">
@@ -69,7 +67,7 @@
                             </div>
                         </div>
                         <!-- follow -->
-                        <div class="row" ng-hide="isOwner()">
+                        <div class="row" ng-hide="isOwner()" style="margin-top: 25px">
                             <div class="col-md-12">
                                 <div class="btn-group btn-group-justified" ng-hide="following">
                                     <a class="btn btn-success" ng-click="follow()">
@@ -100,7 +98,7 @@
                             <a class="btn btn-default" ng-repeat="tag in user.tags" ng-href="#/search/{{tag}}">{{tag}}</a>
                             <a class="btn btn-primary" ng-click="showTagInput = true" ng-hide="showTagInput || !isOwner()">Add tag</a>
                             <form class="form-group" ng-show="showTagInput" ng-submit="submitTag()">
-                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag"/>
+                                <input class="form-control" type="text" ng-model="newtag" placeholder="Add a tag" required/>
                             </form>
                         </div>
                     </div>
@@ -109,7 +107,7 @@
                 <div class="col-md-6 col-md-pull-3">
                     <div class="simple-jumbo">
                         <form class="form-group" ng-submit="sendMessage()" ng-show="isOwner()">
-                            <input class="form-control" type="text" ng-model="message" placeholder="Say something"/>
+                            <input class="form-control" type="text" ng-model="message" placeholder="Say something" required/>
                         </form>
                         <ul class="list-group">
                             <li class="list-group-item" ng-repeat="pub in user.publications | orderBy: '-date'">
