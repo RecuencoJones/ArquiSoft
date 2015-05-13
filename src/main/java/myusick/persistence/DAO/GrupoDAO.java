@@ -7,6 +7,7 @@ import myusick.model.dto.RegisterDTO;
 import myusick.persistence.VO.Grupo;
 import myusick.persistence.VO.Persona;
 import myusick.persistence.connection.ConnectionAdmin;
+import myusick.persistence.connection.PoolManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,19 +18,10 @@ import java.util.List;
  */
 public class GrupoDAO {
 
-    private Connection con;
-
-    public void setConnection(Connection con) {
-        try{
-            this.con = con;
-            this.con.setAutoCommit(false);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<PublisherDTO> getMembersGroup(int uuid){
         ArrayList<PublisherDTO> result = new ArrayList<>();
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try {
             String queryString = "select Publicante_UUID,nombre from Persona where publicante_uuid " +
                     "in (select uuid_p from es_integrante where uuid_g=?)";
@@ -40,20 +32,26 @@ public class GrupoDAO {
                 result.add(new PublisherDTO(resultSet.getInt(1), resultSet.getString(2)));
             }
             con.commit();
+            pm.returnConnection(con);
             return result;
         } catch (SQLException e) {
             try{
                 con.rollback();
+                pm.returnConnection(con);
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return null;
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
+            pm.returnConnection(con);
             return result;
         }
     }
 
     public boolean esUnGrupo(int uuid) {
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try {
             String queryString = "select tipoPublicante from publicante where uuid=?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
@@ -61,10 +59,12 @@ public class GrupoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 con.commit();
+                pm.returnConnection(con);
                 return resultSet.getBoolean(1) == true;
             }
             else{
                 con.rollback();
+                pm.returnConnection(con);
                 return false;
             }
         } catch (SQLException e) {
@@ -72,11 +72,14 @@ public class GrupoDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return false;
         }
     }
 
     public Grupo getDataProfile(int uuid) {
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try {
             String queryString = "select nombre,descripcion,anyoFundacion,avatar from grupo where publicante_uuid = ?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
@@ -84,26 +87,29 @@ public class GrupoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 con.commit();
+                pm.returnConnection(con);
                 return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyoFundacion"),
                         resultSet.getString("descripcion"), resultSet.getString("avatar"));
-            }
-            else{
+            } else{
                 con.rollback();
+                pm.returnConnection(con);
                 return null;
             }
         } catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            pm.returnConnection(con);
             e.printStackTrace();
             return null;
         }
     }
 
     public int registerGroup(GroupDTO gd) {
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            pdao.setConnection(ConnectionAdmin.getConnection());
             int uuid = pdao.insertarPublicante(true);
             if (uuid != -1) {
                 String query = "insert into grupo (Publicante_UUID,nombre,anyofundacion,descripcion) values (?,?,?,?)";
@@ -122,18 +128,21 @@ public class GrupoDAO {
                     ps.setInt(2,gd.getCreator());
                     insertedRows = ps.executeUpdate();
                     con.commit();
-                    pdao.closeConnection();
                     if(insertedRows == 1){
+                        pm.returnConnection(con);
                         return uuid;
-                    }else return uuid;
+                    }else{
+                        pm.returnConnection(con);
+                        return uuid;
+                    }
                 } else {
                     con.rollback();
-                    pdao.closeConnection();
+                    pm.returnConnection(con);
                     return -1;
                 }
             } else {
                 con.rollback();
-                pdao.closeConnection();
+                pm.returnConnection(con);
                 return -1;
             }
         } catch (SQLException e) {
@@ -141,11 +150,14 @@ public class GrupoDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return -1;
         }
     }
 
     public boolean solicitudInsercionGrupo(int persona, int grupo){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try{
             String query = "insert into Pendiente_aceptacion (Grupo,Persona) values (?,?)";
             PreparedStatement ps = con.prepareStatement(query);
@@ -154,22 +166,27 @@ public class GrupoDAO {
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
                 con.commit();
+                pm.returnConnection(con);
                 return true;
             }
             else{
                 con.rollback();
+                pm.returnConnection(con);
                 return false;
             }
         }catch (SQLException e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            pm.returnConnection(con);
             e.printStackTrace();
             return false;
         }
     }
 
     public boolean rechazarDeGrupo (int persona, int grupo){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try{
             String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
             PreparedStatement ps = con.prepareStatement(query);
@@ -178,21 +195,26 @@ public class GrupoDAO {
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
                 con.commit();
+                pm.returnConnection(con);
                 return true;
             }else{
                 con.rollback();
+                pm.returnConnection(con);
                 return false;
             }
         }catch (SQLException e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            pm.returnConnection(con);
             e.printStackTrace();
             return false;
         }
     }
 
     public boolean anadirAGrupo(int persona, int grupo){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         /* Primero lo eliminamos de la tabla de pendientes por aceptar */
         try{
             String query = "delete from Pendiente_aceptacion where persona = ? and grupo = ?";
@@ -210,10 +232,12 @@ public class GrupoDAO {
                 insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
                     con.commit();
+                    pm.returnConnection(con);
                     return true;
                 }else{
                     con.rollback();
                     System.out.println("No ha insertado nada en es_integrante");
+                    pm.returnConnection(con);
                     return false;
                 }
             }
@@ -221,6 +245,7 @@ public class GrupoDAO {
                 /* Esa persona no tenia una solicitud pendiente, error */
                 System.out.println("No hay solicitud pendiente");
                 con.rollback();
+                pm.returnConnection(con);
                 return false;
             }
         }catch (SQLException e) {
@@ -228,12 +253,15 @@ public class GrupoDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return false;
         }
 
     }
 
     public boolean eliminarDeGrupo(int persona, int grupo){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         try{
             String query = "delete from es_integrante where uuid_p = ? and uuid_g = ?";
             PreparedStatement ps = con.prepareStatement(query);
@@ -243,23 +271,27 @@ public class GrupoDAO {
             System.out.println(insertedRows);
             if (insertedRows != 0) {
                 con.commit();
+                pm.returnConnection(con);
                 return true;
             }
             else{
-                System.out.println("No hace el delete");
                 con.rollback();
+                pm.returnConnection(con);
                 return false;
             }
         }catch (SQLException e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            pm.returnConnection(con);
             e.printStackTrace();
             return false;
         }
     }
 
     public List<PublisherDTO> pendientesDeAceptar(int grupo){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         List<PublisherDTO> pendientes = new ArrayList<PublisherDTO>();
         try{
             String query = "select pa.persona, p.nombre from " +
@@ -271,26 +303,30 @@ public class GrupoDAO {
             while (rs.next()) {
                 pendientes.add(new PublisherDTO(rs.getInt(1),rs.getString(2)));
             }
+            pm.returnConnection(con);
             return pendientes;
         }catch (SQLException e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            pm.returnConnection(con);
             e.printStackTrace();
             return null;
         }
     }
 
     public List<ProfileDTO> buscarPorNombre(String nombre){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
         try{
             String query = "select Publicante_uuid, descripcion, avatar from persona where nombre = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, nombre);
             ResultSet rs = ps.executeQuery();
-            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
-            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
-            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            AptitudDAO adao = new AptitudDAO();
+            TagDAO tdao = new TagDAO();
+            PublicacionDAO pdao = new PublicacionDAO();
             while(rs.next()){
                 int uuid = rs.getInt(1);
                 ProfileDTO perfil = new ProfileDTO(nombre,rs.getString("descripcion"),
@@ -298,20 +334,21 @@ public class GrupoDAO {
                         this.getMembersGroup(uuid),null,pdao.getPublicacionesById(uuid));
                 resultado.add(perfil);
             }
-            adao.closeConnection();
-            tdao.closeConnection();
-            pdao.closeConnection();
+            pm.returnConnection(con);
             return resultado;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return null;
         }
     }
 
     public List<ProfileDTO> buscarPorTag(String tag){
+        PoolManager pm = PoolManager.getInstance();
+        Connection con = pm.getConnection();
         List<ProfileDTO> resultado = new ArrayList<ProfileDTO>();
         try{
             String query = "select nombre,avatar, descripcion, Publicante_UUID from grupo where publicante_uuid in(" +
@@ -321,9 +358,9 @@ public class GrupoDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, tag);
             ResultSet rs = ps.executeQuery();
-            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
-            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
-            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            AptitudDAO adao = new AptitudDAO();
+            TagDAO tdao = new TagDAO();
+            PublicacionDAO pdao = new PublicacionDAO();
             while(rs.next()){
                 int uuid = rs.getInt("Publicante_UUID");
                 ProfileDTO perfil = new ProfileDTO(rs.getString("nombre"),rs.getString("descripcion"),
@@ -331,26 +368,15 @@ public class GrupoDAO {
                         null,this.getMembersGroup(uuid),pdao.getPublicacionesById(uuid));
                 resultado.add(perfil);
             }
-            adao.closeConnection();
-            tdao.closeConnection();
-            pdao.closeConnection();
+            pm.returnConnection(con);
             return resultado;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pm.returnConnection(con);
             return null;
-        }
-    }
-
-    public boolean closeConnection(){
-        try {
-            con.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }
