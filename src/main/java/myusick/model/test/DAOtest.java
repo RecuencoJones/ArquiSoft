@@ -1,6 +1,6 @@
 package myusick.model.test;
 
-import myusick.persistence.connection.PoolManager;
+import myusick.model.connection.PoolManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

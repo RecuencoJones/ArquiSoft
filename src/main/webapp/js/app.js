@@ -99,12 +99,12 @@ angular.module('starter', ['ui.router'])
             .state('post', {
                 url: "/post/:_postid",
                 templateUrl: "templates/main/post.html",
-                controller: "PostCtrl",
+                controller: "PostCtrl"/*,
                 onEnter: function($state,auth){
                     if(!auth.isAuthenticated()){
                         $state.go('home');
                     }
-                }
+                }*/
             })
 
             .state('followers', {
@@ -122,6 +122,17 @@ angular.module('starter', ['ui.router'])
                 url: "/following/:_userid",
                 templateUrl: "templates/main/followers.html",
                 controller: "FollowingCtrl",
+                onEnter: function($state,auth){
+                    if(!auth.isAuthenticated()){
+                        $state.go('home');
+                    }
+                }
+            })
+
+            .state('search', {
+                url: "/search/:_term",
+                templateUrl: "templates/main/search.html",
+                controller: "SearchCtrl",
                 onEnter: function($state,auth){
                     if(!auth.isAuthenticated()){
                         $state.go('home');

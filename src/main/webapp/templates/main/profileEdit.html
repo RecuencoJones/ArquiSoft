@@ -10,7 +10,75 @@
         <div class="container">
 
             <div class="row">
-                <h1>Hello world</h1>
+                <!-- General -->
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="jumbotron jumbotron-inverted jumbo-transparent">
+                        <form class="container-fluid" ng-submit="update()">
+                            <div class="form-group" ng-class="{'has-error': errors.name}">
+                                <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </span>
+                                    <input class="form-control" type="text" placeholder="Name" ng-model="user.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.email}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                    </span>
+                                    <input class="form-control" type="text" placeholder="Email" ng-model="user.email"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.avatar}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-picture"></span>
+                                    </span>
+                                    <input class="form-control" type="url" placeholder="Avatar" ng-model="user.avatar"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.description}">
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                </span>
+                                    <textarea class="form-control" type="text" placeholder="Biography" ng-model="user.bio" style="resize: vertical"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.password}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class=" glyphicon glyphicon-lock"></span>
+                                    </span>
+                                    <input class="form-control right-top-radius" type="password" placeholder="New password" ng-model="password">
+                                    <input class="form-control right-bot-radius" type="password" placeholder="Repeat password" ng-model="repassword">
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-success" type="submit">Send</button>
+                        </form>
+                        <br>
+                        <div class="btn-group-justified" ng-hide="hiddenErrorMessage">
+                            <a class="btn btn-danger" style="background-color: #D43F3A;" ng-click="hideErrorMessage()">
+                                Check errors. <span class="glyphicon glyphicon-ban-circle"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills (aptitudes) -->
+                <div class="col-md-3">
+                    <div class="simple-jumbo">
+                        <p class="text-center" style="font-weight: bold">Skills</p>
+                        <div class="btn-group-vertical" style="display: block">
+                            <a class="btn btn-default" ng-repeat="skill in user.skills" ng-href="#/search/{{skill}}">{{skill}}</a>
+                            <a class="btn btn-primary" ng-click="showSkillInput = true" ng-hide="showSkillInput">Add skill</a>
+                            <form class="form-group" ng-show="showSkillInput" ng-submit="submitSkill()">
+                                <input class="form-control" type="text" ng-model="newskill" placeholder="Add a skill" required/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

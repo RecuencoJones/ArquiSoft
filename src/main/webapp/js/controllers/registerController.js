@@ -10,7 +10,7 @@ angular.module('starter')
         
         $scope.register = function(){
             
-            $scope.errors;
+            $scope.errors = {};
             $scope.hiddenErrorMessage = true;
             
             if($scope.password==undefined

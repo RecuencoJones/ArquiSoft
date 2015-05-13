@@ -24,8 +24,8 @@ public class Test {
 //
 //        /*Configuration configuration = new Configuration();
 //        configuration.addClass(myusick.persistence.VO.Aptitud.class);
-//        configuration.addClass(myusick.persistence.VO.Grupo.class);
-//        configuration.addClass(myusick.persistence.VO.Persona.class);
+//        configuration.addClass(myusick.model.vo.Grupo.class);
+//        configuration.addClass(myusick.model.vo.Persona.class);
 //        configuration.addClass(myusick.persistence.VO.Publicacion.class);
 //        configuration.addClass(myusick.persistence.VO.Publicante.class);
 //        configuration.addClass(myusick.persistence.VO.Tag.class);*/

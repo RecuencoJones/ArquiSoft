@@ -12,4 +12,30 @@ angular.module('starter')
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
+
+        $scope.view_name = "Following";
+        $scope.user = {};
+
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.user_id)
+            .success(function(data){
+                console.log(data);
+                if(data.type){
+                    $state.go("error");
+                }else{
+                    $scope.user = data;
+                }
+            }).error(function(data){
+                console.log("error");
+            });
+
+        $http.get(API.URL + API.FOLLOWING_ENDPOINT + $scope.user_id)
+            .success(function(data){
+                console.log(data);
+            });
+        
+        $scope.publishers = [
+            {
+                name: "derp"
+            }
+        ];
     }]);

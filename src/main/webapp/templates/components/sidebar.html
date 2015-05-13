@@ -1,8 +1,8 @@
 <br>
 <ul class="sidebar-nav">
     <li ng-class="{ active: isActive('/find')}">
-        <form ng-submit="search()">
-            <input class="form-control" type="text">
+        <form ng-submit="sidebar_search()" style="padding: 15px">
+            <input class="form-control" type="text" ng-model="search_term" placeholder="Search" required>
         </form>
     </li>
     <li ng-class="{ my_active: isActive('/profile/'+loggedUserId)}">

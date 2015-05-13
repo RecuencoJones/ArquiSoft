@@ -1,10 +1,9 @@
 package myusick.util.security;
 
 
-import myusick.model.dto.AuthTokenDTO;
-import myusick.model.dto.GroupDTO;
-import myusick.model.dto.LoginDTO;
-import myusick.model.dto.PublisherDTO;
+import myusick.controller.dto.AuthTokenDTO;
+import myusick.controller.dto.LoginDTO;
+import myusick.controller.dto.PublisherDTO;
 
 import java.util.ArrayList;
 

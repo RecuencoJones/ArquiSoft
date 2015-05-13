@@ -1,16 +1,6 @@
 package myusick.model.test;
 
-import myusick.model.dto.*;
-import myusick.model.services.MyusickService;
-import myusick.persistence.connection.ConnectionAdmin;
-import org.eclipse.persistence.tools.profiler.Profile;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import myusick.controller.MyusickService;
 
 /**
  * Created by Cuenta de clase on 04/04/2015.

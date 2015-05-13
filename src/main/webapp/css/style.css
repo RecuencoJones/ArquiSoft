@@ -124,6 +124,7 @@ body {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
+    border: 2px solid orange;
 }
 
 .margin-0 {
@@ -141,6 +142,10 @@ body {
 
 .my_active {
     background-color: #000;
+}
+
+.list-hover:hover {
+    background-color: #f5f5f5;
 }
 
 @media(min-width:990px) {
