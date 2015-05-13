@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import myusick.controller.dto.TagDTO;
-import myusick.model.connection.ConnectionAdmin;
+import myusick.model.connection.PoolManager;
 
 import java.sql.*;
 
@@ -15,18 +15,9 @@ import java.sql.*;
  */
 public class TagDAO {
 
-    private Connection con;
-
-    public void setConnection(Connection con) {
-        try{
-            this.con = con;
-            this.con.setAutoCommit(false);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<String> getTagsByPersona(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         ArrayList<String> result = new ArrayList<>();
         try {
             String queryString = "select nombreTag from tag where idTag in (select idTag " +
@@ -38,17 +29,21 @@ public class TagDAO {
                 result.add(resultSet.getString(1));
             }
             con.commit();
+            pool.returnConnection(con);
             return result;
         } catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace(System.err);
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public ArrayList<String> getTagsByGrupo(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         ArrayList<String> result = new ArrayList<>();
         try {
             String queryString = "select nombreTag from tag where idTag in (select idTag " +
@@ -60,17 +55,21 @@ public class TagDAO {
                 result.add(resultSet.getString(1));
             }
             con.commit();
+            pool.returnConnection(con);
             return result;
         } catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace(System.err);
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public boolean registrarTag(TagDTO td) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             int existeTag = getIdByNombre(td.getNombre());
             if (existeTag == -1) {
@@ -85,19 +84,23 @@ public class TagDAO {
                     int uuid = keys.getInt(1);
                     /* anadimos ahora a la tabla de asociacion con el publicante */
                     con.commit();
+                    pool.returnConnection(con);
                     return asociarTag(uuid, td.getPublicante());
 
                 } else{
                     con.rollback();
+                    pool.returnConnection(con);
                     return false;
                 }
             } else if (existeTag == -2) {
                 /*Error de BD*/
                 con.rollback();
+                pool.returnConnection(con);
                 return false;
             } else {
                 /*el tag existe*/
                 con.rollback();
+                pool.returnConnection(con);
                 return asociarTag(existeTag, td.getPublicante());
             }
         } catch (SQLException e) {
@@ -105,11 +108,14 @@ public class TagDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return false;
         }
     }
 
     public int getIdByNombre(String nombre){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try{
             String query = "select idTag from tag where nombreTag = ?";
             PreparedStatement ps = con.prepareStatement(query);
@@ -117,10 +123,12 @@ public class TagDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 con.commit();
+                pool.returnConnection(con);
                 return rs.getInt(1);
             }
             else{
                 con.rollback();
+                pool.returnConnection(con);
                 return -1;
             }
         }catch(SQLException e){
@@ -128,16 +136,17 @@ public class TagDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return -2;
         }
     }
 
     private boolean asociarTag(int idTag, int idPublicante) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             GrupoDAO gdao = new GrupoDAO();
             PersonaDAO pdao = new PersonaDAO();
-            gdao.setConnection(ConnectionAdmin.getConnection());
-            pdao.setConnection(ConnectionAdmin.getConnection());
             String query = null;
             if (gdao.esUnGrupo(idPublicante)) {
                 query = "insert into grupo_tiene_tag (uuid_g,idTag) values (?,?)";
@@ -146,8 +155,7 @@ public class TagDAO {
             } else {
                 /* error, el publicante no existe*/
                 con.rollback();
-                gdao.closeConnection();
-                pdao.closeConnection();
+                pool.returnConnection(con);
                 return false;
             }
             PreparedStatement ps = con.prepareStatement(query);
@@ -156,13 +164,11 @@ public class TagDAO {
             int insertedRows = ps.executeUpdate();
             if (insertedRows == 1) {
                 con.commit();
-                gdao.closeConnection();
-                pdao.closeConnection();
+                pool.returnConnection(con);
                 return true;
             } else {
                 con.rollback();
-                gdao.closeConnection();
-                pdao.closeConnection();
+                pool.returnConnection(con);
                 return false;
             }
         } catch (SQLException e) {
@@ -170,16 +176,7 @@ public class TagDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean closeConnection(){
-        try {
-            con.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+            pool.returnConnection(con);
             return false;
         }
     }
