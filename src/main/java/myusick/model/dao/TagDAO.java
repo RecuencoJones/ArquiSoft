@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import myusick.controller.dto.TagDTO;
+import myusick.controller.dto.SkillTagDTO;
 import myusick.model.connection.PoolManager;
 
 import java.sql.*;
@@ -67,7 +67,7 @@ public class TagDAO {
         }
     }
 
-    public boolean registrarTag(TagDTO td) {
+    public boolean registrarTag(SkillTagDTO td) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -123,8 +123,9 @@ public class TagDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 con.commit();
+                int resultado = rs.getInt(1);
                 pool.returnConnection(con);
-                return rs.getInt(1);
+                return resultado;
             }
             else{
                 con.rollback();
@@ -133,6 +134,7 @@ public class TagDAO {
             }
         }catch(SQLException e){
             try{
+                e.printStackTrace();
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();

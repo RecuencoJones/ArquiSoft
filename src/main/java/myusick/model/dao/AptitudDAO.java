@@ -1,7 +1,6 @@
 package myusick.model.dao;
 
-import myusick.controller.dto.TagDTO;
-import myusick.model.connection.ConnectionAdmin;
+import myusick.controller.dto.SkillTagDTO;
 import myusick.model.connection.PoolManager;
 
 import java.sql.*;
@@ -38,7 +37,7 @@ public class AptitudDAO {
         }
     }
 
-    public boolean registrarAptitud(TagDTO td) {
+    public boolean registrarAptitud(SkillTagDTO td) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -95,8 +94,9 @@ public class AptitudDAO {
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 con.commit();
+                int resultado = rs.getInt(1);
                 pool.returnConnection(con);
-                return rs.getInt(1);
+                return resultado;
             }
             else{
                 con.rollback();

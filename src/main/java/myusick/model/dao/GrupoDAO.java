@@ -2,7 +2,6 @@ package myusick.model.dao;
 
 import myusick.controller.dto.*;
 import myusick.model.connection.PoolManager;
-import myusick.model.vo.Grupo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +53,9 @@ public class GrupoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 con.commit();
+                boolean resultado = resultSet.getBoolean(1) == true;
                 pool.returnConnection(con);
-                return resultSet.getBoolean(1) == true;
+                return resultado;
             } else {
                 con.rollback();
                 pool.returnConnection(con);
@@ -63,6 +63,7 @@ public class GrupoDAO {
             }
         } catch (SQLException e) {
             try {
+                e.printStackTrace();
                 con.rollback();
             } catch (SQLException e2) {
                 e2.printStackTrace();
@@ -73,7 +74,7 @@ public class GrupoDAO {
         }
     }
 
-    public Grupo getDataProfile(int uuid) {
+    public ProfileDTO getDataProfile(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -83,9 +84,11 @@ public class GrupoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 con.commit();
+                ProfileDTO g = new ProfileDTO(resultSet.getString("nombre"), resultSet.getString("descripcion"),
+                        resultSet.getString("avatar"), null, new TagDAO().getTagsByGrupo(uuid),
+                        getMembersGroup(uuid), null, new PublicacionDAO().getPublicacionesById(uuid));
                 pool.returnConnection(con);
-                return new Grupo(uuid, resultSet.getString("nombre"), resultSet.getLong("anyoFundacion"),
-                        resultSet.getString("descripcion"), resultSet.getString("avatar"));
+                return g;
             } else {
                 con.rollback();
                 pool.returnConnection(con);
@@ -119,7 +122,6 @@ public class GrupoDAO {
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
                 /* insertamos al usuario en la tabla de union con el grupo */
-                    System.out.println("grupo " + uuid + " persona " + gd.getCreator());
                     query = "insert into es_integrante (UUID_G,UUID_P) values (?,?)";
                     ps = con.prepareStatement(query);
                     ps.setInt(1, uuid);
@@ -191,12 +193,13 @@ public class GrupoDAO {
             ps.setInt(1, persona);
             ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
-            pool.returnConnection(con);
             if (insertedRows == 1) {
                 con.commit();
+                pool.returnConnection(con);
                 return true;
             } else {
                 con.rollback();
+                pool.returnConnection(con);
                 return false;
             }
         } catch (SQLException e) {
@@ -229,13 +232,14 @@ public class GrupoDAO {
                 ps.setInt(1, grupo);
                 ps.setInt(2, persona);
                 insertedRows = ps.executeUpdate();
-                pool.returnConnection(con);
                 if (insertedRows == 1) {
                     con.commit();
+                    pool.returnConnection(con);
                     return true;
                 } else {
                     con.rollback();
                     System.out.println("No ha insertado nada en es_integrante");
+                    pool.returnConnection(con);
                     return false;
                 }
             } else {
@@ -247,6 +251,7 @@ public class GrupoDAO {
             }
         } catch (SQLException e) {
             try {
+                e.printStackTrace();
                 con.rollback();
             } catch (SQLException e2) {
                 e2.printStackTrace();

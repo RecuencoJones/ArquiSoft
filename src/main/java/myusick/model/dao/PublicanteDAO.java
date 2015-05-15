@@ -65,8 +65,9 @@ public class PublicanteDAO {
                 }
             }
             /* Si llegamos aqui es que hay avatar */
+            String resultado = rs.getString(1);
             pool.returnConnection(con);
-            return rs.getString(1);
+            return resultado;
 
         }catch (SQLException e) {
             try{
@@ -102,8 +103,9 @@ public class PublicanteDAO {
                 }
             }
             /* Si llegamos aqui es que hay avatar */
+            String resultado = rs.getString(1);
             pool.returnConnection(con);
-            return rs.getString(1);
+            return resultado;
 
         }catch (SQLException e) {
             try{

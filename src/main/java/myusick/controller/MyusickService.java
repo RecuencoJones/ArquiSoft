@@ -2,11 +2,7 @@ package myusick.controller;
 
 import myusick.controller.dto.*;
 import myusick.model.dao.*;
-import myusick.model.vo.Grupo;
-import myusick.model.vo.Persona;
-import myusick.model.connection.ConnectionAdmin;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +35,12 @@ public class MyusickService {
         PublicacionDAO pubdao = new PublicacionDAO();
         if (gdao.esUnGrupo(uuid)) {
         /* Cogemos los datos necesarios de la entidad grupo*/
-            Grupo g = gdao.getDataProfile(uuid);
+            ProfileDTO g = gdao.getDataProfile(uuid);
             profile.setType(true);
-            profile.setName(g.getNombre());
-            profile.setYear(g.getAnyofundacion());
+            profile.setName(g.getName());
+            profile.setYear(g.getYear());
             profile.setAvatar(g.getAvatar());
-            profile.setDescription(g.getDescripcion());
+            profile.setDescription(g.getDescription());
         /* Cogemos las tags que tiene almacenadas, si las hay*/
             profile.setTags(tdao.getTagsByGrupo(uuid));
         /* Si es un grupo, almacenamos los miembros del mismo */
@@ -53,17 +49,17 @@ public class MyusickService {
             profile.setPublications(pubdao.getPublicacionesById(uuid));
         } else if (pdao.esUnaPersona(uuid)) {
         /* Cogemos los datos necesarios de la entidad persona*/
-            Persona p = pdao.getDataProfile(uuid);
+            ProfileDTO p = pdao.getDataProfile(uuid);
             profile.setType(false);
-            profile.setName(p.getNombre());
+            profile.setName(p.getName());
             profile.setAvatar(p.getAvatar());
-            profile.setDescription(p.getDescripcion());
+            profile.setDescription(p.getDescription());
         /* Cogemos las aptitudes que tiene almacenadas, si las hay*/
             profile.setSkills(adao.getAptitudesByPersona(uuid));
         /* Cogemos las tags que tiene almacenadas, si las hay*/
             profile.setTags(tdao.getTagsByPersona(uuid));
         /* Almacenamos si pertenece a algun grupo y a cuales en caso afirmativo */
-            profile.setGroups(pdao.getGroupsByMember(p.getPublicante_uuid()));
+            profile.setGroups(pdao.getGroupsByMember(uuid));
         /* Almacenamos las publicaciones que tenga */
             profile.setPublications(pubdao.getPublicacionesById(uuid));
         } else {
@@ -81,13 +77,13 @@ public class MyusickService {
         return res;
     }
 
-    public boolean registrarTag(TagDTO td) {
+    public boolean registrarTag(SkillTagDTO td) {
         TagDAO tdao = new TagDAO();
         boolean res = tdao.registrarTag(td);
         return res;
     }
 
-    public boolean registrarSkill(TagDTO td) {
+    public boolean registrarSkill(SkillTagDTO td) {
         AptitudDAO adao = new AptitudDAO();
         boolean res = adao.registrarAptitud(td);
         return res;

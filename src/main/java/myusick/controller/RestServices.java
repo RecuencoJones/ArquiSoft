@@ -4,7 +4,7 @@ import myusick.controller.services.*;
 import myusick.controller.dto.GroupDTO;
 import myusick.controller.dto.PublicationsDTO;
 import myusick.controller.dto.RegisterDTO;
-import myusick.controller.dto.TagDTO;
+import myusick.controller.dto.SkillTagDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -96,7 +96,7 @@ public class RestServices {
     @Path("/newtag")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String newTag(@Context UriInfo info, TagDTO tagDTO){
+    public String newTag(@Context UriInfo info, SkillTagDTO tagDTO){
         return TagService.newTag(info, tagDTO);
     }
 
@@ -110,7 +110,7 @@ public class RestServices {
     @Path("/newskill")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String newSkill(@Context UriInfo info, TagDTO skillDTO){
+    public String newSkill(@Context UriInfo info, SkillTagDTO skillDTO){
         return SkillService.newSkill(info, skillDTO);
     }
     

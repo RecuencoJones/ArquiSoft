@@ -2,9 +2,6 @@ package myusick.model.dao;
 
 import myusick.controller.dto.*;
 import myusick.model.connection.PoolManager;
-import myusick.model.vo.Persona;
-import myusick.model.connection.ConnectionAdmin;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +14,7 @@ import java.util.List;
  */
 public class PersonaDAO {
 
-    public Persona getDataProfile(int uuid){
+    public ProfileDTO getDataProfile(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try{
@@ -25,11 +22,19 @@ public class PersonaDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            pool.returnConnection(con);
-            if(resultSet.next())
-                return new Persona(uuid,resultSet.getString("nombre"),null,null,0,null,null,0,
-                        resultSet.getString("descripcion"),null,resultSet.getString("avatar"));
-            else return null;
+            if(resultSet.next()){
+                ProfileDTO p = new ProfileDTO(resultSet.getString("nombre"), resultSet.getString("descripcion"),
+                        resultSet.getString("avatar"), new AptitudDAO().getAptitudesByPersona(uuid),
+                        new TagDAO().getTagsByPersona(uuid), null, getGroupsByMember(uuid),
+                        new PublicacionDAO().getPublicacionesById(uuid));
+                pool.returnConnection(con);
+                return p;
+            }
+
+            else{
+                pool.returnConnection(con);
+                return null;
+            }
         }catch (Exception e) {
             try{
                 con.rollback();
@@ -49,8 +54,9 @@ public class PersonaDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 con.commit();
+                boolean resultado = resultSet.getBoolean(1)==false;
                 pool.returnConnection(con);
-                return resultSet.getBoolean(1)==false;
+                return resultado;
             }
             else{
                 con.rollback();
