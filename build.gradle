@@ -26,6 +26,8 @@ dependencies {
 
     compile 'org.slf4j:slf4j-simple:1.7.7'
     compile 'org.javassist:javassist:3.15.0-GA'
+
+    testCompile 'junit:junit:4.11'
 }
 
 war.archiveName 'myusick.war'

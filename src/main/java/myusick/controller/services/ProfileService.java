@@ -1,6 +1,7 @@
 package myusick.controller.services;
 
 import com.google.gson.Gson;
+import myusick.controller.dto.EditDTO;
 import myusick.controller.dto.ProfileDTO;
 import myusick.controller.dto.PublisherDTO;
 import myusick.controller.MyusickService;
@@ -26,6 +27,48 @@ public class ProfileService {
             bands.add(band.getId());
         }
         return gson.toJson(bands);
+    }
+
+    /**
+     * TODO
+     * @param editDTO
+     * @return
+     */
+    public static String editProfile(EditDTO editDTO) {
+        Gson gson = new Gson();
+//        if(editDTO.isType()){
+//            //es grupo
+//            if(editDTO.getAvatar() != null){
+//                new MyusickService().updateGroupAvatar(editDTO.getId(),editDTO.getAvatar());
+//            }
+//            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
+//                new MyusickService().updateGroupDescription(editDTO.getId(),editDTO.getDescripcion());
+//            }
+//            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()) {
+//                new MyusickService().updateGroupName(editDTO.getId(),editDTO.getNombre());
+//            }
+//        }else{
+//            //es persona
+//            if(editDTO.getAvatar() != null){
+//                new MyusickService().updatePersonAvatar(editDTO.getId(),editDTO.getAvatar());
+//            }
+//            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
+//                new MyusickService().updatePersonDescription(editDTO.getId(),editDTO.getDescripcion());
+//            }
+//            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()){
+//                new MyusickService().updatePersonName(editDTO.getId(),editDTO.getNombre());
+//            }
+//            if(editDTO.getEmail() != null && !editDTO.getEmail().isEmpty()){
+//                new MyusickService().updatePersonEmail(editDTO.getId(),editDTO.getEmail());
+//            }
+//            if(editDTO.getTelefono() != null && !editDTO.getTelefono().isEmpty()){
+//                new MyusickService().updatePersonPhone(editDTO.getId(),editDTO.getTelefono());
+//            }
+//            if(editDTO.getPassword() != null && !editDTO.getPassword().isEmpty()){
+//                new MyusickService().updatePersonPassword(editDTO.getId(),editDTO.getPassword());
+//            }
+//        }
+        return null;
     }
 }
 

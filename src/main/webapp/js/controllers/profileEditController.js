@@ -12,20 +12,34 @@ angular.module('starter')
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-        
-        $scope.user = {};
+
+        $scope.name = "";
+        $scope.email = "";
+        $scope.phone = "";
+        $scope.avatar = "";
+        $scope.bio = "";
+        $scope.password = "";
+        $scope.repassword = "";
+        $scope.skills = [];
+
         $scope.errors = [];
         $scope.hiddenErrorMessage = true;
         $scope.newskill = "";
         $scope.showSkillInput = false;
 
-        $http.get(API.URL + API.PROFILE_ENDPOINT + $stateParams._userid)
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.user_id)
             .success(function(data){
                 console.log(data);
                 if(data.type){
                     $state.go("error");
                 }else{
-                    $scope.user = data;
+                    $scope.name = data.name;
+                    $scope.email = data.email;
+                    $scope.phone = data.phone;
+                    $scope.avatar = data.avatar;
+                    $scope.bio = data.description;
+                    console.log(data.skills);
+                    $scope.skills = data.skills;
                 }
             }).error(function(data){
                 console.log("error");
@@ -49,7 +63,7 @@ angular.module('starter')
                 name: $scope.name,
                 email: $scope.email,
                 avatar: $scope.avatar,
-                bio: $scope.bio,
+                description: $scope.bio,
                 password: $scope.password,
                 repassword: $scope.repassword
             }
@@ -61,7 +75,7 @@ angular.module('starter')
             if ($scope.newskill.trim() != "") {
                 var skill = {
                     nombre: $scope.newskill,
-                    publicante: $scope.loggedUserId
+                    publicante: $scope.user_id
                 };
                 $http.post(API.URL + API.SKILL_ENDPOINT,
                     JSON.stringify(skill),
@@ -71,7 +85,7 @@ angular.module('starter')
 
                     .success(function(data){
                         if(data.ok){
-                            $scope.user.skills.push($scope.newskill);
+                            $scope.skills.push($scope.newskill);
                         }else{
                             alert("JAJAJA");
                         }

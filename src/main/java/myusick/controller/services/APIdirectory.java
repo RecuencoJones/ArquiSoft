@@ -25,6 +25,7 @@ public class APIdirectory {
         s += DocUtil.docService("GET", "/profile/{userid}", "PathParam(userid: int)", "application/json", "Saca los datos de perfil del usuario {userid}");
         s += DocUtil.docService("POST", "/newgroup", "application/json", "application/json", "Crea un grupo para un usuario");
         s += DocUtil.docService("POST", "/newtag", "application/json", "application/json", "Crea y/o añade un tag a un usuario");
+        s += DocUtil.docService("POST", "/newskill", "application/json", "application/json", "Crea y/o añade una aptitud a un usuario");
         s += DocUtil.docService("POST", "/post", "application/json", "application/json", "Crea un post para un usuario");
         s += DocUtil.docService("GET", "/post/{id}", "PathParam(id: int)", "application/json", "Busca el comentario cuyo id es {id}");
         s += DocUtil.docService("PUT", "/follow/{seguidor}/{seguido}", "PathParam(seguidor: int, seguido: int)", "application/json", "El usuario {seguidor} sigue a {seguido}");
@@ -41,6 +42,7 @@ public class APIdirectory {
         s += DocUtil.docService("GET", "/search/group/{term}","PathParam(term: string)", "application/json", "Busca todos los grupos cuyo nombre incluya {term}");
         s += DocUtil.docService("GET", "/search/tag/{term}","PathParam(term: string)", "application/json", "Busca todos los publicantes que tengan la etiqueta {term}");
         s += DocUtil.docService("GET", "/search/skill/{term}","PathParam(term: string)", "application/json", "Busca todas las personas que tengan la aptitud {term}");
+        s += DocUtil.docService("POST", "/edit/profile", "application/json", "application/json", "Edita el perfil de un publicante con los valores recibidos");
         //WebsocketProvider
         s += DocUtil.header("SSE");
         s += DocUtil.docService("GET", "/ws/sub/{id}", "PathParam(id: int)", "text/event-stream", "Suscribe a un usuario a su canal");

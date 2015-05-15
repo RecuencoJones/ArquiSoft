@@ -45,6 +45,7 @@ Directorio de servicios REST
 | __GET__ | /search/group/{term} | PathParam(term: string) | application/json | Busca todos los grupos cuyo nombre incluya {term} |
 | __GET__ | /search/tag/{term} | PathParam(term: string) | application/json | Busca todos los publicantes que tengan la etiqueta {term} |
 | __GET__ | /search/skill/{term} | PathParam(term: string) | application/json | Busca todas las personas que tengan la aptitud {term} |
+| __POST__ | /edit/profile | application/json | application/json | Edita el perfil de un publicante con los valores recibidos |
 
 Directorio de servicios SSE
 =====
@@ -67,7 +68,7 @@ Compatibilidad en navegadores
 
 AngularJS
 ------
-TODO doc
+Magic doc
 
 # Configuración de despliegue Tomcat con IntelliJ
 

@@ -19,7 +19,7 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-user"></span>
                             </span>
-                                    <input class="form-control" type="text" placeholder="Name" ng-model="user.name"/>
+                                    <input class="form-control" type="text" placeholder="Name" ng-model="name"/>
                                 </div>
                             </div>
                             <div class="form-group" ng-class="{'has-error': errors.email}">
@@ -27,7 +27,15 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-envelope"></span>
                                     </span>
-                                    <input class="form-control" type="text" placeholder="Email" ng-model="user.email"/>
+                                    <input class="form-control" type="text" placeholder="Email" ng-model="email"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.phone}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-phone"></span>
+                                    </span>
+                                    <input class="form-control" type="tel" placeholder="Phone" ng-model="phone"/>
                                 </div>
                             </div>
                             <div class="form-group" ng-class="{'has-error': errors.avatar}">
@@ -35,7 +43,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-picture"></span>
                                     </span>
-                                    <input class="form-control" type="url" placeholder="Avatar" ng-model="user.avatar"/>
+                                    <input class="form-control" type="url" placeholder="Avatar" ng-model="avatar"/>
                                 </div>
                             </div>
                             <div class="form-group" ng-class="{'has-error': errors.description}">
@@ -43,7 +51,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-comment"></span>
                                 </span>
-                                    <textarea class="form-control" type="text" placeholder="Biography" ng-model="user.bio" style="resize: vertical"></textarea>
+                                    <textarea class="form-control" type="text" placeholder="Biography" ng-model="bio" style="resize: vertical"></textarea>
                                 </div>
                             </div>
                             <div class="form-group" ng-class="{'has-error': errors.password}">
@@ -71,7 +79,7 @@
                     <div class="simple-jumbo">
                         <p class="text-center" style="font-weight: bold">Skills</p>
                         <div class="btn-group-vertical" style="display: block">
-                            <a class="btn btn-default" ng-repeat="skill in user.skills" ng-href="#/search/{{skill}}">{{skill}}</a>
+                            <a class="btn btn-default" ng-repeat="skill in skills" ng-href="#/search/{{skill}}">{{skill}}</a>
                             <a class="btn btn-primary" ng-click="showSkillInput = true" ng-hide="showSkillInput">Add skill</a>
                             <form class="form-group" ng-show="showSkillInput" ng-submit="submitSkill()">
                                 <input class="form-control" type="text" ng-model="newskill" placeholder="Add a skill" required/>

@@ -10,7 +10,44 @@
         <div class="container">
 
             <div class="row">
-                <h1>Hello world</h1>
+                <!-- General -->
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="jumbotron jumbotron-inverted jumbo-transparent">
+                        <form class="container-fluid" ng-submit="update()">
+                            <div class="form-group" ng-class="{'has-error': errors.name}">
+                                <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-music"></span>
+                            </span>
+                                    <input class="form-control" type="text" placeholder="Name" ng-model="name"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.avatar}">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-picture"></span>
+                                    </span>
+                                    <input class="form-control" type="url" placeholder="Avatar" ng-model="avatar"/>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{'has-error': errors.description}">
+                                <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                </span>
+                                    <textarea class="form-control" type="text" placeholder="Description" ng-model="description" style="resize: vertical"></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-success" type="submit">Send</button>
+                        </form>
+                        <br>
+                        <div class="btn-group-justified" ng-hide="hiddenErrorMessage">
+                            <a class="btn btn-danger" style="background-color: #D43F3A;" ng-click="hideErrorMessage()">
+                                Check errors. <span class="glyphicon glyphicon-ban-circle"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
