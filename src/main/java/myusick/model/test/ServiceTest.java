@@ -9,7 +9,7 @@ public class ServiceTest {
 
     public static void main (String [] args){
         MyusickService m = new MyusickService();
-        System.out.println(m.buscarPorAptitud("Guitarra"));
+        System.out.println(m.getFollowing(4));
 //        System.out.println(m.pendientesDeAceptar(6));
 
 

@@ -9,10 +9,17 @@ public class PublisherDTO implements Serializable {
 
     private int id;
     private String name;
+    private String avatar;
 
     public PublisherDTO(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public PublisherDTO(int id, String name, String avatar) {
+        this.id = id;
+        this.name = name;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -31,11 +38,20 @@ public class PublisherDTO implements Serializable {
         this.name = name;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
-        return "Publisher{" +
+        return "PublisherDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 }

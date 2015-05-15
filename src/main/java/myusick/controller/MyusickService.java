@@ -103,10 +103,21 @@ public class MyusickService {
      */
     public ArrayList<Integer> getFollowersIds(int uuid) {
         SeguirDAO sdao = new SeguirDAO();
-        ArrayList<Integer> res = sdao.getFollowers(uuid);
+        ArrayList<Integer> res = sdao.getFollowersIds(uuid);
         return res;
     }
 
+    public ArrayList<PublisherDTO> getFollowers(int uuid){
+        SeguirDAO sdao = new SeguirDAO();
+        ArrayList<PublisherDTO> followers = sdao.getFollowers(uuid);
+        return followers;
+    }
+
+    public ArrayList<PublisherDTO> getFollowing(int userid) {
+        SeguirDAO sdao = new SeguirDAO();
+        ArrayList<PublisherDTO> following = sdao.getFollowing(userid);
+        return following;
+    }
     public boolean follow(int seguidor, int seguido) {
         SeguirDAO sdao = new SeguirDAO();
         boolean res = sdao.follow(seguidor, seguido);
@@ -198,14 +209,5 @@ public class MyusickService {
         GrupoDAO gdao = new GrupoDAO();
         List<ShortProfileDTO> resultado = gdao.buscarPorNombre(term);
         return resultado;
-    }
-
-    //TODO
-    public void getFollowers(int userid) {
-    }
-
-    //TODO
-    public void getFollowing(int userid) {
-
     }
 }

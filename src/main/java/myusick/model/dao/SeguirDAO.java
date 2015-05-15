@@ -1,5 +1,6 @@
 package myusick.model.dao;
 
+import myusick.controller.dto.PublisherDTO;
 import myusick.model.connection.PoolManager;
 
 import java.sql.*;
@@ -84,7 +85,7 @@ public class SeguirDAO {
         }
     }
     
-    public ArrayList<Integer> getFollowers(int uuid) {
+    public ArrayList<Integer> getFollowersIds(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         ArrayList<Integer> result = new ArrayList<>();
@@ -95,6 +96,61 @@ public class SeguirDAO {
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 result.add(rs.getInt(1));
+            }
+            con.commit();
+            pool.returnConnection(con);
+            return result;
+        }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
+
+    public ArrayList<PublisherDTO> getFollowers(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
+        try{
+            String query = "select Publicante_UUID,nombre,avatar from grupo where Publicante_UUID in (" +
+                    "  select seguido from seguir where seguidor = ?" +
+                    ") ";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result.add(new PublisherDTO(rs.getInt("Publicante_UUID"),rs.getString("nombre"),
+                    rs.getString("avatar")));
+            }
+            con.commit();
+            pool.returnConnection(con);
+            return result;
+        }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
+    public ArrayList<PublisherDTO> getFollowing(int userid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
+        try{
+            String query = "select Publicante_UUID,nombre,avatar from persona where Publicante_UUID in (" +
+                    "  select seguidor from seguir where seguido = ?" +
+                    ") ";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, userid);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                result.add(new PublisherDTO(rs.getInt("Publicante_UUID"),rs.getString("nombre"),
+                        rs.getString("avatar")));
             }
             con.commit();
             pool.returnConnection(con);
