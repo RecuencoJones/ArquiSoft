@@ -1,7 +1,7 @@
 package myusick.controller.services;
 
 import com.google.gson.Gson;
-import myusick.controller.dto.TagDTO;
+import myusick.controller.dto.SkillTagDTO;
 import myusick.controller.MyusickService;
 
 import javax.ws.rs.core.UriInfo;
@@ -11,7 +11,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public class TagService {
 
-    public static String newTag(UriInfo info, TagDTO tagDTO) {
+    public static String newTag(UriInfo info, SkillTagDTO tagDTO) {
         Gson gson = new Gson();
         boolean success = new MyusickService().registrarTag(tagDTO);
         if(success){

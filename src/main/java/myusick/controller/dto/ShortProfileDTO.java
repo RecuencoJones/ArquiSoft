@@ -42,4 +42,14 @@ public class ShortProfileDTO {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    @Override
+    public String toString() {
+        return "ShortProfileDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

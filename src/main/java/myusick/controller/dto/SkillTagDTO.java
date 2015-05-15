@@ -3,15 +3,15 @@ package myusick.controller.dto;
 /**
  * Created by david on 05/04/2015.
  */
-public class TagDTO {
+public class SkillTagDTO {
     
     private String nombre;
     private int publicante;
 
-    public TagDTO() {
+    public SkillTagDTO() {
     }
 
-    public TagDTO(String nombre, int publicante) {
+    public SkillTagDTO(String nombre, int publicante) {
         this.nombre = nombre;
         this.publicante = publicante;
     }

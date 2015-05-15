@@ -3,6 +3,7 @@ package myusick.model.dao;
 import myusick.controller.dto.PostDTO;
 import myusick.controller.dto.PublicationsDTO;
 import myusick.model.connection.ConnectionAdmin;
+import myusick.model.connection.PoolManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,18 +14,9 @@ import java.util.List;
  */
 public class PublicacionDAO {
 
-    private Connection con;
-
-    public void setConnection(Connection con){
-        try{
-            this.con = con;
-            this.con.setAutoCommit(false);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<PublicationsDTO> getPublicacionesById(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         ArrayList<PublicationsDTO> result = new ArrayList<>();
         try{
             String queryString = "select idPublicacion,contenido,fecha from Publicacion where Publicante_UUID=?";
@@ -35,34 +27,41 @@ public class PublicacionDAO {
                 result.add(new PublicationsDTO(resultSet.getInt(1),resultSet.getString(2),resultSet.getLong(3)));
             }
             con.commit();
+            pool.returnConnection(con);
             return result;
         }catch (Exception e) {
             try {con.rollback();}
             catch(SQLException e2){
                 e2.printStackTrace();
+                pool.returnConnection(con);
                 return null;
             }
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public int insertarPublicacion(long fecha, String contenido, int publicante_uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             String query="insert into publicacion (fecha, contenido, publicante_uuid) values (?,?,?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1,fecha);
-            ps.setString(2,contenido);
-            ps.setInt(3,publicante_uuid);
+            ps.setString(2, contenido);
+            ps.setInt(3, publicante_uuid);
             int insertedRows = ps.executeUpdate();
             if(insertedRows == 1){
                 ResultSet keys = ps.getGeneratedKeys();
                 keys.next();
                 int idpub = keys.getInt(1);
                 con.commit();
+                pool.returnConnection(con);
                 return idpub;
             }else{
                 con.rollback();
+                pool.returnConnection(con);
                 return -1;
             }
 
@@ -70,14 +69,18 @@ public class PublicacionDAO {
             try {con.rollback();}
             catch(SQLException e2){
                 e2.printStackTrace();
+                pool.returnConnection(con);
                 return -1;
             }
             e.printStackTrace();
+            pool.returnConnection(con);
             return -1;
         }
     }
 
     public PostDTO getPostById(int id) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             boolean isGroup = false;
             String query = "select pu.idpublicacion, pe.avatar, pu.fecha, pe.nombre, pe.publicante_uuid, pu.contenido " +
@@ -98,6 +101,7 @@ public class PublicacionDAO {
                 if(!rs.next()){
                     /* No existe publicacion con ese id */
                     con.rollback();
+                    pool.returnConnection(con);
                     return null;
                 }
             }
@@ -105,19 +109,24 @@ public class PublicacionDAO {
             PostDTO res = new PostDTO(rs.getInt(1),rs.getString(2),rs.getLong(3),rs.getString(4),rs.getInt(5),rs.getString(6));
             res.setType(isGroup);
             con.commit();
+            pool.returnConnection(con);
             return res;
         }catch (SQLException e){
             try {con.rollback();}
             catch(SQLException e2){
                 e2.printStackTrace();
+                pool.returnConnection(con);
                 return null;
             }
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public List<PostDTO> ultimasPublicaciones(int seguidor){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         List<PostDTO> publicaciones = new ArrayList<PostDTO>();
         try {
             String query = "select * from publicacion where publicante_uuid in (" +
@@ -131,8 +140,6 @@ public class PublicacionDAO {
             int id; 
             PublicanteDAO pdao = new PublicanteDAO();
             GrupoDAO gdao = new GrupoDAO();
-            pdao.setConnection(ConnectionAdmin.getConnection());
-            gdao.setConnection(ConnectionAdmin.getConnection());
             while(rs.next()){
                 id = rs.getInt("publicante_uuid");
                 PostDTO post = new PostDTO(rs.getInt("idPublicacion"),
@@ -141,27 +148,18 @@ public class PublicacionDAO {
                 post.setType(gdao.esUnGrupo(id));
                 publicaciones.add(post);
             }
-            pdao.closeConnection();
-            gdao.closeConnection();
+            pool.returnConnection(con);
             return publicaciones;
         }catch (SQLException e){
             try {con.rollback();}
             catch(SQLException e2){
                 e2.printStackTrace();
+                pool.returnConnection(con);
                 return null;
             }
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
-        }
-    }
-
-    public boolean closeConnection(){
-        try {
-            con.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }

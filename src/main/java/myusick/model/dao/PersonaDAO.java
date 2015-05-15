@@ -1,9 +1,7 @@
 package myusick.model.dao;
 
 import myusick.controller.dto.*;
-import myusick.model.vo.Persona;
-import myusick.model.connection.ConnectionAdmin;
-
+import myusick.model.connection.PoolManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,36 +14,39 @@ import java.util.List;
  */
 public class PersonaDAO {
 
-    private Connection con;
-
-    public void setConnection(Connection con){
-        try{
-            this.con = con;
-            this.con.setAutoCommit(false);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public Persona getDataProfile(int uuid){
+    public ProfileDTO getDataProfile(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try{
             String queryString = "select nombre,descripcion,avatar from persona where publicante_uuid = ?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
-                return new Persona(uuid,resultSet.getString("nombre"),null,null,0,null,null,0,
-                        resultSet.getString("descripcion"),null,resultSet.getString("avatar"));
-            else return null;
+            if(resultSet.next()){
+                ProfileDTO p = new ProfileDTO(resultSet.getString("nombre"), resultSet.getString("descripcion"),
+                        resultSet.getString("avatar"), new AptitudDAO().getAptitudesByPersona(uuid),
+                        new TagDAO().getTagsByPersona(uuid), null, getGroupsByMember(uuid),
+                        new PublicacionDAO().getPublicacionesById(uuid));
+                pool.returnConnection(con);
+                return p;
+            }
+
+            else{
+                pool.returnConnection(con);
+                return null;
+            }
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
     public boolean esUnaPersona(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             String queryString = "select tipoPublicante from publicante where uuid=?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
@@ -53,10 +54,13 @@ public class PersonaDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 con.commit();
-                return resultSet.getBoolean(1)==false;
+                boolean resultado = resultSet.getBoolean(1)==false;
+                pool.returnConnection(con);
+                return resultado;
             }
             else{
                 con.rollback();
+                pool.returnConnection(con);
                 return false;
             }
         }catch(SQLException e){
@@ -64,11 +68,14 @@ public class PersonaDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return false;
         }
     }
 
     public ArrayList<PublisherDTO> getGroupsByMember(int member){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         ArrayList<PublisherDTO> result = new ArrayList<>();
         try{
             String queryString = "select Publicante_UUID,nombre from Grupo where publicante_uuid " +
@@ -80,17 +87,21 @@ public class PersonaDAO {
                 result.add(new PublisherDTO(resultSet.getInt(1),resultSet.getString(2)));
             }
             con.commit();
+            pool.returnConnection(con);
             return result;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public LoginDTO getLoginData(String email, String password){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         LoginDTO l = new LoginDTO();
         l.setUser(email);
         l.setPassword(password);
@@ -105,10 +116,12 @@ public class PersonaDAO {
                 l.setUserId(rs.getInt(1));
                 l.setGroups(getGroupsByMember(l.getUserId()));
                 con.commit();
+                pool.returnConnection(con);
                 return l;
             }else{
                 /* El usuario no existe */
                 con.rollback();
+                pool.returnConnection(con);
                 return null;
             }
         } catch (SQLException e) {
@@ -116,14 +129,16 @@ public class PersonaDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return new LoginDTO();
         }
     }
     
     public int registerUser(RegisterDTO rd) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            pdao.setConnection(ConnectionAdmin.getConnection());
             int uuid = pdao.insertarPublicante(false);
             if (uuid != -1) {
                 String query = "insert into persona (Publicante_UUID,nombre,apellidos,email,password," +
@@ -140,17 +155,17 @@ public class PersonaDAO {
                 ps.setString(9, rd.getPhone());
                 int insertedRows = ps.executeUpdate();
                 if (insertedRows == 1) {
-                    pdao.closeConnection();
                     con.commit();
+                    pool.returnConnection(con);
                     return uuid;
                 }else{
-                    pdao.closeConnection();
                     con.rollback();
+                    pool.returnConnection(con);
                     return -1;
                 }
             } else {
-                pdao.closeConnection();
                 con.rollback();
+                pool.returnConnection(con);
                 return -1;
             }
         } catch (Exception e) {
@@ -158,11 +173,14 @@ public class PersonaDAO {
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return -1;
         }        
     }
 
     public List<ShortProfileDTO> buscarPorNombre(String nombre){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
             String query = "select Publicante_uuid, nombre, avatar from persona where nombre like ?";
@@ -174,17 +192,21 @@ public class PersonaDAO {
                 ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
+            pool.returnConnection(con);
             return resultado;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public List<ShortProfileDTO> buscarPorTag(String tag){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
             String query = "select nombre,avatar, Publicante_UUID from persona where publicante_uuid in(" +
@@ -199,17 +221,21 @@ public class PersonaDAO {
                 ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
+            pool.returnConnection(con);
             return resultado;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
     public List<ShortProfileDTO> buscarPorAptitud(String aptitud){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
         try{
             String query = "select nombre, avatar, Publicante_UUID from persona where publicante_uuid in(" +
@@ -219,34 +245,24 @@ public class PersonaDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, aptitud);
             ResultSet rs = ps.executeQuery();
-            AptitudDAO adao = new AptitudDAO(); adao.setConnection(ConnectionAdmin.getConnection());
-            TagDAO tdao = new TagDAO(); tdao.setConnection(ConnectionAdmin.getConnection());
-            PublicacionDAO pdao = new PublicacionDAO(); pdao.setConnection(ConnectionAdmin.getConnection());
+            AptitudDAO adao = new AptitudDAO();
+            TagDAO tdao = new TagDAO();
+            PublicacionDAO pdao = new PublicacionDAO();
             while(rs.next()){
                 int uuid = rs.getInt("Publicante_UUID");
                 ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
                 resultado.add(perfil);
             }
-            adao.closeConnection();
-            tdao.closeConnection();
-            pdao.closeConnection();
+            pool.returnConnection(con);
             return resultado;
         }catch (Exception e) {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
             e.printStackTrace();
+            pool.returnConnection(con);
             return null;
         }
     }
 
-    public boolean closeConnection(){
-        try {
-            con.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 }
