@@ -32,9 +32,11 @@ angular.module('starter')
                 $scope.publishers = data;
             });
 
-        //$scope.publishers = [
-        //    {
-        //        name: "noderp"
-        //    }
-        //];
+        $scope.goTo = function(id,type){
+            if(type){
+                $state.go('group', { _groupid: id});
+            }else{
+                $state.go('profile', { _userid: id});
+            }
+        };
     }]);

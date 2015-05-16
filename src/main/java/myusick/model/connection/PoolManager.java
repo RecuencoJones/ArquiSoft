@@ -14,7 +14,7 @@ public class PoolManager {
      * Atributos de la clase
      */
     private static PoolManager instancia = new PoolManager();
-    private static final int maxConexiones = 16;
+    private static final int maxConexiones = 100;
     private static AtomicInteger numConexiones;
 
     static {
@@ -39,7 +39,7 @@ public class PoolManager {
     }
 
     /**
-     * Acción de coger una de las conexiones disponibles en el poolJDBC.
+     * Acciï¿½n de coger una de las conexiones disponibles en el poolJDBC.
      *
      * @return instancia de conexion a la BD
      */

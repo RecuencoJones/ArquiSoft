@@ -10,6 +10,7 @@ public class PublisherDTO implements Serializable {
     private int id;
     private String name;
     private String avatar;
+    private boolean type;
 
     public PublisherDTO(int id, String name) {
         this.id = id;
@@ -20,6 +21,10 @@ public class PublisherDTO implements Serializable {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
+    }
+
+    public PublisherDTO() {
+
     }
 
     public int getId() {
@@ -44,6 +49,14 @@ public class PublisherDTO implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean isType() {
+        return type;
+    }
+
+    public void setType(boolean type) {
+        this.type = type;
     }
 
     @Override

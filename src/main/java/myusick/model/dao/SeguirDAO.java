@@ -115,7 +115,7 @@ public class SeguirDAO {
         Connection con = pool.getConnection();
         ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
         try{
-            String query =  "select seguido from seguir where seguidor = ?";
+            String query =  "select seguidor from seguir where seguido = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -124,11 +124,15 @@ public class SeguirDAO {
                 /* Con los ids sacamos la informacion de perfil */
                 int id = rs.getInt(1);
                 GrupoDAO g = new GrupoDAO();
+                PublisherDTO pub;
                 if(g.esUnGrupo(id)){
-                    result.add(g.getDataPublisher(id));
+                    pub = g.getDataPublisher(id);
+                    pub.setType(true);
                 }else{
-                    result.add(new PersonaDAO().getDataPublisher(id));
+                    pub = new PersonaDAO().getDataPublisher(id);
+                    pub.setType(false);
                 }
+                result.add(pub);
             }
             pool.returnConnection(con);
             return result;
@@ -147,7 +151,7 @@ public class SeguirDAO {
         Connection con = pool.getConnection();
         ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
         try{
-            String query =  "select seguidor from seguir where seguido = ?";
+            String query =  "select seguido from seguir where seguidor = ?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, uuid);
             ResultSet rs = ps.executeQuery();
@@ -156,11 +160,15 @@ public class SeguirDAO {
                 /* Con los ids sacamos la informacion de perfil */
                 int id = rs.getInt(1);
                 GrupoDAO g = new GrupoDAO();
+                PublisherDTO pub;
                 if(g.esUnGrupo(id)){
-                    result.add(g.getDataPublisher(id));
+                    pub = g.getDataPublisher(id);
+                    pub.setType(true);
                 }else{
-                    result.add(new PersonaDAO().getDataPublisher(id));
+                    pub = new PersonaDAO().getDataPublisher(id);
+                    pub.setType(false);
                 }
+                result.add(pub);
             }
             pool.returnConnection(con);
             return result;
