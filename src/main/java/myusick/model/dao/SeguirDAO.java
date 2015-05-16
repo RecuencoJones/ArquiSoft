@@ -1,5 +1,6 @@
 package myusick.model.dao;
 
+import myusick.controller.dto.PublisherDTO;
 import myusick.model.connection.PoolManager;
 
 import java.sql.*;
@@ -84,7 +85,7 @@ public class SeguirDAO {
         }
     }
     
-    public ArrayList<Integer> getFollowers(int uuid) {
+    public ArrayList<Integer> getFollowersIds(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         ArrayList<Integer> result = new ArrayList<>();
@@ -106,6 +107,88 @@ public class SeguirDAO {
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
+        }
+    }
+
+    public ArrayList<PublisherDTO> getFollowers(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
+        try{
+            String query =  "select seguido from seguir where seguidor = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            con.commit();
+            while(rs.next()){
+                /* Con los ids sacamos la informacion de perfil */
+                int id = rs.getInt(1);
+                GrupoDAO g = new GrupoDAO();
+                if(g.esUnGrupo(id)){
+                    result.add(g.getDataPublisher(id));
+                }else{
+                    result.add(new PersonaDAO().getDataPublisher(id));
+                }
+            }
+            pool.returnConnection(con);
+            return result;
+        }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
+
+    public ArrayList<PublisherDTO> getFollowing(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        ArrayList<PublisherDTO> result = new ArrayList<PublisherDTO>();
+        try{
+            String query =  "select seguidor from seguir where seguido = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            con.commit();
+            while(rs.next()){
+                /* Con los ids sacamos la informacion de perfil */
+                int id = rs.getInt(1);
+                GrupoDAO g = new GrupoDAO();
+                if(g.esUnGrupo(id)){
+                    result.add(g.getDataPublisher(id));
+                }else{
+                    result.add(new PersonaDAO().getDataPublisher(id));
+                }
+            }
+            pool.returnConnection(con);
+            return result;
+        }catch(SQLException e){
+            try{
+                con.rollback();
+            }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
+    public boolean eliminarSeguidorySeguido(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try{
+            String query1 = "delete from seguir where seguidor=? or seguido=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, uuid);
+            ps1.setInt(2, uuid);
+            ps1.executeUpdate();
+            con.commit();
+            pool.returnConnection(con);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
         }
     }
 }

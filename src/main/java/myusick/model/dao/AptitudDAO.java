@@ -141,4 +141,76 @@ public class AptitudDAO {
             return false;
         }
     }
+    public boolean editarAptitud(int id, String nuevo){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            if(nuevo.length()>45 || nuevo.length()==0) return false;
+            String query = "update aptitud set nombre=? where idaptitud=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, nuevo);
+            ps.setInt(2, id);
+            int alteredRows = ps.executeUpdate();
+            if (alteredRows == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean borrarAptitud(int id){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from tiene_aptitud where idaptitud=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, id);
+            int eliminadas_relacion = ps1.executeUpdate();
+
+            String query2 = "delete from aptitud where idaptitud=?";
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ps2.setInt(1, id);
+            int eliminadas_entidad = ps2.executeUpdate();
+
+            if (eliminadas_entidad == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }
+            else{
+                con.rollback();
+                pool.returnConnection(con); return false; }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+    public boolean borrarAptitudesAsociadas(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from tiene_aptitud where UUID_P=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, uuid);
+            ps1.executeUpdate();
+            con.commit();
+            pool.returnConnection(con);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
 }

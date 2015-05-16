@@ -2,7 +2,6 @@ package myusick.controller;
 
 import myusick.controller.dto.*;
 import myusick.model.dao.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,10 +102,21 @@ public class MyusickService {
      */
     public ArrayList<Integer> getFollowersIds(int uuid) {
         SeguirDAO sdao = new SeguirDAO();
-        ArrayList<Integer> res = sdao.getFollowers(uuid);
+        ArrayList<Integer> res = sdao.getFollowersIds(uuid);
         return res;
     }
 
+    public ArrayList<PublisherDTO> getFollowers(int uuid){
+        SeguirDAO sdao = new SeguirDAO();
+        ArrayList<PublisherDTO> followers = sdao.getFollowers(uuid);
+        return followers;
+    }
+
+    public ArrayList<PublisherDTO> getFollowing(int userid) {
+        SeguirDAO sdao = new SeguirDAO();
+        ArrayList<PublisherDTO> following = sdao.getFollowing(userid);
+        return following;
+    }
     public boolean follow(int seguidor, int seguido) {
         SeguirDAO sdao = new SeguirDAO();
         boolean res = sdao.follow(seguidor, seguido);
@@ -200,12 +210,97 @@ public class MyusickService {
         return resultado;
     }
 
-    //TODO
-    public void getFollowers(int userid) {
+    public boolean editarAptitud(int id, String nuevo){
+        return new AptitudDAO().editarAptitud(id,nuevo);
     }
 
-    //TODO
-    public void getFollowing(int userid) {
+    public boolean borrarAptitud(int id){
+        return new AptitudDAO().borrarAptitud(id);
+    }
+    public boolean setNombre(int UUID, String nombre) {
+       return new GrupoDAO().setNombre(UUID, nombre);
+    }
 
+    public boolean setAnyo(int UUID, int nac){
+        return new GrupoDAO().setAnyo(UUID, nac);
+    }
+
+    public boolean setDescripcion(int UUID, String descr){
+        return new GrupoDAO().setDescripcion(UUID, descr);
+    }
+
+    public boolean setAvatar(int UUID, String url){
+        return new GrupoDAO().setAvatar(UUID, url);
+    }
+
+    public boolean borrarGrupo(int uuid){
+        return new GrupoDAO().borrarGrupo(uuid);
+    }
+    public boolean setNombrePersona(int UUID, String nombre){
+        return new PersonaDAO().setNombre(UUID, nombre);
+    }
+
+    public boolean setApellidos(int UUID, String ap){
+       return new PersonaDAO().setApellidos(UUID, ap);
+    }
+
+    public boolean setAvatarPersona(int UUID, String url){
+        return new PersonaDAO().setAvatar(UUID, url);
+    }
+
+    public boolean setEmail(int UUID, String mail){
+        return new PersonaDAO().setEmail(UUID, mail);
+    }
+
+    public boolean setPassword(int UUID, String pass){
+       return new PersonaDAO().setPassword(UUID, pass);
+    }
+
+    public boolean setNacimiento(int UUID, int nac){
+        return new PersonaDAO().setNacimiento(UUID, nac);
+    }
+
+    public boolean setCiudad(int UUID, String city){
+        return new PersonaDAO().setCiudad(UUID, city);
+    }
+
+    public boolean setPais(int UUID, String pais){
+        return new PersonaDAO().setPais(UUID, pais);
+    }
+
+    public boolean setTelefono(int UUID, int tel){
+        return new PersonaDAO().setTelefono(UUID, tel);
+    }
+
+    public boolean setDescripcionPersona(int UUID, String descr){
+        return new PersonaDAO().setDescripcion(UUID, descr);
+    }
+
+    public boolean borrarPersona(int uuid){
+        return new PersonaDAO().borrarPersona(uuid);
+    }
+    public boolean editarPublicacion(int id, long fecha, String contenido){
+        return new PublicacionDAO().editarPublicacion(id, fecha, contenido);
+    }
+    public boolean borrarPublicacion(int id){
+        return new PublicacionDAO().borrarPublicacion(id);
+    }
+//    public boolean editarPublicante(int uuid, boolean nuevo_tipo){
+//        return new PublicanteDAO().editarPublicante(uuid, nuevo_tipo);
+//    }
+//    public boolean borrarPublicante(int uuid){
+//        return new PublicanteDAO().borrarPublicante(uuid);
+//    }
+    public boolean eliminarSeguidorySeguido(int uuid){
+        return new SeguirDAO().eliminarSeguidorySeguido(uuid);
+    }
+    public boolean editarTag(int id, String nuevo){
+        return new TagDAO().editarTag(id, nuevo);
+    }
+    public boolean borrarTag(int id){
+        return new TagDAO().borrarTag(id);
+    }
+    public boolean borrarPublicaciones(int uuid){
+        return new PublicacionDAO().borrarPublicaciones(uuid);
     }
 }

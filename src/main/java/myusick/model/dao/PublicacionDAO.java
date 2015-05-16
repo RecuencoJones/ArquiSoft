@@ -48,7 +48,7 @@ public class PublicacionDAO {
         try {
             String query="insert into publicacion (fecha, contenido, publicante_uuid) values (?,?,?)";
             PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1,fecha);
+            ps.setLong(1, fecha);
             ps.setString(2, contenido);
             ps.setInt(3, publicante_uuid);
             int insertedRows = ps.executeUpdate();
@@ -160,6 +160,89 @@ public class PublicacionDAO {
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
+        }
+    }
+    public boolean editarPublicacion(int id, long fecha, String contenido){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "update publicacion set fecha=?, contenido=? where idPublicacion=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setLong(1, fecha);
+            ps1.setString(2, contenido);
+            ps1.setInt(3, id);
+            int editadas_entidad = ps1.executeUpdate();
+
+            if (editadas_entidad == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }
+            else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean borrarPublicacion(int id){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from publicacion where idpublicacion=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, id);
+            int eliminadas_entidad = ps1.executeUpdate();
+
+            if (eliminadas_entidad == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            try{
+                con.rollback();
+            }catch(SQLException e2){
+                e2.printStackTrace();
+            }
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+    public boolean borrarPublicaciones(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from publicacion where Publicante_UUID=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, uuid);
+            ps1.executeUpdate();
+            /*
+             * No tenemos en cuenta las filas borradas porque puede que no tuviera
+             * ninguna publicacion
+             */
+            con.commit();
+            pool.returnConnection(con);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            try{
+                con.rollback();
+            }catch(SQLException e2){
+                e2.printStackTrace();
+            }
+            pool.returnConnection(con);
+            return false;
         }
     }
 }

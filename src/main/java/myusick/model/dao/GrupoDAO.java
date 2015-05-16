@@ -105,6 +105,35 @@ public class GrupoDAO {
             return null;
         }
     }
+    public PublisherDTO getDataPublisher(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String queryString = "select nombre, avatar from grupo where publicante_uuid = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setInt(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                con.commit();
+                PublisherDTO p = new PublisherDTO(uuid,resultSet.getString("nombre"),
+                        resultSet.getString("avatar"));
+                return p;
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return null;
+            }
+        } catch (Exception e) {
+            try {
+                con.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
 
     public int registerGroup(GroupDTO gd) {
         PoolManager pool = PoolManager.getInstance();
@@ -372,6 +401,7 @@ public class GrupoDAO {
             try {
                 con.rollback();
             } catch (SQLException e2) {
+                pool.returnConnection(con);
                 e2.printStackTrace();
             }
             e.printStackTrace();
@@ -379,4 +409,187 @@ public class GrupoDAO {
             return null;
         }
     }
+    public boolean setNombre(int UUID, String nombre) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if (nombre.length() > 45 || nombre.length() == 0) return false;
+            if (UUID != -1) {
+                String query = "update grupo set nombre=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, nombre);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                } else {
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        } catch (Exception ex) {
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+
+    public boolean setAnyo(int UUID, int nac){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if (UUID != -1) {
+                String query = "update grupo set AnyoFundacion=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setInt(1, nac);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                } else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean setDescripcion(int UUID, String descr){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(descr.length()>144 || descr.length()==0){
+                pool.returnConnection(con);
+                return false;
+            }
+            if (UUID != -1) {
+                String query = "update grupo set descripcion=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, descr);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean setAvatar(int UUID, String url){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(url.length()>100 || url.length()==0){
+                pool.returnConnection(con);
+                return false;
+            }
+            if (UUID != -1) {
+                String query = "update grupo set avatar=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, url);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    System.out.println("actualizar");
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean borrarGrupo(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from grupo_tiene_tag where UUID_G=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, uuid);
+            int eliminadas_relacion1 = ps1.executeUpdate();
+
+            String query2 = "delete from es_integrante where UUID_G=?";
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ps2.setInt(1, uuid);
+            int eliminadas_relacion2 = ps2.executeUpdate();
+
+            String query3 = "delete from pendiente_aceptacion where grupo=?";
+            PreparedStatement ps3 = con.prepareStatement(query3);
+            ps3.setInt(1, uuid);
+            int eliminadas_relacion3 = ps3.executeUpdate();
+
+            String query4 = "delete from grupo where Publicante_UUID=?";
+            PreparedStatement ps4 = con.prepareStatement(query4);
+            ps4.setInt(1, uuid);
+            int eliminadas_relacion4 = ps4.executeUpdate();
+
+            con.commit();
+
+            PublicanteDAO pdao = new PublicanteDAO();
+            boolean eliminadas_entidad = pdao.borrarPublicante(uuid);
+
+            if (eliminadas_entidad) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
 }
