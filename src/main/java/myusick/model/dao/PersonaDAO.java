@@ -1,7 +1,10 @@
 package myusick.model.dao;
 
+import com.sun.jndi.ldap.pool.Pool;
 import myusick.controller.dto.*;
 import myusick.model.connection.PoolManager;
+
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +42,35 @@ public class PersonaDAO {
             try{
                 con.rollback();
             }catch(SQLException e2){e2.printStackTrace();}
+            e.printStackTrace();
+            pool.returnConnection(con);
+            return null;
+        }
+    }
+    public PublisherDTO getDataPublisher(int uuid) {
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String queryString = "select nombre, avatar from persona where publicante_uuid = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setInt(1, uuid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                con.commit();
+                PublisherDTO p = new PublisherDTO(uuid,resultSet.getString("nombre"),
+                        resultSet.getString("avatar"));
+                return p;
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return null;
+            }
+        } catch (Exception e) {
+            try {
+                con.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
@@ -149,7 +181,7 @@ public class PersonaDAO {
                 ps.setString(3, rd.getLastname());
                 ps.setString(4, rd.getEmail());
                 ps.setString(5, rd.getPassword());
-                ps.setLong(6,Long.parseLong(rd.getBirthdate()));
+                ps.setLong(6, Long.parseLong(rd.getBirthdate()));
                 ps.setString(7, rd.getCity());
                 ps.setString(8, rd.getCountry());
                 ps.setString(9, rd.getPhone());
@@ -265,4 +297,405 @@ public class PersonaDAO {
         }
     }
 
+    public boolean borrarDeGrupos(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try{
+            String query = "delete from es_integrante where UUID_P=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, uuid);
+            ps.executeUpdate();
+            con.commit();
+            pool.returnConnection(con);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+            try{
+                con.rollback();
+            }catch(SQLException e2){
+                e2.printStackTrace();
+            }
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+    public boolean setNombre(int UUID, String nombre){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(nombre.length()>20 || nombre.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set nombre=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, nombre);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setApellidos(int UUID, String ap){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(ap.length()>60 || ap.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set apellidos=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, ap);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setAvatar(int UUID, String url){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(url.length()>100 || url.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set avatar=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, url);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setEmail(int UUID, String mail){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(mail.length()>60 || mail.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set email=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, mail);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setPassword(int UUID, String pass){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(pass.length()>20 || pass.length()==0){
+                pool.returnConnection(con);
+                return false;
+            }
+            if (UUID != -1) {
+                String query = "update persona set password=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, pass);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean setNacimiento(int UUID, int nac){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if (UUID != -1) {
+                String query = "update persona set fechaNacimiento=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setInt(1, nac);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setCiudad(int UUID, String city){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(city.length()>45 || city.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set ciudad=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, city);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setPais(int UUID, String pais){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(pais.length()>45 || pais.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set pais=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, pais);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setTelefono(int UUID, int tel){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if (UUID != -1) {
+                String query = "update persona set telefono=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setInt(1, tel);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean setDescripcion(int UUID, String descr){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            PublicanteDAO pdao = new PublicanteDAO();
+            if(descr.length()>144 || descr.length()==0) return false;
+            if (UUID != -1) {
+                String query = "update persona set descripcion=? where Publicante_UUID=?";
+                PreparedStatement ps = con.prepareStatement(query);
+                ps.setString(1, descr);
+                ps.setInt(2, UUID);
+                int alteredRows = ps.executeUpdate();
+                if (alteredRows == 1) {
+                    con.commit();
+                    pool.returnConnection(con);
+                    return true;
+                }else{
+                    con.rollback();
+                    pool.returnConnection(con);
+                    return false;
+                }
+            } else {
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean borrarPersona(int uuid){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from persona_tiene_tag where UUID_P=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, uuid);
+            int eliminadas_relacion1 = ps1.executeUpdate();
+
+            String query2 = "delete from tiene_aptitud where UUID_P=?";
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ps2.setInt(1, uuid);
+            int eliminadas_relacion2 = ps2.executeUpdate();
+
+            String query3 = "delete from pendiente_aceptacion where persona=?";
+            PreparedStatement ps3 = con.prepareStatement(query3);
+            ps3.setInt(1, uuid);
+            int eliminadas_relacion3 = ps3.executeUpdate();
+
+            String query4 = "delete from es_integrante where UUID_P=?";
+            PreparedStatement ps4 = con.prepareStatement(query4);
+            ps4.setInt(1, uuid);
+            int eliminadas_relacion4 = ps4.executeUpdate();
+
+            String query5 = "delete from persona where Publicante_UUID=?";
+            PreparedStatement ps5 = con.prepareStatement(query5);
+            ps5.setInt(1, uuid);
+            int eliminadas_relacion5 = ps5.executeUpdate();
+
+            System.out.println("1: "+eliminadas_relacion1);
+            System.out.println("2: "+eliminadas_relacion2);
+            System.out.println("3: "+eliminadas_relacion3);
+            System.out.println("4: "+eliminadas_relacion4);
+            System.out.println("persona: " + eliminadas_relacion5);
+
+            con.commit();
+
+            PublicanteDAO pdao = new PublicanteDAO();
+            boolean eliminadas_entidad = pdao.borrarPublicante(uuid);
+
+            System.out.println("publicante:" + eliminadas_entidad);
+
+            if (eliminadas_entidad) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            pool.returnConnection(con);
+            return false;
+        }
+    }
 }

@@ -182,4 +182,91 @@ public class TagDAO {
             return false;
         }
     }
+    public boolean editarTag(int id, String nuevo){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            if(nuevo.length()>45 || nuevo.length()==0) return false;
+            String query = "update tag set nombreTag=? where idTag=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, nuevo);
+            ps.setInt(2, id);
+            int alteredRows = ps.executeUpdate();
+            if (alteredRows == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+
+    public boolean borrarTag(int id){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try {
+            String query1 = "delete from grupo_tiene_tag where idtag=?";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ps1.setInt(1, id);
+            int eliminadas_relacion1 = ps1.executeUpdate();
+
+            String query2 = "delete from persona_tiene_tag where idtag=?";
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ps2.setInt(1, id);
+            int eliminadas_relacion2 = ps2.executeUpdate();
+
+            String query3 = "delete from tag where idtag=?";
+            PreparedStatement ps3 = con.prepareStatement(query3);
+            ps3.setInt(1, id);
+            int eliminadas_entidad = ps3.executeUpdate();
+
+            if (eliminadas_entidad == 1) {
+                con.commit();
+                pool.returnConnection(con);
+                return true;
+            }
+            else{
+                con.rollback();
+                pool.returnConnection(con);
+                return false;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            try{
+                con.rollback();
+            }catch(SQLException e2){
+                e2.printStackTrace();
+            }
+            pool.returnConnection(con);
+            return false;
+        }
+    }
+    public boolean borrarTagsAsociadas(int uuid, String tipo){
+        PoolManager pool = PoolManager.getInstance();
+        Connection con = pool.getConnection();
+        try{
+            String query = "delete from "+tipo+"_tiene_tag where UUID_"+tipo.charAt(0)+"=?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,uuid);
+            ps.executeUpdate();
+            con.commit();
+            pool.returnConnection(con);
+            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
+            try{
+                con.rollback();
+            }catch(SQLException e2){
+                e2.printStackTrace();
+            }
+            pool.returnConnection(con);
+            return false;
+        }
+    }
 }
