@@ -2,6 +2,9 @@ package myusick.controller.services;
 
 import com.google.gson.Gson;
 import myusick.controller.MyusickService;
+import myusick.controller.dto.PublisherDTO;
+
+import java.util.ArrayList;
 
 /**
  * Created by david on 01/05/2015.
@@ -25,14 +28,14 @@ public class FollowService {
     //TODO
     public static String getFollowers(int userid) {
         Gson gson = new Gson();
-        new MyusickService().getFollowers(userid);
-        return null;
+        ArrayList<PublisherDTO> list = new MyusickService().getFollowers(userid);
+        return gson.toJson(list);
     }
 
     //TODO
     public static String getFollowing(int userid) {
         Gson gson = new Gson();
-        new MyusickService().getFollowing(userid);
-        return null;
+        ArrayList<PublisherDTO> list = new MyusickService().getFollowing(userid);
+        return gson.toJson(list);
     }
 }

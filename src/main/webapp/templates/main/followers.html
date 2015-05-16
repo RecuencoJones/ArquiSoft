@@ -30,8 +30,18 @@
                     <div class="simple-jumbo">
                         <h2 class="page-header text-center" style="margin-top: 10px;">{{view_name}}</h2>
                         <ul class="list-group">
-                            <li class="list-group-item list-hover" ng-repeat="pub in publishers">
-                                {{pub.name}}
+                            <li class="list-group-item list-hover" ng-repeat="pub in publishers" ng-click="goTo(pub.id,pub.type)">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img class="img-responsive img-bordered" style="max-height: 50px" ng-src="{{pub.avatar}}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{pub.name}}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item" ng-hide="publishers.length">
+                                No {{view_name}}
                             </li>
                         </ul>
                     </div>

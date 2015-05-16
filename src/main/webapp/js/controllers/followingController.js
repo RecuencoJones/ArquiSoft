@@ -28,14 +28,17 @@ angular.module('starter')
                 console.log("error");
             });
 
+        $scope.publishers = [];
+
         $http.get(API.URL + API.FOLLOWING_ENDPOINT + $scope.user_id)
             .success(function(data){
                 console.log(data);
+                $scope.publishers = data;
             });
         
-        $scope.publishers = [
-            {
-                name: "derp"
-            }
-        ];
+        //$scope.publishers = [
+        //    {
+        //        name: "derp"
+        //    }
+        //];
     }]);

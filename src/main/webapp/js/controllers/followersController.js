@@ -23,15 +23,18 @@ angular.module('starter')
             }).error(function(data){
                 console.log("error");
             });
+
+        $scope.publishers = [];
         
         $http.get(API.URL + API.FOLLOWERS_ENDPOINT + $scope.user_id)
             .success(function(data){
                 console.log(data);
+                $scope.publishers = data;
             });
 
-        $scope.publishers = [
-            {
-                name: "noderp"
-            }
-        ];
+        //$scope.publishers = [
+        //    {
+        //        name: "noderp"
+        //    }
+        //];
     }]);

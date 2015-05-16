@@ -15,7 +15,7 @@ public class ConnectionAdmin {
     private final static String DRIVER_URL =
             "jdbc:mysql://localhost:3306/myusickdb";
     private final static String USER = "root";
-    private final static String PASSWORD = "";
+    private final static String PASSWORD = "toor";
 
 
     static {
