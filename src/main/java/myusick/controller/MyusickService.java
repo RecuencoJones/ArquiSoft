@@ -217,6 +217,7 @@ public class MyusickService {
     public boolean borrarAptitud(int id){
         return new AptitudDAO().borrarAptitud(id);
     }
+
     public boolean setNombre(int UUID, String nombre) {
        return new GrupoDAO().setNombre(UUID, nombre);
     }

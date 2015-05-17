@@ -388,7 +388,7 @@ public class PersonaDAO {
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(url.length()>100 || url.length()==0) return false;
+            if(url.length()>500 || url.length()==0) return false;
             if (UUID != -1) {
                 String query = "update persona set avatar=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);

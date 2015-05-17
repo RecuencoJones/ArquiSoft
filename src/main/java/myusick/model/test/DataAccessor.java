@@ -1,7 +1,5 @@
 package myusick.model.test;
 
-import myusick.persistence.VO.*;
-
 /**
  * Created by Sandra on 25/03/2015.
  */

@@ -26,5 +26,6 @@ angular.module('starter')
         "SEARCH_PERSON_ENDPOINT": "/search/person/",
         "SEARCH_GROUP_ENDPOINT": "/search/group/",
         "SEARCH_TAG_ENDPOINT": "/search/tag/",
-        "SEARCH_SKILL_ENDPOINT": "/search/skill/"
+        "SEARCH_SKILL_ENDPOINT": "/search/skill/",
+        "PROFILE_EDIT_ENDPOINT": "/edit/profile/"
     });

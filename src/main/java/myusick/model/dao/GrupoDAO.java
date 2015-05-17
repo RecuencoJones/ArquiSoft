@@ -413,7 +413,6 @@ public class GrupoDAO {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
-            PublicanteDAO pdao = new PublicanteDAO();
             if (nombre.length() > 45 || nombre.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update grupo set nombre=? where Publicante_UUID=?";
@@ -515,7 +514,7 @@ public class GrupoDAO {
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(url.length()>100 || url.length()==0){
+            if(url.length()>500 || url.length()==0){
                 pool.returnConnection(con);
                 return false;
             }

@@ -36,39 +36,36 @@ public class ProfileService {
      */
     public static String editProfile(EditDTO editDTO) {
         Gson gson = new Gson();
-//        if(editDTO.isType()){
-//            //es grupo
-//            if(editDTO.getAvatar() != null){
-//                new MyusickService().updateGroupAvatar(editDTO.getId(),editDTO.getAvatar());
-//            }
-//            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
-//                new MyusickService().updateGroupDescription(editDTO.getId(),editDTO.getDescripcion());
-//            }
-//            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()) {
-//                new MyusickService().updateGroupName(editDTO.getId(),editDTO.getNombre());
-//            }
-//        }else{
-//            //es persona
-//            if(editDTO.getAvatar() != null){
-//                new MyusickService().updatePersonAvatar(editDTO.getId(),editDTO.getAvatar());
-//            }
-//            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
-//                new MyusickService().updatePersonDescription(editDTO.getId(),editDTO.getDescripcion());
-//            }
-//            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()){
-//                new MyusickService().updatePersonName(editDTO.getId(),editDTO.getNombre());
-//            }
-//            if(editDTO.getEmail() != null && !editDTO.getEmail().isEmpty()){
-//                new MyusickService().updatePersonEmail(editDTO.getId(),editDTO.getEmail());
-//            }
-//            if(editDTO.getTelefono() != null && !editDTO.getTelefono().isEmpty()){
-//                new MyusickService().updatePersonPhone(editDTO.getId(),editDTO.getTelefono());
-//            }
-//            if(editDTO.getPassword() != null && !editDTO.getPassword().isEmpty()){
-//                new MyusickService().updatePersonPassword(editDTO.getId(),editDTO.getPassword());
-//            }
-//        }
-        return null;
+        if(editDTO.isType()){
+            //es grupo
+            if(editDTO.getAvatar() != null && !editDTO.getAvatar().isEmpty()){
+                new MyusickService().setAvatar(editDTO.getId(), editDTO.getAvatar());
+            }
+            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
+                new MyusickService().setDescripcion(editDTO.getId(), editDTO.getDescripcion());
+            }
+            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()) {
+                new MyusickService().setNombre(editDTO.getId(), editDTO.getNombre());
+            }
+        }else{
+            //es persona
+            if(editDTO.getAvatar() != null && !editDTO.getAvatar().isEmpty()){
+                new MyusickService().setAvatarPersona(editDTO.getId(),editDTO.getAvatar());
+            }
+            if(editDTO.getDescripcion() != null && !editDTO.getDescripcion().isEmpty()){
+                new MyusickService().setDescripcionPersona(editDTO.getId(),editDTO.getDescripcion());
+            }
+            if(editDTO.getNombre() != null && !editDTO.getNombre().isEmpty()){
+                new MyusickService().setNombrePersona(editDTO.getId(),editDTO.getNombre());
+            }
+            if(editDTO.getTelefono() != 0){
+                new MyusickService().setTelefono(editDTO.getId(),editDTO.getTelefono());
+            }
+            if(editDTO.getPassword() != null && !editDTO.getPassword().isEmpty() && editDTO.getPassword().equals(editDTO.getRepassword())){
+                new MyusickService().setPassword(editDTO.getId(),editDTO.getPassword());
+            }
+        }
+        return "{\"ok\": true}";
     }
 }
 

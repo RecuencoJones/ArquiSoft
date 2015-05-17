@@ -2,7 +2,6 @@ angular.module('starter')
 
     .controller('ProfileEditCtrl',['$scope', '$state', '$stateParams', '$location', '$http', 'auth', 'API', function($scope,$state,$stateParams,$location,$http,auth,API){
         $scope.loggedUserId = auth.identity().userid;
-        $scope.user_id = $stateParams._userid;
         $scope.hidden = true;
 
         $scope.toggleMenu = function() {
@@ -14,7 +13,6 @@ angular.module('starter')
         };
 
         $scope.name = "";
-        $scope.email = "";
         $scope.phone = "";
         $scope.avatar = "";
         $scope.bio = "";
@@ -22,22 +20,17 @@ angular.module('starter')
         $scope.repassword = "";
         $scope.skills = [];
 
-        $scope.errors = [];
+        $scope.errors = {};
         $scope.hiddenErrorMessage = true;
         $scope.newskill = "";
         $scope.showSkillInput = false;
 
-        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.user_id)
+        $http.get(API.URL + API.PROFILE_ENDPOINT + $scope.loggedUserId)
             .success(function(data){
                 console.log(data);
                 if(data.type){
                     $state.go("error");
                 }else{
-                    $scope.name = data.name;
-                    $scope.email = data.email;
-                    $scope.phone = data.phone;
-                    $scope.avatar = data.avatar;
-                    $scope.bio = data.description;
                     console.log(data.skills);
                     $scope.skills = data.skills;
                 }
@@ -50,23 +43,50 @@ angular.module('starter')
         };
         
         $scope.update = function(){
-            $scope.errors = [];
+            $scope.errors = {};
             $scope.hiddenErrorMessage = true;
-            
+
+            if(!($scope.phone.trim().length==0) && !$scope.phone.match(/[0-9]{9}/)){
+                $scope.errors.phone = true;
+                $scope.hiddenErrorMessage = false;
+            }
+            if(!($scope.avatar.trim().length==0) && !$scope.avatar.match(/\.(jpeg|jpg|gif|png)$/)){
+                $scope.errors.avatar = true;
+                $scope.hiddenErrorMessage = false;
+            }
             if($scope.password != $scope.repassword){
                 $scope.errors.password = true;
                 $scope.hiddenErrorMessage = false;
+            }
+            if(!$scope.hiddenErrorMessage){
                 return;
             }
             
             var tmp = {
-                name: $scope.name,
-                email: $scope.email,
+                id: $scope.loggedUserId,
+                nombre: $scope.name.trim().length==0 ? null : $scope.name,
+                telefono: $scope.phone,
                 avatar: $scope.avatar,
-                description: $scope.bio,
+                descripcion: $scope.bio,
                 password: $scope.password,
-                repassword: $scope.repassword
-            }
+                repassword: $scope.repassword,
+                type: false
+            };
+
+            $http.post(API.URL + API.PROFILE_EDIT_ENDPOINT,
+                JSON.stringify(tmp),
+                {
+                    'Content-Type': 'application/json'
+                }).success(function(data){
+                    if(!data.ok){
+                        $scope.hiddenErrorMessage = false;
+                        $scope.errors = data;
+                    }else{
+                        $state.go('profile', {_userid: $scope.loggedUserId});
+                    }
+                }).error(function () {
+                    $scope.hiddenErrorMessage = false;
+                });
             
         };
         

@@ -16,21 +16,21 @@ public class EditDTO {
 
     //persona
     private String password;
-    private String telefono;
-    private String email;
+    private String repassword;
+    private int telefono;
 
     public EditDTO() {
     }
 
-    public EditDTO(int id, boolean type, String nombre, String descripcion, String avatar, String password, String telefono, String email) {
+    public EditDTO(int id, boolean type, String nombre, String descripcion, String avatar, String password, String repassword, int telefono) {
         this.id = id;
         this.type = type;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.avatar = avatar;
         this.password = password;
+        this.repassword = repassword;
         this.telefono = telefono;
-        this.email = email;
     }
 
     public int getId() {
@@ -81,19 +81,19 @@ public class EditDTO {
         this.password = password;
     }
 
-    public String getTelefono() {
+    public String getRepassword() {
+        return repassword;
+    }
+
+    public void setRepassword(String repassword) {
+        this.repassword = repassword;
+    }
+
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
