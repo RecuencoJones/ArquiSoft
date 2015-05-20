@@ -104,7 +104,7 @@ angular.module('starter')
                         if(data.ok){
                             $scope.band.tags.push($scope.newtag);
                         }else{
-                            alert("JAJAJA");
+                            alert("Error");
                         }
                         $scope.newtag = "";
                         $scope.showTagInput = false;
@@ -171,51 +171,5 @@ angular.module('starter')
         $scope.hideSuccessMessage = function(){
             $scope.showSuccessApplianceMessage = false;
         };
-
-        /*$scope.band = {
-         name: "Metallica",
-         description: "Cute metal band",
-         avatar: "img/metallica.jpg",
-         members: [
-             {
-                 id: 1,
-                 name: "Lars"
-             },
-             {
-                 id: 2,
-                 name: "Kirk"
-             },
-             {
-                 id: 3,
-                 name: "James"
-             },
-             {
-                 id: 666,
-                 name: "Cliff"
-             },
-         ],
-         publications: [
-             {
-             id: "4",
-             date: Date.now(),
-             user: "Metallica",
-             user_id: "2",
-             content: "MASTEEEEER MWAHAHAHAHA"
-             },
-             {
-             id: "3",
-             date: Date.now(),
-             user: "Metallica",
-             user_id: "2",
-             content: "Sad but true"
-             }
-         ],
-         tags: [
-             "Los Angeles",
-             "California",
-             "Thrash metal",
-             "Speed metal",
-             "BEST"
-         ]};*/
     }]);
 

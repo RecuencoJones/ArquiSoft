@@ -148,6 +148,14 @@ body {
     background-color: #f5f5f5;
 }
 
+.no-margin {
+    margin: 0;
+}
+
+.profile-icons-bar {
+    padding-top: 10px;
+}
+
 @media(min-width:990px) {
     .custom-nav-toggle {
         margin-bottom: 0;
@@ -158,10 +166,6 @@ body {
     
     .simple-jumbo {
         margin-bottom: 0px;
-    }
-    
-    .profile-icons-bar {
-        padding-top: 10px;
     }
     
     .margin-bot-10 {

@@ -16,25 +16,24 @@
                         <!-- Cabecera del panel -->
                         <div class="row margin-0">
                             <!-- Foto de perfil -->
-                            <div class="col-md-12 col-md-offset-0 col-xs-6 col-xs-offset-3">
+                            <div class="col-md-12">
                                 <img class="img img-responsive img-bordered" ng-src="{{user.avatar}}"/>
                             </div>
                             <!-- Fotos y Contactos -->
-                            <div class="col-md-12 col-xs-3 profile-icons-bar">
+                            <div class="col-md-12 profile-icons-bar">
                                 <div class="row text-center">
-                                    <div class="col-md-4 col-xs-12 margin-bot-10">
-                                        <a class="btn btn-default" title="Media">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-4 col-xs-12 margin-bot-10">
-                                        <a class="btn btn-default" title="Contacts">
+                                    <div class="col-md-6 col-xs-6 margin-bot-10">
+                                        <a class="btn btn-default" title="Following" ng-href="#/following/{{user_id}}">
                                             <span class="glyphicon glyphicon-user"></span>
+                                            <span class="glyphicon glyphicon-arrow-right"></span>
+                                            <p class="no-margin">Following</p>
                                         </a>
                                     </div>
-                                    <div class="col-md-4 col-xs-12 margin-bot-10">
-                                        <a class="btn btn-default" title="Favourites">
-                                            <span class="glyphicon glyphicon-star"></span>
+                                    <div class="col-md-6 col-xs-6 margin-bot-10">
+                                        <a class="btn btn-default" title="Followers" ng-href="#/followers/{{user_id}}">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            <span class="glyphicon glyphicon-arrow-left"></span>
+                                            <p class="no-margin">Followers</p>
                                         </a>
                                     </div>
                                 </div>
