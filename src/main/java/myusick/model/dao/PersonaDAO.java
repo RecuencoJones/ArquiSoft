@@ -1,52 +1,66 @@
 package myusick.model.dao;
 
-import com.sun.jndi.ldap.pool.Pool;
 import myusick.controller.dto.*;
 import myusick.model.connection.PoolManager;
-
-import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ *
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con las personas del sistema
  */
 public class PersonaDAO {
 
-    public ProfileDTO getDataProfile(int uuid){
+    /**
+     * Extrae los datos de perfil de una persona concreta
+     *
+     * @param uuid id de la persona
+     * @return datos del perfil de la persona
+     */
+    public ProfileDTO getDataProfile(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
-        try{
+        try {
             String queryString = "select nombre,descripcion,avatar from persona where publicante_uuid = ?";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 ProfileDTO p = new ProfileDTO(resultSet.getString("nombre"), resultSet.getString("descripcion"),
                         resultSet.getString("avatar"), new AptitudDAO().getAptitudesByPersona(uuid),
                         new TagDAO().getTagsByPersona(uuid), null, getGroupsByMember(uuid),
                         new PublicacionDAO().getPublicacionesById(uuid));
                 pool.returnConnection(con);
                 return p;
-            }
-
-            else{
+            } else {
                 pool.returnConnection(con);
                 return null;
             }
-        }catch (Exception e) {
-            try{
+        } catch (Exception e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
         }
     }
+
+    /**
+     * Extrae la informacion de publicante de una persona
+     * a partir de su id
+     *
+     * @param uuid id de la persona
+     * @return informacion de publicante de la persona
+     */
     public PublisherDTO getDataPublisher(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -57,7 +71,7 @@ public class PersonaDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 con.commit();
-                PublisherDTO p = new PublisherDTO(uuid,resultSet.getString("nombre"),
+                PublisherDTO p = new PublisherDTO(uuid, resultSet.getString("nombre"),
                         resultSet.getString("avatar"));
                 return p;
             } else {
@@ -76,7 +90,15 @@ public class PersonaDAO {
             return null;
         }
     }
-    public boolean esUnaPersona(int uuid){
+
+    /**
+     * Indica si un publicante concreto es una persona
+     *
+     * @param uuid id del publicante
+     * @return cierto en caso de que sea una persona, falso
+     * en caso contrario
+     */
+    public boolean esUnaPersona(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -84,88 +106,113 @@ public class PersonaDAO {
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 con.commit();
-                boolean resultado = resultSet.getBoolean(1)==false;
+                boolean resultado = resultSet.getBoolean(1) == false;
                 pool.returnConnection(con);
                 return resultado;
-            }
-            else{
+            } else {
                 con.rollback();
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(SQLException e){
-            try{
+        } catch (SQLException e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public ArrayList<PublisherDTO> getGroupsByMember(int member){
+    /**
+     * Extrae los grupos a los que pertenezca una persona concreta
+     *
+     * @param member id de la persona
+     * @return lista con los grupos a los que pertenece la persona
+     */
+    public ArrayList<PublisherDTO> getGroupsByMember(int member) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         ArrayList<PublisherDTO> result = new ArrayList<>();
-        try{
+        try {
             String queryString = "select Publicante_UUID,nombre from Grupo where publicante_uuid " +
                     "in (select uuid_g from es_integrante where uuid_p=?)";
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setInt(1, member);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                result.add(new PublisherDTO(resultSet.getInt(1),resultSet.getString(2)));
+            while (resultSet.next()) {
+                result.add(new PublisherDTO(resultSet.getInt(1), resultSet.getString(2)));
             }
             con.commit();
             pool.returnConnection(con);
             return result;
-        }catch (Exception e) {
-            try{
+        } catch (Exception e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
         }
     }
 
-    public LoginDTO getLoginData(String email, String password){
+    /**
+     * Proporciona la informacion de login de una persona concreta
+     *
+     * @param email    email para acceder a la red social del publicante
+     * @param password contrasena para acceder a la red social del publicante
+     * @return informacion de login del publicante concreto
+     */
+    public LoginDTO getLoginData(String email, String password) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         LoginDTO l = new LoginDTO();
         l.setUser(email);
         l.setPassword(password);
         try {
-            String query="select publicante_uuid from persona where email=? and password=?";
+            String query = "select publicante_uuid from persona where email=? and password=?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             int i = 1;
-            if(rs.next()){
+            if (rs.next()) {
                 l.setUserId(rs.getInt(1));
                 l.setGroups(getGroupsByMember(l.getUserId()));
                 con.commit();
                 pool.returnConnection(con);
                 return l;
-            }else{
+            } else {
                 /* El usuario no existe */
                 con.rollback();
                 pool.returnConnection(con);
                 return null;
             }
         } catch (SQLException e) {
-            try{
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return new LoginDTO();
         }
     }
-    
+
+    /**
+     * Inserta una persona en la base de datos
+     *
+     * @param rd informacion de una persona concreta
+     * @return id de la persona, insertado en el objeto
+     * RegisterDTO, -1 en caso de error
+     */
     public int registerUser(RegisterDTO rd) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -190,7 +237,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return uuid;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return -1;
@@ -201,46 +248,65 @@ public class PersonaDAO {
                 return -1;
             }
         } catch (Exception e) {
-            try{
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return -1;
-        }        
+        }
     }
 
-    public List<ShortProfileDTO> buscarPorNombre(String nombre){
+    /**
+     * Extrae todos aquellos perfiles cuyo nombre coincida total
+     * o parcialmente con alguno de los perfiles de la base de datos
+     *
+     * @param nombre cadena con la que se quiere coincidir el nombre
+     *               de algun perfil de la base de datos
+     * @return lista con los perfiles en los que se encuentren coincidencias
+     */
+    public List<ShortProfileDTO> buscarPorNombre(String nombre) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
-        try{
+        try {
             String query = "select Publicante_uuid, nombre, avatar from persona where nombre like ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, "%"+nombre+"%");
+            ps.setString(1, "%" + nombre + "%");
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int uuid = rs.getInt(1);
-                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid, rs.getString("nombre"), rs.getString("avatar"), false);
                 resultado.add(perfil);
             }
             pool.returnConnection(con);
             return resultado;
-        }catch (Exception e) {
-            try{
+        } catch (Exception e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
         }
     }
 
-    public List<ShortProfileDTO> buscarPorTag(String tag){
+    /**
+     * Busca aquellos perfiles que posean relaciones con tags
+     * cuyo nombre coincida con el que se inserta como parametro
+     *
+     * @param tag nombre del tag
+     * @return lista de los perfiles con coincidencias
+     */
+    public List<ShortProfileDTO> buscarPorTag(String tag) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
-        try{
+        try {
             String query = "select nombre,avatar, Publicante_UUID from persona where publicante_uuid in(" +
                     "  select UUID_P from persona_tiene_tag where idTag in (" +
                     "    select idTag from tag where nombreTag=?" +
@@ -248,28 +314,37 @@ public class PersonaDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, tag);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int uuid = rs.getInt("Publicante_UUID");
-                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid, rs.getString("nombre"), rs.getString("avatar"), false);
                 resultado.add(perfil);
             }
             pool.returnConnection(con);
             return resultado;
-        }catch (Exception e) {
-            try{
+        } catch (Exception e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
         }
     }
 
-    public List<ShortProfileDTO> buscarPorAptitud(String aptitud){
+    /**
+     * Busca aquellos perfiles que posean relaciones con aptitudes
+     * cuyo nombre coincida con el que se inserta como parametro
+     *
+     * @param aptitud nombre de la aptitud
+     * @return lista de los perfiles con coincidencias
+     */
+    public List<ShortProfileDTO> buscarPorAptitud(String aptitud) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         List<ShortProfileDTO> resultado = new ArrayList<>();
-        try{
+        try {
             String query = "select nombre, avatar, Publicante_UUID from persona where publicante_uuid in(" +
                     "  select UUID_P from tiene_aptitud where idAptitud in (" +
                     "    select idAptitud from aptitud where nombre=?" +
@@ -280,27 +355,37 @@ public class PersonaDAO {
             AptitudDAO adao = new AptitudDAO();
             TagDAO tdao = new TagDAO();
             PublicacionDAO pdao = new PublicacionDAO();
-            while(rs.next()){
+            while (rs.next()) {
                 int uuid = rs.getInt("Publicante_UUID");
-                ShortProfileDTO perfil = new ShortProfileDTO(uuid,rs.getString("nombre"),rs.getString("avatar"),false);
+                ShortProfileDTO perfil = new ShortProfileDTO(uuid, rs.getString("nombre"), rs.getString("avatar"), false);
                 resultado.add(perfil);
             }
             pool.returnConnection(con);
             return resultado;
-        }catch (Exception e) {
-            try{
+        } catch (Exception e) {
+            try {
                 con.rollback();
-            }catch(SQLException e2){e2.printStackTrace();}
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
             pool.returnConnection(con);
             return null;
         }
     }
 
-    public boolean borrarDeGrupos(int uuid){
+    /**
+     * Borra al publicante de todos los grupos en los que tenga
+     * relacion
+     *
+     * @param uuid id del publicante
+     * @return cierto en caso de que el borrado se realice con exito,
+     * falso en caso contrario
+     */
+    public boolean borrarDeGrupos(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
-        try{
+        try {
             String query = "delete from es_integrante where UUID_P=?";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, uuid);
@@ -308,23 +393,32 @@ public class PersonaDAO {
             con.commit();
             pool.returnConnection(con);
             return true;
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            try{
+            try {
                 con.rollback();
-            }catch(SQLException e2){
+            } catch (SQLException e2) {
                 e2.printStackTrace();
             }
             pool.returnConnection(con);
             return false;
         }
     }
-    public boolean setNombre(int UUID, String nombre){
+
+    /**
+     * Actualiza el nombre de una persona concreta
+     *
+     * @param UUID   id de la persona
+     * @param nombre nuevo nombre de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setNombre(int UUID, String nombre) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(nombre.length()>20 || nombre.length()==0) return false;
+            if (nombre.length() > 20 || nombre.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set nombre=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -335,7 +429,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -345,18 +439,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setApellidos(int UUID, String ap){
+    /**
+     * Actualiza los apellidos de la persona
+     *
+     * @param UUID id de la persona
+     * @param ap   apellidos de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setApellidos(int UUID, String ap) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(ap.length()>60 || ap.length()==0) return false;
+            if (ap.length() > 60 || ap.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set apellidos=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -367,7 +469,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -377,18 +479,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setAvatar(int UUID, String url){
+    /**
+     * Actualiza el avatar de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param url  nueva url de la imagen del avatar
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setAvatar(int UUID, String url) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(url.length()>500 || url.length()==0) return false;
+            if (url.length() > 500 || url.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set avatar=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -399,7 +509,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -409,18 +519,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setEmail(int UUID, String mail){
+    /**
+     * Actualiza el email de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param mail nuevo email de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setEmail(int UUID, String mail) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(mail.length()>60 || mail.length()==0) return false;
+            if (mail.length() > 60 || mail.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set email=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -431,7 +549,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -441,18 +559,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setPassword(int UUID, String pass){
+    /**
+     * Actualiza la contrasena de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param pass nueva contrasena de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setPassword(int UUID, String pass) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(pass.length()>20 || pass.length()==0){
+            if (pass.length() > 20 || pass.length() == 0) {
                 pool.returnConnection(con);
                 return false;
             }
@@ -466,7 +592,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -476,14 +602,22 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean setNacimiento(int UUID, int nac){
+    /**
+     * Actualiza la fecha de nacimiento de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param nac  nueva fecha de nacimiento de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setNacimiento(int UUID, int nac) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -498,7 +632,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -508,18 +642,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setCiudad(int UUID, String city){
+    /**
+     * Actualiza la ciudad de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param city nueva ciudad de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setCiudad(int UUID, String city) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(city.length()>45 || city.length()==0) return false;
+            if (city.length() > 45 || city.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set ciudad=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -530,7 +672,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -540,18 +682,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setPais(int UUID, String pais){
+    /**
+     * Actualiza el pais de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param pais nuevo pais de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setPais(int UUID, String pais) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(pais.length()>45 || pais.length()==0) return false;
+            if (pais.length() > 45 || pais.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set pais=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -562,7 +712,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -572,13 +722,21 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setTelefono(int UUID, int tel){
+    /**
+     * Actualiza el telefono de una persona concreta
+     *
+     * @param UUID id de la persona
+     * @param tel  nuevo telefono de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setTelefono(int UUID, int tel) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -593,7 +751,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -603,18 +761,26 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean setDescripcion(int UUID, String descr){
+    /**
+     * Actualiza la descripcion de una persona concreta
+     *
+     * @param UUID  id de la persona
+     * @param descr nueva descripcion de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean setDescripcion(int UUID, String descr) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(descr.length()>144 || descr.length()==0) return false;
+            if (descr.length() > 144 || descr.length() == 0) return false;
             if (UUID != -1) {
                 String query = "update persona set descripcion=? where Publicante_UUID=?";
                 PreparedStatement ps = con.prepareStatement(query);
@@ -625,7 +791,7 @@ public class PersonaDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -635,13 +801,20 @@ public class PersonaDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             return false;
         }
     }
 
-    public boolean borrarPersona(int uuid){
+    /**
+     * Elimina una persona concreta de la base de datos
+     *
+     * @param uuid id de la persona
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario.
+     */
+    public boolean borrarPersona(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -670,29 +843,21 @@ public class PersonaDAO {
             ps5.setInt(1, uuid);
             int eliminadas_relacion5 = ps5.executeUpdate();
 
-            System.out.println("1: "+eliminadas_relacion1);
-            System.out.println("2: "+eliminadas_relacion2);
-            System.out.println("3: "+eliminadas_relacion3);
-            System.out.println("4: "+eliminadas_relacion4);
-            System.out.println("persona: " + eliminadas_relacion5);
-
             con.commit();
 
             PublicanteDAO pdao = new PublicanteDAO();
             boolean eliminadas_entidad = pdao.borrarPublicante(uuid);
 
-            System.out.println("publicante:" + eliminadas_entidad);
-
             if (eliminadas_entidad) {
                 con.commit();
                 pool.returnConnection(con);
                 return true;
-            }else{
+            } else {
                 con.rollback();
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             pool.returnConnection(con);
             return false;

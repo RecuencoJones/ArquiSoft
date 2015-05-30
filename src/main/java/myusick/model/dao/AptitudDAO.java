@@ -7,10 +7,22 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con las aptitudes del sistema
  */
 public class AptitudDAO {
 
+    /**
+     * Exreae las aptitudes de una persona concreta
+     * @param uuid id de la persona
+     * @return lista con los nombres de las aptitudes
+     * de la persona solicitada
+     */
     public ArrayList<String> getAptitudesByPersona(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -37,6 +49,12 @@ public class AptitudDAO {
         }
     }
 
+    /**
+     * Inserta una nueva aptitud en la base de datos
+     * @param td informacion de la aptitud que se quiere insertar
+     * @return cierto en caso de que la insercion sea correcta, falso
+     * en caso contrario.
+     */
     public boolean registrarAptitud(SkillTagDTO td) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -84,6 +102,12 @@ public class AptitudDAO {
         }
     }
 
+    /**
+     * Extrae el id de una aptitud a partir de su nombre
+     * @param nombre nombre de la aptitud
+     * @return id de la aptitud, -1 en caso de que la aptitud no exista
+     * y -2 en caso de error con la conexion a la base de datos
+     */
     public int getIdByNombre(String nombre){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -113,6 +137,13 @@ public class AptitudDAO {
         }
     }
 
+    /**
+     * Establece una relacion entre una aptitud y un publicante
+     * @param idAptitud id de la aptitud
+     * @param idPublicante id del publicante
+     * @return cierto en caso de que la relacion se establezca
+     * con exito, falso en caso contrario
+     */
     private boolean asociarAptitud(int idAptitud, int idPublicante) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -141,6 +172,14 @@ public class AptitudDAO {
             return false;
         }
     }
+
+    /**
+     * Cambia el nombre de una aptitud concreta
+     * @param id id de la aptitud a actualizar
+     * @param nuevo nuevo nombre de la aptitud
+     * @return cierto en caso de que la actualizacion
+     * sea correcta, falso en caso contrario
+     */
     public boolean editarAptitud(int id, String nuevo){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -167,6 +206,12 @@ public class AptitudDAO {
         }
     }
 
+    /**
+     * Borra una aptitud concreta de la base de datos
+     * @param id id de la aptitud
+     * @return cierto en caso de que la aptitud sea borrada
+     * con exito, falso en caso contrario
+     */
     public boolean borrarAptitud(int id){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -195,6 +240,14 @@ public class AptitudDAO {
             return false;
         }
     }
+
+    /**
+     * Borra todas aquellas aptitudes que esten relacionadas
+     * con un publicante concreto
+     * @param uuid id del publicante
+     * @return cierto en caso de que el borrado sea satisfactorio,
+     * falso en caso contrario
+     */
     public boolean borrarAptitudesAsociadas(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();

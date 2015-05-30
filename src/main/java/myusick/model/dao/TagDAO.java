@@ -12,7 +12,7 @@ import java.sql.*;
  * Myusick. Arquitectura Software 2015
  * @author David Recuenco (648701)
  * @author Guillermo Perez (610382)
- * @autor Sandra Campos (629928)
+ * @author Sandra Campos (629928)
  *
  * Clase DAO que proporciona el acceso a los datos relacionados
  * con las tags del sistema

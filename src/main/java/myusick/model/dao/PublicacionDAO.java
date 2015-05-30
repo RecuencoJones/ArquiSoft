@@ -2,18 +2,28 @@ package myusick.model.dao;
 
 import myusick.controller.dto.PostDTO;
 import myusick.controller.dto.PublicationsDTO;
-import myusick.model.connection.ConnectionAdmin;
 import myusick.model.connection.PoolManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con las publicaciones del sistema
  */
 public class PublicacionDAO {
 
+    /**
+     * Extrae las publicaciones de un publicante concreto
+     * @param uuid id del publicante
+     * @return lista con la informacion de las publicaciones
+     * de un publicante concreto
+     */
     public ArrayList<PublicationsDTO> getPublicacionesById(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -42,6 +52,17 @@ public class PublicacionDAO {
         }
     }
 
+    /**
+     * Inserta una publicacion en la base de datos
+     * @param fecha fecha de la publicacion, se establece en formato
+     *              long porque cuenta los milisegundos que han pasado desde 1970
+     *              hasta la fecha concreta. Imprescindible para la adaptacion
+     *              con AngularJS en el front-end.
+     * @param contenido texto de la publicacion
+     * @param publicante_uuid id del publicante que ha realizado la publicacion
+     * @return id de la publicacion generado automaticamente por la base de datos,
+     * -1 en caso de que exista un error con la base de datos.
+     */
     public int insertarPublicacion(long fecha, String contenido, int publicante_uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -78,6 +99,11 @@ public class PublicacionDAO {
         }
     }
 
+    /**
+     * Extrae una publicacion a partir de un id concreto
+     * @param id id de la publicacion
+     * @return informacion de la publicacion concreta
+     */
     public PostDTO getPostById(int id) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -124,6 +150,15 @@ public class PublicacionDAO {
         }
     }
 
+    /**
+     * Extrae las 10 ultimas publicaciones de todos aquellos
+     * seguidores que tenga un publicante concreto, incluidos los suyos
+     * propios.
+     * @param seguidor id del publicante del que se quieren ver las
+     *                 publicaciones de sus seguidores
+     * @return lista con las diez ultimas publicaciones, tanto de sus
+     * seguidores como de el mismo
+     */
     public List<PostDTO> ultimasPublicaciones(int seguidor){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -162,6 +197,15 @@ public class PublicacionDAO {
             return null;
         }
     }
+
+    /**
+     * Actualiza los datos de una publicacion conreta
+     * @param id id de la publicacion
+     * @param fecha fecha de la publicacion
+     * @param contenido texto de la publicacion
+     * @return cierto en caso de que la actualizacion se realice
+     * con exito, falso en caso contrario
+     */
     public boolean editarPublicacion(int id, long fecha, String contenido){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -190,6 +234,11 @@ public class PublicacionDAO {
         }
     }
 
+    /**
+     * Elimina una publicacion concreta de la base de datos
+     * @param id id de la publicacion
+     * @return cierto en caso de que la eliminacion se realice con exito, falso en caso contrario
+     */
     public boolean borrarPublicacion(int id){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -219,6 +268,14 @@ public class PublicacionDAO {
             return false;
         }
     }
+
+    /**
+     * Borra todas aquellas publicaciones que haya escrito
+     * un publicante concreto
+     * @param uuid id del publicante
+     * @return cierto en caso de que la eliminacion se realice
+     * con exito, falso en caso contrario
+     */
     public boolean borrarPublicaciones(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
