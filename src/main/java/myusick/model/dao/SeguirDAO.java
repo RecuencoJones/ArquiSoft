@@ -2,14 +2,25 @@ package myusick.model.dao;
 
 import myusick.controller.dto.PublisherDTO;
 import myusick.model.connection.PoolManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Created by david on 01/05/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @autor Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con la funcionalidad de seguir a personas y grupos
  */
 public class SeguirDAO {
+    /**
+     * 
+     * @param seguidor
+     * @param seguido
+     * @return
+     */
     public boolean follow(int seguidor, int seguido){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();

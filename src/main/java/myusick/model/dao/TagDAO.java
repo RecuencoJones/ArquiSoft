@@ -4,17 +4,27 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import myusick.controller.dto.SkillTagDTO;
 import myusick.model.connection.PoolManager;
-
 import java.sql.*;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @autor Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con las tags del sistema
  */
 public class TagDAO {
 
+    /**
+     * Metodo encargado de devolver los tags que se tengan asociados a una
+     * persona concreta
+     * @param uuid id de la persona
+     * @return tags asociadas a la persona
+     */
     public ArrayList<String> getTagsByPersona(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -41,6 +51,12 @@ public class TagDAO {
         }
     }
 
+    /**
+     * Metodo encargado de devolver los tags que se tengan asociados a un
+     * grupo concreto
+     * @param uuid id del grupo
+     * @return tags asociadas al grupo
+     */
     public ArrayList<String> getTagsByGrupo(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -67,6 +83,12 @@ public class TagDAO {
         }
     }
 
+    /**
+     * Registra un nuevo tag en la base de datos
+     * @param td informacion del tag a insertar
+     * @return cierto en caso de que la insercion sea correcta, falso
+     * en caso contrario
+     */
     public boolean registrarTag(SkillTagDTO td) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -113,6 +135,12 @@ public class TagDAO {
         }
     }
 
+    /**
+     * Devuelve el id de la tag a partir de su nombre
+     * @param nombre nombre de la tag
+     * @return id de la tag, -1 en caso de que la tag no exista
+     * y -2 en caso de un problema de conexion con la BD
+     */
     public int getIdByNombre(String nombre){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -143,6 +171,14 @@ public class TagDAO {
         }
     }
 
+    /**
+     * Establece una relacion entre un publicante y una tag. De esta manera, ese publicante
+     * tendra asociada dicha tag en caso de consulta.
+     * @param idTag id del tag que se desea asociar
+     * @param idPublicante id delp publicante que se desea asociar
+     * @return cierto en caso de que la operacion en la BD haya sido correcta, falso en
+     * caso contrario.
+     */
     private boolean asociarTag(int idTag, int idPublicante) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -182,6 +218,14 @@ public class TagDAO {
             return false;
         }
     }
+
+    /**
+     * Modifica el nombre de una tag concreta
+     * @param id id de la tag a modificar
+     * @param nuevo nuevo nombre que va a tener
+     * @return cierto en caso de que la actualizacion haya
+     * sido correcta, falso en caso contrario.
+     */
     public boolean editarTag(int id, String nuevo){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -207,6 +251,12 @@ public class TagDAO {
         }
     }
 
+    /**
+     * Borra un tag concreto de la base de datos
+     * @param id id del tag que se desea borrar
+     * @return cierto en caso de que el borrado sea correcto, falso
+     * en caso contrario.
+     */
     public boolean borrarTag(int id){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -247,6 +297,15 @@ public class TagDAO {
             return false;
         }
     }
+
+    /**
+     * Borra todos los tags que tenga asociados un publicante
+     * @param uuid id del publicante
+     * @param tipo indica si el publicante es un grupo o un publicante, de esta manera
+     *             se unifican dos metodos en uno
+     * @return cierto en caso de que el borrado haya sido correcto, falso en caso
+     * contrario
+     */
     public boolean borrarTagsAsociadas(int uuid, String tipo){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
