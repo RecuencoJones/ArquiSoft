@@ -2,14 +2,26 @@ package myusick.model.dao;
 
 import myusick.controller.dto.PublisherDTO;
 import myusick.model.connection.PoolManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Created by david on 01/05/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con la funcionalidad de seguir a personas y grupos
  */
 public class SeguirDAO {
+    /**
+     * Establece una relacion entre dos publicantes
+     * @param seguidor id de la persona que quiere seguir a alguien
+     * @param seguido id de la persona que va a ser seguida
+     * @return cierto en caso de que la operacion resulte con exito,
+     * falso en caso contrario
+     */
     public boolean follow(int seguidor, int seguido){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -32,6 +44,13 @@ public class SeguirDAO {
         }
     }
 
+    /**
+     * Elimina la relacion existente entre dos persona
+     * @param seguidor id de la persona que quiere seguir a alguien
+     * @param seguido id de la persona que va a ser seguida
+     * @return cierto en caso de que la operacion resulte con exito,
+     * falso en caso contrario
+     */
     public boolean unfollow(int seguidor, int seguido){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -54,6 +73,14 @@ public class SeguirDAO {
         }
     }
 
+    /**
+     * Devuelve un objeto de tipo booleano que indicara si los dos
+     * publicantes tienen una relacion en la base de datos
+     * @param seguidor id de la persona que quiere seguir a alguien
+     * @param seguido id de la persona que va a ser seguida
+     * @return cierto en caso de que seguidor y seguido tengan una relacion
+     * en la base de datos
+     */
     public boolean isfollow(int seguidor, int seguido){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -84,7 +111,12 @@ public class SeguirDAO {
             return false;
         }
     }
-    
+
+    /**
+     * Extrae los ids de todos los seguidores que un publicante tenga
+     * @param uuid id del publicante
+     * @return lista con los ids de los seguidores
+     */
     public ArrayList<Integer> getFollowersIds(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -110,6 +142,13 @@ public class SeguirDAO {
         }
     }
 
+    /**
+     * Extrae una lista con la informacion de los publicantes que siguen
+     * a un publicante concreto pasado por parametro
+     * @param uuid id del publicante del que se quiere saber la informacion
+     * @return lista con la informacion de cada publicante que sigue al publicante
+     * pasado por parametro
+     */
     public ArrayList<PublisherDTO> getFollowers(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -146,6 +185,13 @@ public class SeguirDAO {
         }
     }
 
+    /**
+     * Extrae una lista con toda la informacion de aquellos publicantes
+     * a los que el publicante pasado por parametro sigue.
+     * @param uuid id del publicante del que se desea obtener la informacion
+     * @return lista con la informacion de aquellos publicantes
+     * a los que el publicante pasado por parametro sigue
+     */
     public ArrayList<PublisherDTO> getFollowing(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -181,6 +227,13 @@ public class SeguirDAO {
             return null;
         }
     }
+
+    /**
+     * Borra todas aquellas relaciones que tenga un publicante concreto
+     * @param uuid id del publicante
+     * @return cierto en caso de que la operacion resulte con exito,
+     * falso en caso contrario
+     */
     public boolean eliminarSeguidorySeguido(int uuid){
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();

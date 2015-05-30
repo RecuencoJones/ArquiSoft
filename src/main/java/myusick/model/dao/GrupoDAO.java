@@ -1,16 +1,33 @@
 package myusick.model.dao;
 
-import myusick.controller.dto.*;
+import myusick.controller.dto.GroupDTO;
+import myusick.controller.dto.ProfileDTO;
+import myusick.controller.dto.PublisherDTO;
+import myusick.controller.dto.ShortProfileDTO;
 import myusick.model.connection.PoolManager;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ *
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ *         Clase DAO que proporciona el acceso a los datos relacionados
+ *         con las personas del sistema
  */
 public class GrupoDAO {
 
+    /**
+     * Extrae la informacion de perfil de todos los miembros
+     * que conforman un grupo concreto
+     *
+     * @param uuid id del grupo
+     * @return lista con la informacion de los perfiles de los
+     * integrantes del grupo
+     */
     public ArrayList<PublisherDTO> getMembersGroup(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -43,6 +60,13 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Indica si un publicante concreto es un grupo
+     *
+     * @param uuid id del publicante
+     * @return cierto en caso de que sea un grupo,
+     * falso en caso contrario
+     */
     public boolean esUnGrupo(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -74,6 +98,12 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Extrae la informacion de perfil de un grupo concreto
+     *
+     * @param uuid id del grupo
+     * @return informacion de perfil del grupo
+     */
     public ProfileDTO getDataProfile(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -105,6 +135,14 @@ public class GrupoDAO {
             return null;
         }
     }
+
+    /**
+     * Obtiene la informacion de un publicante a partir del
+     * id del grupo
+     *
+     * @param uuid id del grupo
+     * @return informacion de publicante del grupo
+     */
     public PublisherDTO getDataPublisher(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -115,7 +153,7 @@ public class GrupoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 con.commit();
-                PublisherDTO p = new PublisherDTO(uuid,resultSet.getString("nombre"),
+                PublisherDTO p = new PublisherDTO(uuid, resultSet.getString("nombre"),
                         resultSet.getString("avatar"));
                 return p;
             } else {
@@ -135,6 +173,12 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Inserta un grupo en la base de datos
+     *
+     * @param gd informacion del grupo que se quiere insertar
+     * @return uuid del grupo insertado, -1 en caso contrario
+     */
     public int registerGroup(GroupDTO gd) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -183,6 +227,14 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Presenta una solicitud para ingresar en un grupo concreto
+     *
+     * @param persona id de la persona que solicita entrar
+     * @param grupo   id del grupo al que se solicita entrar
+     * @return cierto en caso de que la peticion se haya realizado
+     * correctamente, falso en caso contrario
+     */
     public boolean solicitudInsercionGrupo(int persona, int grupo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -213,6 +265,15 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Responder a la peticion de insercion desfavorablemente, la persona
+     * no ingresara en el grupo
+     *
+     * @param persona id de la persona que solicitaba entrar
+     * @param grupo   id del grupo al que se solicitaba entrar
+     * @return cierto en caso de que se haya respondido correctamente, falso
+     * en caso contrario
+     */
     public boolean rechazarDeGrupo(int persona, int grupo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -243,6 +304,15 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Responder a la peticion de solicitud de insercion en un grupo favorablemente.
+     * La persona pertenecera a partir de ahora al grupo que solicito.
+     *
+     * @param persona id de la persona que solicitaba entrar
+     * @param grupo   id del grupo al que se le solicitaba entrar
+     * @return cierto en caso de que se haya respondido correctamente, falso
+     * en caso contrario.
+     */
     public boolean anadirAGrupo(int persona, int grupo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -254,7 +324,6 @@ public class GrupoDAO {
             ps.setInt(2, grupo);
             int insertedRows = ps.executeUpdate();
             if (insertedRows != 0) {
-                System.out.println("Ha llegado a borrar peticion");
                 /* Ahora, lo anadimos al grupo al que solicito entrar */
                 query = "insert into es_integrante(UUID_G,UUID_P) values (?,?)";
                 ps = con.prepareStatement(query);
@@ -267,13 +336,11 @@ public class GrupoDAO {
                     return true;
                 } else {
                     con.rollback();
-                    System.out.println("No ha insertado nada en es_integrante");
                     pool.returnConnection(con);
                     return false;
                 }
             } else {
                 /* Esa persona no tenia una solicitud pendiente, error */
-                System.out.println("No hay solicitud pendiente");
                 con.rollback();
                 pool.returnConnection(con);
                 return false;
@@ -292,6 +359,14 @@ public class GrupoDAO {
 
     }
 
+    /**
+     * Elimina a una persona concreta de un grupo al que pertenece
+     *
+     * @param persona id de la persona
+     * @param grupo   id del grupo
+     * @return cierto en caso de que la eliminacion sea correcta, falso
+     * en caso contrario
+     */
     public boolean eliminarDeGrupo(int persona, int grupo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -322,6 +397,13 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Extrae una lista de publicantes que han presentado una solicitud de insercion
+     * a un grupo concreto y que aun no se han contestado.
+     *
+     * @param grupo id del grupo al que se solicita entrar
+     * @return lista de publicantes pendientes de respuesta
+     */
     public List<PublisherDTO> pendientesDeAceptar(int grupo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -350,6 +432,13 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Busca aquellos perfiles que contengan, total o parcialmente, en su nombre
+     * la cadena de caracteres insertada como parametro
+     *
+     * @param nombre cadena con la que se pretende encontrar coincidencias
+     * @return lista con los perfiles en los que haya coincidencias
+     */
     public List<ShortProfileDTO> buscarPorNombre(String nombre) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -378,6 +467,13 @@ public class GrupoDAO {
         }
     }
 
+    /**
+     * Obtiene aquellos perfiles de grupos que tengan relacion con
+     * la tag insertada como parametro
+     *
+     * @param tag nombre de la tag
+     * @return lista de perfiles con coincidencias
+     */
     public List<ShortProfileDTO> buscarPorTag(String tag) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -409,6 +505,15 @@ public class GrupoDAO {
             return null;
         }
     }
+
+    /**
+     * Actualiza el nombre del grupo
+     *
+     * @param UUID   id del grupo
+     * @param nombre nuevo nombre del grupo
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario
+     */
     public boolean setNombre(int UUID, String nombre) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -440,8 +545,15 @@ public class GrupoDAO {
         }
     }
 
-
-    public boolean setAnyo(int UUID, int nac){
+    /**
+     * Actualiza el anyo de fundacion del grupo
+     *
+     * @param UUID id del grupo
+     * @param nac  nueva fecha de fundacion del grupo
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario
+     */
+    public boolean setAnyo(int UUID, int nac) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -456,7 +568,7 @@ public class GrupoDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                } else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -466,19 +578,27 @@ public class GrupoDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean setDescripcion(int UUID, String descr){
+    /**
+     * Actualiza la descripcion del grupo
+     *
+     * @param UUID  id del grupo
+     * @param descr nueva descripcion del grupo
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario
+     */
+    public boolean setDescripcion(int UUID, String descr) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(descr.length()>144 || descr.length()==0){
+            if (descr.length() > 144 || descr.length() == 0) {
                 pool.returnConnection(con);
                 return false;
             }
@@ -492,7 +612,7 @@ public class GrupoDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
                     return false;
@@ -502,19 +622,27 @@ public class GrupoDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean setAvatar(int UUID, String url){
+    /**
+     * Actualiza la imagen de avatar del grupo
+     *
+     * @param UUID id del grupo
+     * @param url  nueva url de la imagen de avatar del grupo
+     * @return cierto en caso de que la actualizacion sea correcta,
+     * falso en caso contrario
+     */
+    public boolean setAvatar(int UUID, String url) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
             PublicanteDAO pdao = new PublicanteDAO();
-            if(url.length()>500 || url.length()==0){
+            if (url.length() > 500 || url.length() == 0) {
                 pool.returnConnection(con);
                 return false;
             }
@@ -528,10 +656,9 @@ public class GrupoDAO {
                     con.commit();
                     pool.returnConnection(con);
                     return true;
-                }else{
+                } else {
                     con.rollback();
                     pool.returnConnection(con);
-                    System.out.println("actualizar");
                     return false;
                 }
             } else {
@@ -539,14 +666,21 @@ public class GrupoDAO {
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             pool.returnConnection(con);
             ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean borrarGrupo(int uuid){
+    /**
+     * Borra un grupo de la base de datos
+     *
+     * @param uuid id del grupo
+     * @return cierto en caso de que se haya borrado correctamente,
+     * falso en caso contrario
+     */
+    public boolean borrarGrupo(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
         try {
@@ -579,12 +713,12 @@ public class GrupoDAO {
                 con.commit();
                 pool.returnConnection(con);
                 return true;
-            }else{
+            } else {
                 con.rollback();
                 pool.returnConnection(con);
                 return false;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             pool.returnConnection(con);
             return false;

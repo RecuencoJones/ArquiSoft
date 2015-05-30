@@ -1,14 +1,26 @@
 package myusick.model.dao;
 
 import myusick.model.connection.PoolManager;
-
 import java.sql.*;
 
 /**
- * Created by Cuenta de clase on 02/04/2015.
+ * Myusick. Arquitectura Software 2015
+ * @author David Recuenco (648701)
+ * @author Guillermo Perez (610382)
+ * @author Sandra Campos (629928)
+ *
+ * Clase DAO que proporciona el acceso a los datos relacionados
+ * con los publicantes del sistema
  */
 public class PublicanteDAO {
 
+    /**
+     * Inserta un publicante en la base de datos
+     * @param tipo cierto en caso de que sea un grupo, falso
+     *             en caso contrario
+     * @return id que se le ha asignado automaticamente por la bd en
+     * caso de que la insercion sea correcta, -1 en caso de error
+     */
     public int insertarPublicante(boolean tipo) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -43,6 +55,12 @@ public class PublicanteDAO {
 
     }
 
+    /**
+     * Extrae la url del avatar de un publicante concreto
+     * @param id id del publicante
+     * @return url del avatar del publicante, null en caso de que
+     * el publicante no tenga avatar o que el publicante no exista
+     */
     public String getAvatarById(int id) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -83,6 +101,12 @@ public class PublicanteDAO {
         }
     }
 
+    /**
+     * Extrae el nombre de un publicante a partir de su id
+     * @param id id del publicante
+     * @return nombre del publicante, null en caso de que
+     * el publicante no exista
+     */
     public String getNombreById(int id) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -123,26 +147,12 @@ public class PublicanteDAO {
         }
     }
 
-    //    public boolean editarPublicante(int uuid, boolean nuevo_tipo) {
-//        PoolManager pool = PoolManager.getInstance();
-//        Connection con = pool.getConnection();
-//        try {
-//            String query4 = "update publicante set tipoPublicante=? where UUID=?";
-//            PreparedStatement ps = con.prepareStatement(query4);
-//            ps.setBoolean(1, nuevo_tipo);
-//            ps.setInt(2, uuid);
-//            int resul = ps.executeUpdate();
-//            boolean resultado;
-//            if (resul > 0) resultado = true;
-//            else resultado = false;
-//            pool.returnConnection(con);
-//            return resultado;
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            pool.returnConnection(con);
-//            return false;
-//        }
-//    }
+    /**
+     * Elimina un publicante de la base de datos
+     * @param uuid id del publicante
+     * @return cierto en caso de que la operacion se realice con exito,
+     * falso en caso contrario
+     */
     public boolean borrarPublicante(int uuid) {
         PoolManager pool = PoolManager.getInstance();
         Connection con = pool.getConnection();
@@ -168,61 +178,5 @@ public class PublicanteDAO {
             return false;
         }
     }
-//    public boolean borrarPublicante(int uuid) {
-//            /* Recogemos la informacion de que tipo de publicante es para el futuro */
-//        boolean esGrupo = new GrupoDAO().esUnGrupo(uuid);
-//        System.out.println("es grupo "+esGrupo);
-//            /* Primero borramos los seguidores */
-//        boolean resultado = new SeguirDAO().eliminarSeguidorySeguido(uuid);
-//        System.out.println("seguidores "+resultado);
-//            /* Ahora borramos sus tags */
-//        if (esGrupo) {
-//            resultado = resultado && new TagDAO().borrarTagsAsociadas(uuid, "Grupo");
-//                /* Borramos sus publicaciones */
-//            resultado = resultado && new PublicacionDAO().borrarPublicaciones(uuid);
-//                /* Borramos los miembros del grupo */
-//            resultado = resultado && new GrupoDAO().borrarGrupo(uuid);
-//        } else {
-//            resultado = resultado && new TagDAO().borrarTagsAsociadas(uuid, "Persona");
-//                /* Borramos sus aptitudes */
-//            resultado = resultado && new AptitudDAO().borrarAptitudesAsociadas(uuid);
-//                /* Lo borramos de sus grupos */
-//            resultado = resultado && new PersonaDAO().borrarDeGrupos(uuid);
-//                /* Borramos sus publicaciones */
-//            resultado = resultado && new PublicacionDAO().borrarPublicaciones(uuid);
-//                /* Ahora borramos a la propia persona */
-//            resultado = resultado && new PersonaDAO().borrarPersona(uuid);
-//
-//        }
-//            /* Por ultimo lo eliminamos de la tabla de publicantes si ha ido bien hasta ahora*/
-//        if (resultado) {
-//            PoolManager pool = PoolManager.getInstance();
-//            Connection con = pool.getConnection();
-//            try {
-//                String query = "delete from publicante where UUID=?";
-//                PreparedStatement ps = con.prepareStatement(query);
-//                ps.setInt(1, uuid);
-//                int deleteRows = ps.executeUpdate();
-//                if (deleteRows == 1) {
-//                    con.commit();
-//                    resultado = true;
-//                } else {
-//                    con.rollback();
-//                    resultado = false;
-//                }
-//                pool.returnConnection(con);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//                try {
-//                    con.rollback();
-//                } catch (SQLException e2) {
-//                    e2.printStackTrace();
-//                }
-//                pool.returnConnection(con);
-//                return false;
-//            }
-//        }
-//        return resultado;
-//    }
 
 }
